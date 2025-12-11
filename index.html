@@ -537,7 +537,7 @@
       </button>
     </div>
 
-    <!-- Экран 3: Турнир (после создания) -->
+    <!-- Экран 3: Турнир (после создания / просмотра) -->
     <div class="card hidden" id="screen-tournament">
       <button class="btn-ghost" id="back-from-tournament-btn">
         ← История
@@ -571,7 +571,7 @@
         Завершить турнир
       </button>
 
-      <div class="history-note" style="margin-top: 10px;">
+      <div class="history-note" style="margin-top: 10px;" id="tournament-footer-note">
         Дальше мы добавим расширенные настройки и отчёты.
       </div>
     </div>
@@ -767,6 +767,7 @@
     const tournamentHeaderTitle = document.getElementById("tournament-header-title");
     const tournamentHeaderSubtitle = document.getElementById("tournament-header-subtitle");
     const tournamentHeaderMeta = document.getElementById("tournament-header-meta");
+    const tournamentFooterNote = document.getElementById("tournament-footer-note");
 
     // История турниров
     const historyListEl = document.getElementById("history-list");
@@ -988,16 +989,11 @@
         item.appendChild(titleRow);
         item.appendChild(meta);
 
+        // Открываем и Live, и завершённые турниры на одном экране
         item.addEventListener("click", () => {
-          if (t.live) {
-            activeTournament = t;
-            updateTournamentScreen();
-            showScreen("tournament");
-          } else {
-            alert(
-              `Просмотр завершённого турнира: "${t.name}". (Позже сделаем отдельный экран.)`
-            );
-          }
+          activeTournament = t;
+          updateTournamentScreen();
+          showScreen("tournament");
         });
 
         historyListEl.appendChild(item);
@@ -1168,16 +1164,6 @@
       return playersCount * 3;
     }
 
-    function shuffleArray(arr) {
-      const a = [...arr];
-      for (let i = a.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [a[i], a[j]] = [a[j], a[i]];
-      }
-      return a;
-    }
-
-    // Все комбинации по k элементов
     function combinations(arr, k) {
       const res = [];
       const n = arr.length;
@@ -1208,7 +1194,6 @@
         partnerCount[id] = {};
       });
 
-      // идеальное среднее количество совместных игр пары: 12 / (N - 1)
       const pairTarget = N > 1 ? 12 / (N - 1) : 0;
 
       function getPairCount(a, b) {
@@ -1243,7 +1228,6 @@
             const teamB = variant.teamB;
             const playersInGame = [...teamA, ...teamB];
 
-            // гипотетическое количество игр после этой партии
             let minNext = Infinity;
             let maxNext = -Infinity;
 
@@ -1255,7 +1239,6 @@
 
             const gamesSpread = maxNext - minNext;
 
-            // штраф за “перекормленные” пары
             let partnerPenalty = 0;
             const pairsToCheck = [teamA, teamB];
             for (const [p, q] of pairsToCheck) {
@@ -1263,7 +1246,7 @@
               const next = current + 1;
               const over = next - pairTarget;
               if (over > 0) {
-                partnerPenalty += over * over; // квадратичный штраф
+                partnerPenalty += over * over;
               }
             }
 
@@ -1346,10 +1329,12 @@
     function updateTournamentScreen() {
       if (!activeTournament) return;
 
+      const isLive = !!activeTournament.live;
+
       tournamentHeaderTitle.textContent = activeTournament.name || "Турнир";
-      tournamentHeaderSubtitle.textContent = activeTournament.live
+      tournamentHeaderSubtitle.textContent = isLive
         ? "Турнир в статусе Live. Можно играть матчи и смотреть таблицу."
-        : "Турнир завершён. Можно просмотреть итоговую таблицу (экран истории пока без детального просмотра).";
+        : "Турнир завершён. Можно просматривать матчи, завершённые игры и таблицу.";
 
       const playersCount = getPlayersCountForTournament(activeTournament);
 
@@ -1384,10 +1369,13 @@
 
       tournamentHeaderMeta.innerHTML = baseMeta;
 
-      if (activeTournament.live) {
+      if (isLive) {
         tournamentFinishBtn.classList.remove("hidden");
+        tournamentFooterNote.textContent = "Турнир Live — можно продолжать играть матчи.";
       } else {
         tournamentFinishBtn.classList.add("hidden");
+        tournamentFooterNote.textContent =
+          "Это завершённый турнир. Результаты можно смотреть, но не редактировать.";
       }
     }
 
@@ -1547,7 +1535,6 @@
       matchPair2Select.onchange = ensureDifferent;
     }
 
-    // Авто-подбор для 3 пар (Winner stays)
     function autoSuggestNextMatchForThreePairs(t) {
       const pairs = t.pairs || [];
       if (pairs.length !== 3) return;
@@ -1642,11 +1629,9 @@
           "Добавь минимум 2 пары, чтобы создавать матчи.";
         matchPairsSelectRow.classList.add("hidden");
         firstMatchRandomBtn.classList.add("hidden");
-        saveMatchBtn.disabled = true;
         return;
       }
 
-      saveMatchBtn.disabled = false;
       matchPairsSelectRow.classList.remove("hidden");
 
       if (activeTournament.pairsModeType === "two_pairs") {
@@ -1790,9 +1775,10 @@
         row.appendChild(nameEl);
         row.appendChild(infoEl);
 
-        // клик по матчу — редактирование
+        // клик по матчу — редактирование только если Live
         row.addEventListener("click", () => {
-          if (!activeTournament || activeTournament.mode !== "pairs") return;
+          if (!activeTournament || !activeTournament.live) return;
+          if (activeTournament.mode !== "pairs") return;
           editingMatchId = m.id;
           saveMatchBtn.textContent = "Обновить матч";
 
@@ -1877,8 +1863,9 @@
         row.appendChild(nameEl);
         row.appendChild(infoEl);
 
-        // клик по матчу — редактирование
+        // клик по матчу — редактирование только если Live
         row.addEventListener("click", () => {
+          if (!activeTournament || !activeTournament.live) return;
           if (!activeTournament || activeTournament.mode !== "americano") return;
           editingMatchId = m.id;
           saveMatchBtn.textContent = "Обновить матч";
@@ -1901,7 +1888,7 @@
       if (!activeTournament || activeTournament.mode !== "americano") {
         americanoConfigNote.textContent =
           "Американо доступен только для соответствующего режима.";
-        saveMatchBtn.disabled = true;
+        saveMatchBtn.disabled = false;
         americanoCurrentGameEl.textContent = "";
         americanoRemainingList.innerHTML = "";
         return;
@@ -1913,13 +1900,10 @@
       if (players.length < 4) {
         americanoConfigNote.textContent =
           "Нужно минимум 4 игрока, чтобы сыграть матч Американо.";
-        saveMatchBtn.disabled = true;
         americanoCurrentGameEl.textContent = "";
         americanoRemainingList.innerHTML = "";
         return;
       }
-
-      saveMatchBtn.disabled = false;
 
       const playerById = {};
       players.forEach((p) => {
@@ -2048,7 +2032,7 @@
       americanoRoundInfo.textContent =
         `Круг ${round}: сыграно ${played} из ${total} игр (осталось ${remaining}).`;
 
-      if (remaining <= 0) {
+      if (remaining <= 0 && activeTournament.live) {
         amRoundButtons.classList.remove("hidden");
       } else {
         amRoundButtons.classList.add("hidden");
@@ -2067,8 +2051,14 @@
         return;
       }
 
+      const isLive = !!activeTournament.live;
+
       editingMatchId = null;
       saveMatchBtn.textContent = "Сохранить матч";
+      saveMatchBtn.disabled = !isLive;
+      if (!isLive) {
+        saveMatchBtn.textContent = "Редактирование недоступно (турнир завершён)";
+      }
 
       if (activeTournament.mode === "pairs") {
         pairsConfigBlock.classList.remove("hidden");
@@ -2103,6 +2093,10 @@
         renderAmericanoRoundInfo();
         renderAmericanoConfig();
         renderMatchesListAmericano();
+
+        if (!isLive) {
+          amRoundButtons.classList.add("hidden");
+        }
       } else {
         pairsConfigBlock.classList.add("hidden");
         americanoConfigBlock.classList.add("hidden");
@@ -2223,8 +2217,6 @@
       }
     }
 
-    // --- Экран завершённых игр ---
-
     function renderFinishedScreen() {
       finishedList.innerHTML = "";
 
@@ -2311,7 +2303,6 @@
           playerById[p.id] = p;
         });
 
-        // отсортируем по кругу и id
         const sorted = [...matches].sort((a, b) => {
           const ra = a.round || 1;
           const rb = b.round || 1;
@@ -2631,6 +2622,10 @@
 
     amNewRoundBtn.addEventListener("click", () => {
       if (!activeTournament || activeTournament.mode !== "americano") return;
+      if (!activeTournament.live) {
+        alert("Турнир завершён, новые круги недоступны.");
+        return;
+      }
       activeTournament.americanoCurrentRound =
         (activeTournament.americanoCurrentRound || 1) + 1;
       if (
@@ -2650,6 +2645,11 @@
     saveMatchBtn.addEventListener("click", () => {
       if (!activeTournament) {
         alert("Сначала создай и открой турнир.");
+        return;
+      }
+
+      if (!activeTournament.live) {
+        alert("Турнир завершён, редактирование матчей недоступно.");
         return;
       }
 
