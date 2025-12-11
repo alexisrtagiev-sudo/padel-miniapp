@@ -559,6 +559,10 @@
         Матчи
       </button>
 
+      <button class="btn btn-secondary" id="tournament-finished-games-btn">
+        Завершённые игры
+      </button>
+
       <button class="btn btn-secondary" id="tournament-table-btn">
         Таблица
       </button>
@@ -678,6 +682,21 @@
       <div class="players-list" id="table-list"></div>
     </div>
 
+    <!-- Экран 6: Завершённые игры -->
+    <div class="card hidden" id="screen-finished">
+      <button class="btn-ghost" id="back-from-finished-btn">
+        ← Турнир
+      </button>
+
+      <div class="title" id="finished-title">Завершённые игры</div>
+      <div class="subtitle" id="finished-subtitle">
+        Все сыгранные матчи этого турнира.
+      </div>
+
+      <div class="mode-label">Список игр</div>
+      <div class="players-list" id="finished-list"></div>
+    </div>
+
     <div class="footer">
       Beta • Padel Mini App
     </div>
@@ -695,6 +714,7 @@
     const screenMatches = document.getElementById("screen-matches");
     const screenHistory = document.getElementById("screen-history");
     const screenTable = document.getElementById("screen-table");
+    const screenFinished = document.getElementById("screen-finished");
 
     // Кнопки
     const newTournamentBtn = document.getElementById("new-tournament-btn");
@@ -705,6 +725,7 @@
     const backFromTournamentBtn = document.getElementById("back-from-tournament-btn");
     const backFromMatchesBtn = document.getElementById("back-from-matches-btn");
     const backFromTableBtn = document.getElementById("back-from-table-btn");
+    const backFromFinishedBtn = document.getElementById("back-from-finished-btn");
     const goToPlayersBtn = document.getElementById("go-to-players-btn");
     const addPlayerBtn = document.getElementById("add-player-btn");
     const addPairBtn = document.getElementById("add-pair-btn");
@@ -712,6 +733,7 @@
     const tournamentMatchesBtn = document.getElementById("tournament-matches-btn");
     const tournamentTableBtn = document.getElementById("tournament-table-btn");
     const tournamentFinishBtn = document.getElementById("tournament-finish-btn");
+    const tournamentFinishedGamesBtn = document.getElementById("tournament-finished-games-btn");
     const saveMatchBtn = document.getElementById("save-match-btn");
     const firstMatchRandomBtn = document.getElementById("first-match-random-btn");
     const amShowResultsBtn = document.getElementById("am-show-results-btn");
@@ -780,6 +802,11 @@
     const tableSubtitle = document.getElementById("table-subtitle");
     const tableList = document.getElementById("table-list");
 
+    // Экран завершённых игр
+    const finishedTitle = document.getElementById("finished-title");
+    const finishedSubtitle = document.getElementById("finished-subtitle");
+    const finishedList = document.getElementById("finished-list");
+
     // Текущее состояние
     let tournaments = [];
     let currentTournament = null;
@@ -797,6 +824,7 @@
       screenMatches.classList.add("hidden");
       screenHistory.classList.add("hidden");
       screenTable.classList.add("hidden");
+      screenFinished.classList.add("hidden");
 
       if (screen === "home") screenHome.classList.remove("hidden");
       if (screen === "new") screenNew.classList.remove("hidden");
@@ -805,6 +833,7 @@
       if (screen === "matches") screenMatches.classList.remove("hidden");
       if (screen === "history") screenHistory.classList.remove("hidden");
       if (screen === "table") screenTable.classList.remove("hidden");
+      if (screen === "finished") screenFinished.classList.remove("hidden");
     }
 
     function modeLabel(mode) {
@@ -1239,9 +1268,9 @@
             }
 
             const score =
-              partnerPenalty * 10 + // сильно штрафуем перекос по парам
-              gamesSpread * 2 +     // и помягче — разброс по общему числу игр
-              Math.random() * 0.1;  // небольшой рандом, чтобы не было зацикливания
+              partnerPenalty * 10 +
+              gamesSpread * 2 +
+              Math.random() * 0.1;
 
             if (!best || score < best.score) {
               best = {
@@ -1256,7 +1285,6 @@
 
         if (!best) break;
 
-        // применяем лучший вариант
         best.playersInGame.forEach((id) => {
           gamesPlayed[id] += 1;
         });
@@ -2195,6 +2223,142 @@
       }
     }
 
+    // --- Экран завершённых игр ---
+
+    function renderFinishedScreen() {
+      finishedList.innerHTML = "";
+
+      if (!activeTournament) {
+        finishedTitle.textContent = "Завершённые игры";
+        finishedSubtitle.textContent =
+          "Сначала создай и открой турнир.";
+        const msg = document.createElement("div");
+        msg.className = "hint";
+        msg.textContent = "Создай турнир и сыграй хотя бы один матч.";
+        finishedList.appendChild(msg);
+        return;
+      }
+
+      finishedTitle.textContent = `Завершённые игры — ${activeTournament.name || ""}`;
+      finishedSubtitle.textContent =
+        activeTournament.mode === "americano"
+          ? "Все сыгранные матчи Американо (по кругам)."
+          : "Все сыгранные матчи в режиме пар.";
+
+      const matches = activeTournament.matches || [];
+      if (!matches.length) {
+        const msg = document.createElement("div");
+        msg.className = "hint";
+        msg.textContent = "Пока нет сыгранных матчей.";
+        finishedList.appendChild(msg);
+        return;
+      }
+
+      if (activeTournament.mode === "pairs") {
+        const pairs = activeTournament.pairs || [];
+        const pairById = {};
+        pairs.forEach((p, index) => {
+          pairById[p.id] = {
+            ...p,
+            label: `Пара ${index + 1}`,
+          };
+        });
+
+        matches.forEach((m, idx) => {
+          const row = document.createElement("div");
+          row.className = "player-item";
+
+          const p1 = pairById[m.pair1Id];
+          const p2 = pairById[m.pair2Id];
+
+          const nameEl = document.createElement("div");
+          nameEl.className = "player-name";
+
+          let title = `Матч ${idx + 1}: `;
+          if (p1 && p2) {
+            title += `${p1.label}: ${p1.name1} & ${p1.name2} vs ${p2.label}: ${p2.name1} & ${p2.name2}`;
+          } else {
+            title += "неизвестные пары";
+          }
+          nameEl.textContent = title;
+
+          const infoEl = document.createElement("div");
+          infoEl.style.fontSize = "11px";
+          infoEl.style.textAlign = "right";
+
+          const setsWonA = m.sets.filter((s) => s.gamesA > s.gamesB).length;
+          const setsWonB = m.sets.filter((s) => s.gamesB > s.gamesA).length;
+          const setsScoreText = `${setsWonA}:${setsWonB} по сетам`;
+
+          let resultText = "";
+          if (m.result === "p1") resultText = "Победа пары 1";
+          else if (m.result === "p2") resultText = "Победа пары 2";
+          else if (m.result === "draw") resultText = "Ничья";
+
+          const setsDetails = m.sets.map((s) => `${s.gamesA}:${s.gamesB}`).join(", ");
+
+          infoEl.innerHTML = `${setsScoreText}<br>${setsDetails}<br>${resultText}<br>${m.playedAt || ""}`;
+
+          row.appendChild(nameEl);
+          row.appendChild(infoEl);
+
+          finishedList.appendChild(row);
+        });
+      } else if (activeTournament.mode === "americano") {
+        const players = activeTournament.players || [];
+        const playerById = {};
+        players.forEach((p) => {
+          playerById[p.id] = p;
+        });
+
+        // отсортируем по кругу и id
+        const sorted = [...matches].sort((a, b) => {
+          const ra = a.round || 1;
+          const rb = b.round || 1;
+          if (ra !== rb) return ra - rb;
+          return (a.id || 0) - (b.id || 0);
+        });
+
+        sorted.forEach((m, idx) => {
+          const row = document.createElement("div");
+          row.className = "player-item";
+
+          const teamAPlayers = (m.teamA || [])
+            .map((id) => (playerById[id] ? playerById[id].name : "?"))
+            .join(" & ");
+          const teamBPlayers = (m.teamB || [])
+            .map((id) => (playerById[id] ? playerById[id].name : "?"))
+            .join(" & ");
+
+          const nameEl = document.createElement("div");
+          nameEl.className = "player-name";
+          const roundInfo = m.round ? `Круг ${m.round}, ` : "";
+          nameEl.textContent = `${roundInfo}матч ${idx + 1}: ${teamAPlayers} vs ${teamBPlayers}`;
+
+          const infoEl = document.createElement("div");
+          infoEl.style.fontSize = "11px";
+          infoEl.style.textAlign = "right";
+
+          let resultText = "";
+          if ((m.scoreA || 0) > (m.scoreB || 0)) resultText = "Победа команды 1";
+          else if ((m.scoreB || 0) > (m.scoreA || 0)) resultText = "Победа команды 2";
+          else resultText = "Ничья";
+
+          infoEl.innerHTML = `${m.scoreA || 0}:${m.scoreB || 0} очков<br>${resultText}<br>${m.playedAt || ""}`;
+
+          row.appendChild(nameEl);
+          row.appendChild(infoEl);
+
+          finishedList.appendChild(row);
+        });
+      } else {
+        const msg = document.createElement("div");
+        msg.className = "hint";
+        msg.textContent = "Завершённые игры доступны только для режимов «Пары» и «Американо».";
+        finishedList.appendChild(msg);
+      }
+    }
+
     // --- Обработчики кнопок ---
 
     newTournamentBtn.addEventListener("click", () => {
@@ -2239,6 +2403,10 @@
     });
 
     backFromTableBtn.addEventListener("click", () => {
+      showScreen("tournament");
+    });
+
+    backFromFinishedBtn.addEventListener("click", () => {
       showScreen("tournament");
     });
 
@@ -2383,7 +2551,7 @@
       renderHistory();
 
       alert(
-        `Турнир "${activeTournament.name}" создан. Дальше можно переходить к матчам и таблице.`
+        `Турнир "${activeTournament.name}" создан. Дальше можно переходить к матчам, завершённым играм и таблице.`
       );
       showScreen("tournament");
     });
@@ -2409,6 +2577,11 @@
     tournamentTableBtn.addEventListener("click", () => {
       renderTableScreen();
       showScreen("table");
+    });
+
+    tournamentFinishedGamesBtn.addEventListener("click", () => {
+      renderFinishedScreen();
+      showScreen("finished");
     });
 
     tournamentFinishBtn.addEventListener("click", () => {
@@ -2759,7 +2932,7 @@
       saveMatchBtn.textContent = "Сохранить матч";
 
       renderMatchesScreen();
-      alert("Матч сохранён. Таблица и расписание обновлены.");
+      alert("Матч сохранён. Таблица и список завершённых игр обновлены.");
     });
 
     // Авто-подстановка счёта в Американо
