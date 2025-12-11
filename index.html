@@ -299,15 +299,15 @@
       margin-top: 6px;
     }
 
+    .hint-strong {
+      color: #fbbf24;
+    }
+
     .current-game-text {
-      font-size: 15px;
+      font-size: 17px;
       font-weight: 700;
       margin-top: 4px;
       color: #e5e7eb;
-    }
-
-    .hint-strong {
-      color: #fbbf24;
     }
 
     .badge {
@@ -457,7 +457,7 @@
         </div>
 
         <div class="pairs-settings-note">
-          Например, при 16 очках команды могут сыграть 10:6 или 8:8 — главное, чтобы сумма была 16.  
+          Например, при 16 очках команды могут сыграть 10:6 или 8:8 — главное, чтобы сумма была 16.
           Значения кратны 4, чтобы игроки на корте могли подавать примерно одинаковое количество раз.
         </div>
       </div>
@@ -685,6 +685,7 @@
 
   <script>
     const MAX_PAIRS = 3;
+    const STORAGE_KEY = "padel_tournaments_v1";
 
     // Экраны
     const screenHome = document.getElementById("screen-home");
@@ -812,6 +813,41 @@
       return mode;
     }
 
+    // --- Сохранение / загрузка состояния (localStorage) ---
+
+    function saveState() {
+      try {
+        const data = {
+          tournaments,
+          nextTournamentId,
+        };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      } catch (e) {
+        console.error("Ошибка сохранения состояния:", e);
+      }
+    }
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const data = JSON.parse(raw);
+        if (Array.isArray(data.tournaments)) {
+          tournaments = data.tournaments;
+        }
+        if (typeof data.nextTournamentId === "number") {
+          nextTournamentId = data.nextTournamentId;
+        } else {
+          nextTournamentId =
+            tournaments.length
+              ? Math.max(...tournaments.map((t) => t.id || 0)) + 1
+              : 1;
+        }
+      } catch (e) {
+        console.error("Ошибка загрузки состояния:", e);
+      }
+    }
+
     function setPlayersHintForMode(mode) {
       if (mode === "pairs") {
         playersHint.innerHTML =
@@ -902,9 +938,9 @@
         const playersCount = getPlayersCountForTournament(t);
 
         meta.innerHTML = `
-          <span>${t.createdAt}</span>
+          <span>${t.createdAt || ""}</span>
           <span>${modeLabel(t.mode)}</span>
-          <span>${t.courts} корт(а)</span>
+          <span>${t.courts || 1} корт(а)</span>
           <span>${playersCount} игрок(ов)</span>
         `;
 
@@ -1112,38 +1148,127 @@
       return a;
     }
 
-    // Генерация расписания Американо (пока жадный алгоритм, но даёт честное распределение по числу игр)
+    // Все комбинации по k элементов
+    function combinations(arr, k) {
+      const res = [];
+      const n = arr.length;
+      function helper(start, combo) {
+        if (combo.length === k) {
+          res.push([...combo]);
+          return;
+        }
+        for (let i = start; i < n; i++) {
+          combo.push(arr[i]);
+          helper(i + 1, combo);
+          combo.pop();
+        }
+      }
+      helper(0, []);
+      return res;
+    }
+
+    // Генерация расписания Американо с балансом партнёрств
     function generateAmericanoSchedule(playerIds, gamesCount) {
       const schedule = [];
-      const counts = {};
+      const gamesPlayed = {};
+      const partnerCount = {};
+      const N = playerIds.length;
+
       playerIds.forEach((id) => {
-        counts[id] = 0;
+        gamesPlayed[id] = 0;
+        partnerCount[id] = {};
       });
 
-      for (let i = 1; i <= gamesCount; i++) {
-        const sortedIds = [...playerIds].sort((a, b) => {
-          if (counts[a] === counts[b]) {
-            return a - b;
+      // идеальное среднее количество совместных игр пары: 12 / (N - 1)
+      const pairTarget = N > 1 ? 12 / (N - 1) : 0;
+
+      function getPairCount(a, b) {
+        const x = Math.min(a, b);
+        const y = Math.max(a, b);
+        return (partnerCount[x] && partnerCount[x][y]) || 0;
+      }
+
+      function incPairCount(a, b) {
+        const x = Math.min(a, b);
+        const y = Math.max(a, b);
+        if (!partnerCount[x]) partnerCount[x] = {};
+        partnerCount[x][y] = (partnerCount[x][y] || 0) + 1;
+      }
+
+      const allCombos = combinations(playerIds, 4);
+
+      for (let gameIndex = 1; gameIndex <= gamesCount; gameIndex++) {
+        let best = null;
+
+        for (const combo of allCombos) {
+          const [a, b, c, d] = combo;
+
+          const variants = [
+            { teamA: [a, b], teamB: [c, d] },
+            { teamA: [a, c], teamB: [b, d] },
+            { teamA: [a, d], teamB: [b, c] },
+          ];
+
+          for (const variant of variants) {
+            const teamA = variant.teamA;
+            const teamB = variant.teamB;
+            const playersInGame = [...teamA, ...teamB];
+
+            // гипотетическое количество игр после этой партии
+            let minNext = Infinity;
+            let maxNext = -Infinity;
+
+            playerIds.forEach((id) => {
+              const val = gamesPlayed[id] + (playersInGame.includes(id) ? 1 : 0);
+              if (val < minNext) minNext = val;
+              if (val > maxNext) maxNext = val;
+            });
+
+            const gamesSpread = maxNext - minNext;
+
+            // штраф за “перекормленные” пары
+            let partnerPenalty = 0;
+            const pairsToCheck = [teamA, teamB];
+            for (const [p, q] of pairsToCheck) {
+              const current = getPairCount(p, q);
+              const next = current + 1;
+              const over = next - pairTarget;
+              if (over > 0) {
+                partnerPenalty += over * over; // квадратичный штраф
+              }
+            }
+
+            const score =
+              partnerPenalty * 10 + // сильно штрафуем перекос по парам
+              gamesSpread * 2 +     // и помягче — разброс по общему числу игр
+              Math.random() * 0.1;  // небольшой рандом, чтобы не было зацикливания
+
+            if (!best || score < best.score) {
+              best = {
+                score,
+                teamA,
+                teamB,
+                playersInGame,
+              };
+            }
           }
-          return counts[a] - counts[b];
+        }
+
+        if (!best) break;
+
+        // применяем лучший вариант
+        best.playersInGame.forEach((id) => {
+          gamesPlayed[id] += 1;
         });
+        incPairCount(best.teamA[0], best.teamA[1]);
+        incPairCount(best.teamB[0], best.teamB[1]);
 
-        const chosen = sortedIds.slice(0, 4);
-        if (chosen.length < 4) break;
-
-        chosen.forEach((id) => {
-          counts[id] = (counts[id] || 0) + 1;
-        });
-
-        const rest = playerIds.filter((id) => !chosen.includes(id));
-        const shuffled = shuffleArray(chosen);
-        const teamA = shuffled.slice(0, 2);
-        const teamB = shuffled.slice(2, 4);
+        const rest = playerIds.filter((id) => !best.playersInGame.includes(id));
 
         schedule.push({
-          id: i,
-          teamA,
-          teamB,
+          id: gameIndex,
+          teamA: best.teamA,
+          teamB: best.teamB,
           rest,
         });
       }
@@ -1201,9 +1326,9 @@
       const playersCount = getPlayersCountForTournament(activeTournament);
 
       let baseMeta = `
-        <span>${activeTournament.createdAt}</span>
+        <span>${activeTournament.createdAt || ""}</span>
         <span>${modeLabel(activeTournament.mode)}</span>
-        <span>${activeTournament.courts} корт(а)</span>
+        <span>${activeTournament.courts || 1} корт(а)</span>
         <span>${playersCount} игрок(ов)</span>
       `;
 
@@ -1643,13 +1768,11 @@
           editingMatchId = m.id;
           saveMatchBtn.textContent = "Обновить матч";
 
-          // пары
           if (activeTournament.pairsModeType !== "two_pairs") {
             matchPair1Select.value = String(m.pair1Id);
             matchPair2Select.value = String(m.pair2Id);
           }
 
-          // сеты
           const setsCount = activeTournament.setsPerMatch || 1;
           for (let i = 1; i <= setsCount; i++) {
             const inputA = document.getElementById(`set-a-${i}`);
@@ -2026,7 +2149,6 @@
           return;
         }
 
-        // Шапка
         const headerRow = document.createElement("div");
         headerRow.className = "player-item";
 
@@ -2254,6 +2376,7 @@
 
       tournaments.push(currentTournament);
       nextTournamentId += 1;
+      saveState();
 
       activeTournament = currentTournament;
       updateTournamentScreen();
@@ -2296,6 +2419,7 @@
       if (!confirmed) return;
 
       activeTournament.live = false;
+      saveState();
       updateTournamentScreen();
       renderHistory();
       alert(`Турнир "${activeTournament.name}" завершён.`);
@@ -2336,7 +2460,6 @@
       if (!activeTournament || activeTournament.mode !== "americano") return;
       activeTournament.americanoCurrentRound =
         (activeTournament.americanoCurrentRound || 1) + 1;
-      // новый круг — те же игры, очки игроков сохраняются
       if (
         activeTournament.americanoSchedule &&
         activeTournament.americanoSchedule.length
@@ -2344,6 +2467,7 @@
         activeTournament.americanoCurrentGameId =
           activeTournament.americanoSchedule[0].id;
       }
+      saveState();
       alert(
         `Начат новый круг ${activeTournament.americanoCurrentRound}. Очки игроков сохраняются.`
       );
@@ -2374,7 +2498,6 @@
           return;
         }
 
-        // нельзя блокировать, если мы редактируем эту игру
         if (!editingMatchId && isAmericanoGamePlayed(activeTournament, round, gameId)) {
           alert(
             "Эта игра текущего круга уже сохранена. Для изменения результата нажми на неё в истории матчей."
@@ -2446,7 +2569,6 @@
           if (!activeTournament.matches) activeTournament.matches = [];
           activeTournament.matches.push(match);
 
-          // переходим к следующей несыгранной игре этого круга
           const nextGame = schedule.find(
             (g) => !isAmericanoGamePlayed(activeTournament, round, g.id)
           );
@@ -2454,6 +2576,8 @@
             activeTournament.americanoCurrentGameId = nextGame.id;
           }
         }
+
+        saveState();
 
         editingMatchId = null;
         saveMatchBtn.textContent = "Сохранить матч";
@@ -2495,7 +2619,6 @@
       const setsCount = activeTournament.setsPerMatch || 1;
       const maxGames = activeTournament.gamesPerSet || null;
 
-      // определяем, является ли этот матч "первым матчем турнира"
       let isFirstMatch = false;
       if (!activeTournament.matches || activeTournament.matches.length === 0) {
         isFirstMatch = true;
@@ -2623,7 +2746,8 @@
         activeTournament.matches.push(match);
       }
 
-      // очистка полей ввода
+      saveState();
+
       for (let i = 1; i <= setsCount; i++) {
         const inputA = document.getElementById(`set-a-${i}`);
         const inputB = document.getElementById(`set-b-${i}`);
@@ -2666,6 +2790,7 @@
     });
 
     // Инициализация
+    loadState();
     updateSettingsVisibility();
     showScreen("home");
   </script>
