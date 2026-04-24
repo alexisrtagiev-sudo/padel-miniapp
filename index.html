@@ -1,814 +1,979 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8" />
-  <title>Padel Mini App</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+!DOCTYPE html
+html lang=ru
+head
+  meta charset=UTF-8 
+  titlePadel Mini Apptitle
+  meta name=viewport content=width=device-width, initial-scale=1.0 
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  style
+    root {
+      --bg #0f172a;
+      --card #020617;
+      --card-soft #020819;
+      --text #f9fafb;
+      --text-muted #9ca3af;
+      --text-soft #6b7280;
+      --border rgba(148, 163, 184, 0.35);
+      --border-strong rgba(148, 163, 184, 0.5);
+      --primary-start #22c55e;
+      --primary-end #22d3ee;
+      --primary-text #020617;
+      --primary-shadow rgba(34, 197, 94, 0.35);
+      --danger-bg #b91c1c;
+      --danger-bg-hover #dc2626;
+      --danger-text #fee2e2;
+      --warning #fbbf24;
+      --remove #f97373;
+      --live #f87171;
+      --live-text #fecaca;
+      --shadow rgba(0, 0, 0, 0.6);
+    }
+
+    body.theme-day {
+      --bg #e5edf7;
+      --card #ffffff;
+      --card-soft #f1f5f9;
+      --text #0f172a;
+      --text-muted #475569;
+      --text-soft #64748b;
+      --border rgba(15, 23, 42, 0.14);
+      --border-strong rgba(15, 23, 42, 0.22);
+      --primary-start #16a34a;
+      --primary-end #0ea5e9;
+      --primary-text #ffffff;
+      --primary-shadow rgba(14, 165, 233, 0.22);
+      --danger-bg #dc2626;
+      --danger-bg-hover #b91c1c;
+      --danger-text #ffffff;
+      --warning #b45309;
+      --remove #dc2626;
+      --live #ef4444;
+      --live-text #991b1b;
+      --shadow rgba(15, 23, 42, 0.16);
+    }
+
+    body.theme-night {
+      --bg #0f172a;
+      --card #020617;
+      --card-soft #020819;
+      --text #f9fafb;
+      --text-muted #9ca3af;
+      --text-soft #6b7280;
+      --border rgba(148, 163, 184, 0.35);
+      --border-strong rgba(148, 163, 184, 0.5);
+      --primary-start #22c55e;
+      --primary-end #22d3ee;
+      --primary-text #020617;
+      --primary-shadow rgba(34, 197, 94, 0.35);
+      --danger-bg #b91c1c;
+      --danger-bg-hover #dc2626;
+      --danger-text #fee2e2;
+      --warning #fbbf24;
+      --remove #f97373;
+      --live #f87171;
+      --live-text #fecaca;
+      --shadow rgba(0, 0, 0, 0.6);
+    }
+
+    body.theme-red {
+      --bg #ef4444;
+      --card #ff5a5a;
+      --card-soft #f87171;
+      --text #050505;
+      --text-muted #1f1f1f;
+      --text-soft #3b0b0b;
+      --border rgba(0, 0, 0, 0.45);
+      --border-strong rgba(0, 0, 0, 0.7);
+      --primary-start #050505;
+      --primary-end #18181b;
+      --primary-text #ffffff;
+      --primary-shadow rgba(0, 0, 0, 0.28);
+      --danger-bg #050505;
+      --danger-bg-hover #18181b;
+      --danger-text #ffffff;
+      --warning #050505;
+      --remove #050505;
+      --live #050505;
+      --live-text #050505;
+      --shadow rgba(0, 0, 0, 0.35);
+    }
+
+     {
+      box-sizing border-box;
+      margin 0;
+      padding 0;
+      font-family system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif;
     }
 
     body {
-      background: #0f172a;
-      color: #f9fafb;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      background var(--bg);
+      color var(--text);
+      min-height 100vh;
+      display flex;
+      justify-content center;
+      align-items center;
+      transition background 0.2s ease, color 0.2s ease;
     }
 
     .app {
-      width: 100%;
-      max-width: 420px;
-      padding: 24px 16px 32px;
+      width 100%;
+      max-width 420px;
+      padding 24px 16px 32px;
     }
 
     .card {
-      background: #020617;
-      border-radius: 16px;
-      padding: 20px 18px 24px;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
-      border: 1px solid rgba(148, 163, 184, 0.2);
+      background var(--card);
+      border-radius 16px;
+      padding 20px 18px 24px;
+      box-shadow 0 16px 40px var(--shadow);
+      border 1px solid var(--border);
+      transition background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .home-top-row {
+      display flex;
+      justify-content space-between;
+      align-items flex-start;
+      gap 12px;
+      margin-bottom 4px;
+    }
+
+    .home-title-block {
+      flex 1;
+      min-width 0;
+    }
+
+    .theme-switcher {
+      display inline-flex;
+      align-items center;
+      padding 3px;
+      border-radius 999px;
+      border 1px solid var(--border-strong);
+      background var(--card-soft);
+      gap 2px;
+      flex-shrink 0;
+    }
+
+    .theme-btn {
+      width 30px;
+      height 30px;
+      border-radius 999px;
+      border 1px solid transparent;
+      background transparent;
+      color var(--text);
+      cursor pointer;
+      display inline-flex;
+      justify-content center;
+      align-items center;
+      font-size 15px;
+      line-height 1;
+      transition background 0.15s ease, border-color 0.15s ease, transform 0.07s ease;
+    }
+
+    .theme-btnhover {
+      transform translateY(-1px);
+      border-color var(--border-strong);
+    }
+
+    .theme-btn.active {
+      background var(--text);
+      color var(--card);
+      border-color var(--text);
+    }
+
+    body.theme-red .theme-btn.active {
+      background #050505;
+      color #ef4444;
+      border-color #050505;
+    }
+
+    .theme-red-label {
+      font-size 10px;
+      font-weight 900;
+      letter-spacing -0.04em;
     }
 
     .title {
-      font-size: 22px;
-      font-weight: 700;
-      margin-bottom: 4px;
+      font-size 22px;
+      font-weight 700;
+      margin-bottom 4px;
+      color var(--text);
     }
 
     .subtitle {
-      font-size: 13px;
-      color: #9ca3af;
-      margin-bottom: 20px;
+      font-size 13px;
+      color var(--text-muted);
+      margin-bottom 20px;
     }
 
     .mode-label {
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: #6b7280;
-      margin-bottom: 8px;
+      font-size 12px;
+      text-transform uppercase;
+      letter-spacing 0.1em;
+      color var(--text-soft);
+      margin-bottom 8px;
     }
 
     .btn {
-      width: 100%;
-      border-radius: 999px;
-      border: none;
-      padding: 14px 18px;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      margin-bottom: 10px;
-      transition: transform 0.07s ease, box-shadow 0.07s ease, background 0.15s ease;
+      width 100%;
+      border-radius 999px;
+      border none;
+      padding 14px 18px;
+      font-size 15px;
+      font-weight 600;
+      cursor pointer;
+      margin-bottom 10px;
+      transition transform 0.07s ease, box-shadow 0.07s ease, background 0.15s ease, border-color 0.15s ease;
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, #22c55e, #22d3ee);
-      color: #020617;
-      box-shadow: 0 12px 30px rgba(34, 197, 94, 0.35);
+      background linear-gradient(135deg, var(--primary-start), var(--primary-end));
+      color var(--primary-text);
+      box-shadow 0 12px 30px var(--primary-shadow);
     }
 
-    .btn-primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 16px 40px rgba(34, 197, 94, 0.45);
+    .btn-primaryhover {
+      transform translateY(-1px);
+      box-shadow 0 16px 40px var(--primary-shadow);
     }
 
     .btn-secondary {
-      background: #020617;
-      color: #e5e7eb;
-      border: 1px solid rgba(148, 163, 184, 0.4);
+      background var(--card);
+      color var(--text);
+      border 1px solid var(--border-strong);
     }
 
-    .btn-secondary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.65);
-      border-color: #e5e7eb;
+    .btn-secondaryhover {
+      transform translateY(-1px);
+      box-shadow 0 10px 26px var(--shadow);
+      border-color var(--text);
     }
 
     .btn-ghost {
-      width: auto;
-      padding: 8px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      background: transparent;
-      color: #9ca3af;
-      font-size: 12px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
-      margin-bottom: 12px;
+      width auto;
+      padding 8px 12px;
+      border-radius 999px;
+      border 1px solid var(--border-strong);
+      background transparent;
+      color var(--text-muted);
+      font-size 12px;
+      display inline-flex;
+      align-items center;
+      gap 6px;
+      cursor pointer;
+      margin-bottom 12px;
     }
 
-    .btn-ghost:hover {
-      border-color: #e5e7eb;
-      color: #e5e7eb;
+    .btn-ghosthover {
+      border-color var(--text);
+      color var(--text);
     }
 
     .btn-small {
-      width: auto;
-      padding: 8px 12px;
-      border-radius: 999px;
-      border: none;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      background: #22c55e;
-      color: #020617;
+      width auto;
+      padding 8px 12px;
+      border-radius 999px;
+      border none;
+      font-size 12px;
+      font-weight 600;
+      cursor pointer;
+      background var(--primary-start);
+      color var(--primary-text);
+    }
+
+    body.theme-red .btn-small {
+      background #050505;
+      color #ffffff;
     }
 
     .btn-danger {
-      background: #b91c1c;
-      color: #fee2e2;
-      border: none;
+      background var(--danger-bg);
+      color var(--danger-text);
+      border none;
     }
 
-    .btn-danger:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 10px 26px rgba(185, 28, 28, 0.65);
-      background: #dc2626;
+    .btn-dangerhover {
+      transform translateY(-1px);
+      box-shadow 0 10px 26px rgba(0, 0, 0, 0.28);
+      background var(--danger-bg-hover);
     }
 
     .footer {
-      margin-top: 16px;
-      text-align: center;
-      font-size: 11px;
-      color: #6b7280;
+      margin-top 16px;
+      text-align center;
+      font-size 11px;
+      color var(--text-soft);
     }
 
     .history-note {
-      font-size: 11px;
-      color: #9ca3af;
-      margin-top: 4px;
-      text-align: center;
+      font-size 11px;
+      color var(--text-muted);
+      margin-top 4px;
+      text-align center;
     }
 
     .hidden {
-      display: none;
+      display none !important;
     }
 
     .field-label {
-      font-size: 12px;
-      color: #9ca3af;
-      margin-bottom: 4px;
+      font-size 12px;
+      color var(--text-muted);
+      margin-bottom 4px;
     }
 
     .field {
-      width: 100%;
-      border-radius: 12px;
-      border: 1px solid rgba(148, 163, 184, 0.5);
-      background: #020617;
-      color: #e5e7eb;
-      padding: 10px 12px;
-      font-size: 14px;
-      margin-bottom: 12px;
+      width 100%;
+      border-radius 12px;
+      border 1px solid var(--border-strong);
+      background var(--card);
+      color var(--text);
+      padding 10px 12px;
+      font-size 14px;
+      margin-bottom 12px;
+      outline none;
     }
 
-    .field::placeholder {
-      color: #6b7280;
+    .fieldfocus {
+      border-color var(--text);
+    }
+
+    .fieldplaceholder {
+      color var(--text-soft);
     }
 
     .field-row {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 12px;
+      display flex;
+      gap 8px;
+      margin-bottom 12px;
     }
 
     .field-row .field {
-      margin-bottom: 0;
+      margin-bottom 0;
     }
 
     .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 3px 8px;
-      border-radius: 999px;
-      font-size: 11px;
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      color: #9ca3af;
+      display inline-flex;
+      align-items center;
+      gap 6px;
+      padding 3px 8px;
+      border-radius 999px;
+      font-size 11px;
+      border 1px solid var(--border-strong);
+      color var(--text-muted);
     }
 
     .pill-live {
-      border-color: rgba(248, 113, 113, 0.8);
-      color: #fecaca;
+      border-color var(--live);
+      color var(--live-text);
     }
 
     .pill-live-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: #f87171;
-      box-shadow: 0 0 6px rgba(248, 113, 113, 0.9);
+      width 8px;
+      height 8px;
+      border-radius 999px;
+      background var(--live);
+      box-shadow 0 0 6px var(--live);
     }
 
     .history-list {
-      margin-top: 8px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      max-height: 320px;
-      overflow-y: auto;
-      padding-right: 4px;
+      margin-top 8px;
+      display flex;
+      flex-direction column;
+      gap 8px;
+      max-height 320px;
+      overflow-y auto;
+      padding-right 4px;
     }
 
     .history-item {
-      border-radius: 12px;
-      border: 1px solid rgba(148, 163, 184, 0.35);
-      padding: 10px 12px;
-      cursor: pointer;
-      background: #020617;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      transition: background 0.1s ease, transform 0.05s ease;
+      border-radius 12px;
+      border 1px solid var(--border);
+      padding 10px 12px;
+      cursor pointer;
+      background var(--card);
+      display flex;
+      flex-direction column;
+      gap 4px;
+      transition background 0.1s ease, transform 0.05s ease;
     }
 
-    .history-item:hover {
-      background: #020819;
-      transform: translateY(-1px);
+    .history-itemhover {
+      background var(--card-soft);
+      transform translateY(-1px);
     }
 
     .history-title-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
+      display flex;
+      justify-content space-between;
+      align-items center;
+      gap 8px;
     }
 
     .history-name {
-      font-size: 14px;
-      font-weight: 500;
+      font-size 14px;
+      font-weight 500;
+      color var(--text);
     }
 
     .history-meta {
-      font-size: 11px;
-      color: #9ca3af;
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
+      font-size 11px;
+      color var(--text-muted);
+      display flex;
+      gap 8px;
+      flex-wrap wrap;
     }
 
     .players-list {
-      margin-top: 8px;
-      max-height: 220px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
+      margin-top 8px;
+      max-height 220px;
+      overflow-y auto;
+      display flex;
+      flex-direction column;
+      gap 6px;
     }
 
     .player-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 6px 10px;
-      border-radius: 10px;
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      font-size: 13px;
-      cursor: pointer;
+      display flex;
+      justify-content space-between;
+      align-items center;
+      padding 6px 10px;
+      border-radius 10px;
+      border 1px solid var(--border-strong);
+      font-size 13px;
+      cursor pointer;
+      color var(--text);
+      background transparent;
     }
 
-    .player-item:hover {
-      background: #020819;
+    .player-itemhover {
+      background var(--card-soft);
     }
 
     .player-name {
-      flex: 1;
+      flex 1;
     }
 
     .player-remove-btn {
-      border: none;
-      background: transparent;
-      color: #f97373;
-      cursor: pointer;
-      font-size: 16px;
-      line-height: 1;
-      padding: 0 4px;
+      border none;
+      background transparent;
+      color var(--remove);
+      cursor pointer;
+      font-size 16px;
+      line-height 1;
+      padding 0 4px;
     }
 
     .hint {
-      font-size: 11px;
-      color: #9ca3af;
-      margin-top: 6px;
+      font-size 11px;
+      color var(--text-muted);
+      margin-top 6px;
     }
 
     .hint-strong {
-      color: #fbbf24;
+      color var(--warning);
     }
 
     .current-game-text {
-      font-size: 17px;
-      font-weight: 700;
-      margin-top: 4px;
-      color: #e5e7eb;
+      font-size 17px;
+      font-weight 700;
+      margin-top 4px;
+      color var(--text);
     }
 
     .badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 18px;
-      padding: 2px 6px;
-      border-radius: 999px;
-      font-size: 11px;
-      background: rgba(148, 163, 184, 0.2);
-      color: #e5e7eb;
-      margin-left: 6px;
+      display inline-flex;
+      align-items center;
+      justify-content center;
+      min-width 18px;
+      padding 2px 6px;
+      border-radius 999px;
+      font-size 11px;
+      background var(--card-soft);
+      color var(--text);
+      margin-left 6px;
+      border 1px solid var(--border);
     }
 
     .pairs-settings,
     .americano-settings {
-      margin-top: 10px;
-      padding: 10px 10px 8px;
-      border-radius: 12px;
-      border: 1px solid rgba(148, 163, 184, 0.35);
-      background: #020819;
+      margin-top 10px;
+      padding 10px 10px 8px;
+      border-radius 12px;
+      border 1px solid var(--border);
+      background var(--card-soft);
     }
 
     .pairs-settings-title {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #6b7280;
-      margin-bottom: 6px;
+      font-size 11px;
+      text-transform uppercase;
+      letter-spacing 0.08em;
+      color var(--text-soft);
+      margin-bottom 6px;
     }
 
     .pairs-settings-note {
-      font-size: 11px;
-      color: #9ca3af;
-      margin-top: 4px;
+      font-size 11px;
+      color var(--text-muted);
+      margin-top 4px;
     }
-  </style>
-</head>
-<body>
-  <div class="app">
-    <!-- Экран 1: стартовый -->
-    <div class="card" id="screen-home">
-      <div class="title">Padel турниры</div>
-      <div class="subtitle">
+  style
+head
+body class=theme-night
+  div class=app
+    div class=card id=screen-home
+      div class=home-top-row
+        div class=home-title-block
+          div class=titlePadel турнирыdiv
+        div
+
+        div class=theme-switcher aria-label=Переключатель темы
+          button class=theme-btn id=theme-day-btn type=button title=Дневная тема☀️button
+          button class=theme-btn id=theme-night-btn type=button title=Ночная тема🌙button
+          button class=theme-btn id=theme-red-btn type=button title=Red тема
+            span class=theme-red-labelREDspan
+          button
+        div
+      div
+
+      div class=subtitle
         Управляй матчами в Американо и формате пар прямо из Telegram.
-      </div>
+      div
 
-      <div class="mode-label">Главное меню</div>
+      div class=mode-labelГлавное менюdiv
 
-      <button class="btn btn-primary" id="new-tournament-btn">
+      button class=btn btn-primary id=new-tournament-btn
         Новый турнир
-      </button>
+      button
 
-      <button class="btn btn-secondary" id="history-btn">
+      button class=btn btn-secondary id=history-btn
         История турниров
-      </button>
+      button
 
-      <div class="history-note">
-        Незавершённые турниры будут отмечены как <strong>Live</strong>.
-      </div>
-    </div>
+      div class=history-note
+        Незавершённые турниры будут отмечены как strongLivestrong.
+      div
+    div
 
-    <!-- Экран 2: Новый турнир (настройки) -->
-    <div class="card hidden" id="screen-new">
-      <button class="btn-ghost" id="back-from-new-btn">
+    div class=card hidden id=screen-new
+      button class=btn-ghost id=back-from-new-btn
         ← Назад
-      </button>
+      button
 
-      <div class="title">Новый турнир</div>
-      <div class="subtitle">
+      div class=titleНовый турнирdiv
+      div class=subtitle
         Настрой формат, а затем добавь игроков.
-      </div>
+      div
 
-      <div class="field-label">Название турнира</div>
-      <input
-        type="text"
-        class="field"
-        id="tournament-name-input"
-        placeholder="Например: Воскресный падел"
-      />
+      div class=field-labelНазвание турнираdiv
+      input
+        type=text
+        class=field
+        id=tournament-name-input
+        placeholder=Например Воскресный падел
+      
 
-      <div class="field-row">
-        <div style="flex: 1;">
-          <div class="field-label">Режим</div>
-          <select class="field" id="tournament-mode-select">
-            <option value="americano">Американо</option>
-            <option value="pairs">Пары (до 3 пар)</option>
-          </select>
-        </div>
-        <div style="width: 110px;">
-          <div class="field-label">Кортов</div>
-          <select class="field" id="courts-select">
-            <option value="1" selected>1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-          </select>
-        </div>
-      </div>
+      div class=field-row
+        div style=flex 1;
+          div class=field-labelРежимdiv
+          select class=field id=tournament-mode-select
+            option value=americanoАмериканоoption
+            option value=pairsПары (до 3 пар)option
+          select
+        div
+        div style=width 110px;
+          div class=field-labelКортовdiv
+          select class=field id=courts-select
+            option value=1 selected1option
+            option value=22option
+            option value=33option
+            option value=44option
+          select
+        div
+      div
 
-      <!-- Настройки для режима Пары -->
-      <div class="pairs-settings hidden" id="pairs-settings">
-        <div class="pairs-settings-title">Формат матча (Пары)</div>
+      div class=pairs-settings hidden id=pairs-settings
+        div class=pairs-settings-titleФормат матча (Пары)div
 
-        <div class="field-row">
-          <div style="flex: 1;">
-            <div class="field-label">Геймов в сете</div>
-            <select class="field" id="games-per-set-select">
-              <option value="4" selected>4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-            </select>
-          </div>
-          <div style="flex: 1;">
-            <div class="field-label">Сетов в матче</div>
-            <select class="field" id="sets-per-match-select">
-              <option value="1" selected>1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-            </select>
-          </div>
-        </div>
+        div class=field-row
+          div style=flex 1;
+            div class=field-labelГеймов в сетеdiv
+            select class=field id=games-per-set-select
+              option value=4 selected4option
+              option value=55option
+              option value=66option
+            select
+          div
+          div style=flex 1;
+            div class=field-labelСетов в матчеdiv
+            select class=field id=sets-per-match-select
+              option value=1 selected1option
+              option value=22option
+              option value=33option
+              option value=44option
+              option value=55option
+            select
+          div
+        div
 
-        <div class="pairs-settings-note">
-          В парах считаем только геймы и сеты. Очки турнира: победа — 3, ничья — 1, поражение — 0.
-        </div>
-      </div>
+        div class=pairs-settings-note
+          В парах считаем только геймы и сеты. Очки турнира победа — 3, ничья — 1, поражение — 0.
+        div
+      div
 
-      <!-- Настройки для режима Американо -->
-      <div class="americano-settings" id="americano-settings">
-        <div class="pairs-settings-title">Формат матча (Американо)</div>
+      div class=americano-settings id=americano-settings
+        div class=pairs-settings-titleФормат матча (Американо)div
 
-        <div class="field-row">
-          <div style="flex: 1;">
-            <div class="field-label">Очков в матче (сумма двух команд)</div>
-            <select class="field" id="points-per-game-select">
-              <option value="8">8</option>
-              <option value="12">12</option>
-              <option value="16" selected>16</option>
-              <option value="20">20</option>
-              <option value="24">24</option>
-            </select>
-          </div>
-        </div>
+        div class=field-row
+          div style=flex 1;
+            div class=field-labelОчков в матче (сумма двух команд)div
+            select class=field id=points-per-game-select
+              option value=88option
+              option value=1212option
+              option value=16 selected16option
+              option value=2020option
+              option value=2424option
+            select
+          div
+        div
 
-        <div class="pairs-settings-note">
-          Например, при 16 очках команды могут сыграть 10:6 или 8:8 — главное, чтобы сумма была 16.
+        div class=pairs-settings-note
+          Например, при 16 очках команды могут сыграть 106 или 88 — главное, чтобы сумма была 16.
           Значения кратны 4, чтобы игроки на корте могли подавать примерно одинаковое количество раз.
-        </div>
-      </div>
+        div
+      div
 
-      <button class="btn btn-primary" id="go-to-players-btn">
+      button class=btn btn-primary id=go-to-players-btn
         Далее → Игроки
-      </button>
+      button
 
-      <div class="history-note">
+      div class=history-note
         Настройки можно будет расширять позже (очки за победу, время матча и т.д.).
-      </div>
-    </div>
+      div
+    div
 
-    <!-- Экран 2b: Игроки -->
-    <div class="card hidden" id="screen-players">
-      <button class="btn-ghost" id="back-from-players-btn">
+    div class=card hidden id=screen-players
+      button class=btn-ghost id=back-from-players-btn
         ← Назад к настройкам
-      </button>
+      button
 
-      <div class="title">Игроки</div>
-      <div class="subtitle" id="players-subtitle">
+      div class=titleИгрокиdiv
+      div class=subtitle id=players-subtitle
         Добавь игроков для этого турнира.
-      </div>
+      div
 
-      <!-- Блок ввода одиночных игроков (Американо) -->
-      <div id="single-player-block">
-        <div class="field-label">
+      div id=single-player-block
+        div class=field-label
           Имя игрока
-        </div>
-        <div class="field-row">
-          <input
-            type="text"
-            class="field"
-            id="player-name-input"
-            placeholder="Например: Alex"
-          />
-          <button class="btn-small" id="add-player-btn">
+        div
+        div class=field-row
+          input
+            type=text
+            class=field
+            id=player-name-input
+            placeholder=Например Alex
+          
+          button class=btn-small id=add-player-btn
             +
-          </button>
-        </div>
-      </div>
+          button
+        div
+      div
 
-      <!-- Блок ввода пар (режим Пары) -->
-      <div id="pair-input-block" class="hidden">
-        <div class="field-label" id="pair-label">
+      div id=pair-input-block class=hidden
+        div class=field-label id=pair-label
           Пара 1
-        </div>
-        <div class="field-row">
-          <input
-            type="text"
-            class="field"
-            id="pair-player1-input"
-            placeholder="Игрок 1 (например: Саша)"
-          />
-          <input
-            type="text"
-            class="field"
-            id="pair-player2-input"
-            placeholder="Игрок 2 (например: Денис)"
-          />
-        </div>
-        <button class="btn-small" id="add-pair-btn">
+        div
+        div class=field-row
+          input
+            type=text
+            class=field
+            id=pair-player1-input
+            placeholder=Игрок 1 (например Саша)
+          
+          input
+            type=text
+            class=field
+            id=pair-player2-input
+            placeholder=Игрок 2 (например Денис)
+          
+        div
+        button class=btn-small id=add-pair-btn
           Добавить пару
-        </button>
-      </div>
+        button
+      div
 
-      <div class="hint" id="players-hint"></div>
+      div class=hint id=players-hintdiv
 
-      <div class="mode-label" style="margin-top: 12px;">
-        Список участников <span class="badge" id="players-count-badge">0</span>
-      </div>
+      div class=mode-label style=margin-top 12px;
+        Список участников span class=badge id=players-count-badge0span
+      div
 
-      <div class="players-list" id="players-list"></div>
+      div class=players-list id=players-listdiv
 
-      <button class="btn btn-primary" id="players-continue-btn">
+      button class=btn btn-primary id=players-continue-btn
         Продолжить (к турниру)
-      </button>
-    </div>
+      button
+    div
 
-    <!-- Экран 3: Турнир (после создания / просмотра) -->
-    <div class="card hidden" id="screen-tournament">
-      <button class="btn-ghost" id="back-from-tournament-btn">
+    div class=card hidden id=screen-tournament
+      button class=btn-ghost id=back-from-tournament-btn
         ← История
-      </button>
+      button
 
-      <div class="title" id="tournament-header-title">Турнир</div>
-      <div class="subtitle" id="tournament-header-subtitle">
+      div class=title id=tournament-header-titleТурнирdiv
+      div class=subtitle id=tournament-header-subtitle
         Турнир в статусе Live. Можно играть матчи и смотреть таблицу.
-      </div>
+      div
 
-      <div class="mode-label">Параметры турнира</div>
-      <div class="history-meta" id="tournament-header-meta"></div>
+      div class=mode-labelПараметры турнираdiv
+      div class=history-meta id=tournament-header-metadiv
 
-      <div class="mode-label" style="margin-top: 16px;">
+      div class=mode-label style=margin-top 16px;
         Экраны турнира
-      </div>
+      div
 
-      <button class="btn btn-secondary" id="tournament-matches-btn">
+      button class=btn btn-secondary id=tournament-matches-btn
         Матчи
-      </button>
+      button
 
-      <button class="btn btn-secondary" id="tournament-finished-games-btn">
+      button class=btn btn-secondary id=tournament-finished-games-btn
         Завершённые игры
-      </button>
+      button
 
-      <button class="btn btn-secondary" id="tournament-table-btn">
+      button class=btn btn-secondary id=tournament-table-btn
         Таблица
-      </button>
+      button
 
-      <button class="btn btn-danger hidden" id="tournament-finish-btn">
+      button class=btn btn-danger hidden id=tournament-finish-btn
         Завершить турнир
-      </button>
+      button
 
-      <div class="history-note" style="margin-top: 10px;" id="tournament-footer-note">
+      div class=history-note style=margin-top 10px; id=tournament-footer-note
         Дальше мы добавим расширенные настройки и отчёты.
-      </div>
-    </div>
+      div
+    div
 
-    <!-- Экран 3b: Матчи -->
-    <div class="card hidden" id="screen-matches">
-      <button class="btn-ghost" id="back-from-matches-btn">
+    div class=card hidden id=screen-matches
+      button class=btn-ghost id=back-from-matches-btn
         ← Турнир
-      </button>
+      button
 
-      <div class="title" id="matches-title">Матчи</div>
-      <div class="subtitle" id="matches-subtitle">
+      div class=title id=matches-titleМатчиdiv
+      div class=subtitle id=matches-subtitle
         Управляй матчами и следи за очками.
-      </div>
+      div
 
-      <div class="hint" id="americano-round-info"></div>
+      div class=hint id=americano-round-infodiv
 
-      <!-- Конфиг для режима Пары -->
-      <div id="pairs-config-block">
-        <div class="mode-label" style="margin-top: 12px;">Новый матч (Пары)</div>
-        <div class="hint" id="matches-config-note"></div>
+      div id=pairs-config-block
+        div class=mode-label style=margin-top 12px;Новый матч (Пары)div
+        div class=hint id=matches-config-notediv
 
-        <div id="match-pairs-select-row" class="field-row">
-          <select class="field" id="match-pair1-select"></select>
-          <select class="field" id="match-pair2-select"></select>
-        </div>
+        div id=match-pairs-select-row class=field-row
+          select class=field id=match-pair1-selectselect
+          select class=field id=match-pair2-selectselect
+        div
 
-        <button class="btn-small hidden" id="first-match-random-btn">
+        button class=btn-small hidden id=first-match-random-btn
           🎲 Случайный выбор первых пар
-        </button>
+        button
 
-        <div class="hint" id="matches-rules-hint"></div>
+        div class=hint id=matches-rules-hintdiv
 
-        <div id="sets-inputs-container" style="margin-top: 12px;"></div>
-      </div>
+        div id=sets-inputs-container style=margin-top 12px;div
+      div
 
-      <!-- Конфиг для режима Американо -->
-      <div id="americano-config-block" class="hidden">
-        <div class="mode-label" style="margin-top: 12px;">Текущая игра</div>
-        <div class="current-game-text" id="americano-current-game"></div>
+      div id=americano-config-block class=hidden
+        div class=mode-label style=margin-top 12px;Текущая играdiv
+        div class=current-game-text id=americano-current-gamediv
 
-        <div class="mode-label" style="margin-top: 8px;">Счёт</div>
-        <div class="hint" id="americano-config-note"></div>
+        div class=mode-label style=margin-top 8px;Счётdiv
+        div class=hint id=americano-config-notediv
 
-        <div class="field-row">
-          <input type="number" class="field" id="am-scoreA" min="0" placeholder="Очки команды 1" />
-          <input type="number" class="field" id="am-scoreB" min="0" placeholder="Очки команды 2" />
-        </div>
+        div class=field-row
+          input type=number class=field id=am-scoreA min=0 placeholder=Очки команды 1 
+          input type=number class=field id=am-scoreB min=0 placeholder=Очки команды 2 
+        div
 
-        <div class="mode-label" style="margin-top: 8px;">Оставшиеся игры</div>
-        <div class="players-list" id="americano-remaining-list"></div>
-      </div>
+        div class=mode-label style=margin-top 8px;Оставшиеся игрыdiv
+        div class=players-list id=americano-remaining-listdiv
+      div
 
-      <button class="btn btn-primary" id="save-match-btn" style="margin-top: 4px;">
+      button class=btn btn-primary id=save-match-btn style=margin-top 4px;
         Сохранить матч
-      </button>
+      button
 
-      <div id="am-round-buttons" class="hidden" style="margin-top:8px; display:flex; gap:8px; justify-content:space-between;">
-        <button class="btn btn-secondary" id="am-show-results-btn" style="margin-bottom:0;">
+      div id=am-round-buttons class=hidden style=margin-top8px; displayflex; gap8px; justify-contentspace-between;
+        button class=btn btn-secondary id=am-show-results-btn style=margin-bottom0;
           Результат
-        </button>
-        <button class="btn btn-primary" id="am-new-round-btn" style="margin-bottom:0;">
+        button
+        button class=btn btn-primary id=am-new-round-btn style=margin-bottom0;
           Ещё круг
-        </button>
-      </div>
+        button
+      div
 
-      <!-- Статистика на этом экране скрыта (только в таблице) -->
-      <div class="players-list hidden" id="pairs-stats-list"></div>
+      div class=players-list hidden id=pairs-stats-listdiv
 
-      <div class="mode-label" style="margin-top: 16px;">
+      div class=mode-label style=margin-top 16px;
         История матчей
-      </div>
-      <div class="players-list" id="matches-list"></div>
-    </div>
+      div
+      div class=players-list id=matches-listdiv
+    div
 
-    <!-- Экран 4: История турниров -->
-    <div class="card hidden" id="screen-history">
-      <button class="btn-ghost" id="back-from-history-btn">
+    div class=card hidden id=screen-history
+      button class=btn-ghost id=back-from-history-btn
         ← Назад
-      </button>
+      button
 
-      <div class="title">История турниров</div>
-      <div class="subtitle">
+      div class=titleИстория турнировdiv
+      div class=subtitle
         Список турниров, отсортированный по дате создания. Live — ещё не завершён.
-      </div>
+      div
 
-      <div class="mode-label">Турниры</div>
+      div class=mode-labelТурнирыdiv
 
-      <div id="history-empty" class="history-note hidden">
+      div id=history-empty class=history-note hidden
         Пока нет ни одного турнира. Создай первый через «Новый турнир».
-      </div>
+      div
 
-      <div class="history-list" id="history-list"></div>
-    </div>
+      div class=history-list id=history-listdiv
+    div
 
-    <!-- Экран 5: Таблица -->
-    <div class="card hidden" id="screen-table">
-      <button class="btn-ghost" id="back-from-table-btn">
+    div class=card hidden id=screen-table
+      button class=btn-ghost id=back-from-table-btn
         ← Турнир
-      </button>
+      button
 
-      <div class="title" id="table-title">Таблица</div>
-      <div class="subtitle" id="table-subtitle">
+      div class=title id=table-titleТаблицаdiv
+      div class=subtitle id=table-subtitle
         Рейтинг по очкам.
-      </div>
+      div
 
-      <div class="mode-label">Итоговая таблица</div>
-      <div class="players-list" id="table-list"></div>
-    </div>
+      div class=mode-labelИтоговая таблицаdiv
+      div class=players-list id=table-listdiv
+    div
 
-    <!-- Экран 6: Завершённые игры -->
-    <div class="card hidden" id="screen-finished">
-      <button class="btn-ghost" id="back-from-finished-btn">
+    div class=card hidden id=screen-finished
+      button class=btn-ghost id=back-from-finished-btn
         ← Турнир
-      </button>
+      button
 
-      <div class="title" id="finished-title">Завершённые игры</div>
-      <div class="subtitle" id="finished-subtitle">
+      div class=title id=finished-titleЗавершённые игрыdiv
+      div class=subtitle id=finished-subtitle
         Все сыгранные матчи этого турнира.
-      </div>
+      div
 
-      <div class="mode-label">Список игр</div>
-      <div class="players-list" id="finished-list"></div>
-    </div>
+      div class=mode-labelСписок игрdiv
+      div class=players-list id=finished-listdiv
+    div
 
-    <div class="footer">
+    div class=footer
       Beta • Padel Mini App
-    </div>
-  </div>
+    div
+  div
 
-  <script>
+  script
     const MAX_PAIRS = 3;
-    const STORAGE_KEY = "padel_tournaments_v1";
+    const STORAGE_KEY = padel_tournaments_v1;
+    const THEME_KEY = padel_theme_v1;
 
-    // Экраны
-    const screenHome = document.getElementById("screen-home");
-    const screenNew = document.getElementById("screen-new");
-    const screenPlayers = document.getElementById("screen-players");
-    const screenTournament = document.getElementById("screen-tournament");
-    const screenMatches = document.getElementById("screen-matches");
-    const screenHistory = document.getElementById("screen-history");
-    const screenTable = document.getElementById("screen-table");
-    const screenFinished = document.getElementById("screen-finished");
+    const screenHome = document.getElementById(screen-home);
+    const screenNew = document.getElementById(screen-new);
+    const screenPlayers = document.getElementById(screen-players);
+    const screenTournament = document.getElementById(screen-tournament);
+    const screenMatches = document.getElementById(screen-matches);
+    const screenHistory = document.getElementById(screen-history);
+    const screenTable = document.getElementById(screen-table);
+    const screenFinished = document.getElementById(screen-finished);
 
-    // Кнопки
-    const newTournamentBtn = document.getElementById("new-tournament-btn");
-    const historyBtn = document.getElementById("history-btn");
-    const backFromNewBtn = document.getElementById("back-from-new-btn");
-    const backFromPlayersBtn = document.getElementById("back-from-players-btn");
-    const backFromHistoryBtn = document.getElementById("back-from-history-btn");
-    const backFromTournamentBtn = document.getElementById("back-from-tournament-btn");
-    const backFromMatchesBtn = document.getElementById("back-from-matches-btn");
-    const backFromTableBtn = document.getElementById("back-from-table-btn");
-    const backFromFinishedBtn = document.getElementById("back-from-finished-btn");
-    const goToPlayersBtn = document.getElementById("go-to-players-btn");
-    const addPlayerBtn = document.getElementById("add-player-btn");
-    const addPairBtn = document.getElementById("add-pair-btn");
-    const playersContinueBtn = document.getElementById("players-continue-btn");
-    const tournamentMatchesBtn = document.getElementById("tournament-matches-btn");
-    const tournamentTableBtn = document.getElementById("tournament-table-btn");
-    const tournamentFinishBtn = document.getElementById("tournament-finish-btn");
-    const tournamentFinishedGamesBtn = document.getElementById("tournament-finished-games-btn");
-    const saveMatchBtn = document.getElementById("save-match-btn");
-    const firstMatchRandomBtn = document.getElementById("first-match-random-btn");
-    const amShowResultsBtn = document.getElementById("am-show-results-btn");
-    const amNewRoundBtn = document.getElementById("am-new-round-btn");
+    const themeDayBtn = document.getElementById(theme-day-btn);
+    const themeNightBtn = document.getElementById(theme-night-btn);
+    const themeRedBtn = document.getElementById(theme-red-btn);
 
-    // Поля (настройки турнира)
-    const nameInput = document.getElementById("tournament-name-input");
-    const modeSelect = document.getElementById("tournament-mode-select");
-    const courtsSelect = document.getElementById("courts-select");
-    const gamesPerSetSelect = document.getElementById("games-per-set-select");
-    const setsPerMatchSelect = document.getElementById("sets-per-match-select");
-    const pointsPerGameSelect = document.getElementById("points-per-game-select");
+    const newTournamentBtn = document.getElementById(new-tournament-btn);
+    const historyBtn = document.getElementById(history-btn);
+    const backFromNewBtn = document.getElementById(back-from-new-btn);
+    const backFromPlayersBtn = document.getElementById(back-from-players-btn);
+    const backFromHistoryBtn = document.getElementById(back-from-history-btn);
+    const backFromTournamentBtn = document.getElementById(back-from-tournament-btn);
+    const backFromMatchesBtn = document.getElementById(back-from-matches-btn);
+    const backFromTableBtn = document.getElementById(back-from-table-btn);
+    const backFromFinishedBtn = document.getElementById(back-from-finished-btn);
+    const goToPlayersBtn = document.getElementById(go-to-players-btn);
+    const addPlayerBtn = document.getElementById(add-player-btn);
+    const addPairBtn = document.getElementById(add-pair-btn);
+    const playersContinueBtn = document.getElementById(players-continue-btn);
+    const tournamentMatchesBtn = document.getElementById(tournament-matches-btn);
+    const tournamentTableBtn = document.getElementById(tournament-table-btn);
+    const tournamentFinishBtn = document.getElementById(tournament-finish-btn);
+    const tournamentFinishedGamesBtn = document.getElementById(tournament-finished-games-btn);
+    const saveMatchBtn = document.getElementById(save-match-btn);
+    const firstMatchRandomBtn = document.getElementById(first-match-random-btn);
+    const amShowResultsBtn = document.getElementById(am-show-results-btn);
+    const amNewRoundBtn = document.getElementById(am-new-round-btn);
 
-    // Игроки / пары
-    const playerNameInput = document.getElementById("player-name-input");
-    const playersListEl = document.getElementById("players-list");
-    const playersCountBadge = document.getElementById("players-count-badge");
-    const playersSubtitle = document.getElementById("players-subtitle");
-    const playersHint = document.getElementById("players-hint");
+    const nameInput = document.getElementById(tournament-name-input);
+    const modeSelect = document.getElementById(tournament-mode-select);
+    const courtsSelect = document.getElementById(courts-select);
+    const gamesPerSetSelect = document.getElementById(games-per-set-select);
+    const setsPerMatchSelect = document.getElementById(sets-per-match-select);
+    const pointsPerGameSelect = document.getElementById(points-per-game-select);
 
-    const singlePlayerBlock = document.getElementById("single-player-block");
-    const pairInputBlock = document.getElementById("pair-input-block");
-    const pairLabel = document.getElementById("pair-label");
-    const pairPlayer1Input = document.getElementById("pair-player1-input");
-    const pairPlayer2Input = document.getElementById("pair-player2-input");
+    const playerNameInput = document.getElementById(player-name-input);
+    const playersListEl = document.getElementById(players-list);
+    const playersCountBadge = document.getElementById(players-count-badge);
+    const playersSubtitle = document.getElementById(players-subtitle);
+    const playersHint = document.getElementById(players-hint);
 
-    const pairsSettingsBlock = document.getElementById("pairs-settings");
-    const americanoSettingsBlock = document.getElementById("americano-settings");
+    const singlePlayerBlock = document.getElementById(single-player-block);
+    const pairInputBlock = document.getElementById(pair-input-block);
+    const pairLabel = document.getElementById(pair-label);
+    const pairPlayer1Input = document.getElementById(pair-player1-input);
+    const pairPlayer2Input = document.getElementById(pair-player2-input);
 
-    // Турнирный экран
-    const tournamentHeaderTitle = document.getElementById("tournament-header-title");
-    const tournamentHeaderSubtitle = document.getElementById("tournament-header-subtitle");
-    const tournamentHeaderMeta = document.getElementById("tournament-header-meta");
-    const tournamentFooterNote = document.getElementById("tournament-footer-note");
+    const pairsSettingsBlock = document.getElementById(pairs-settings);
+    const americanoSettingsBlock = document.getElementById(americano-settings);
 
-    // История турниров
-    const historyListEl = document.getElementById("history-list");
-    const historyEmptyEl = document.getElementById("history-empty");
+    const tournamentHeaderTitle = document.getElementById(tournament-header-title);
+    const tournamentHeaderSubtitle = document.getElementById(tournament-header-subtitle);
+    const tournamentHeaderMeta = document.getElementById(tournament-header-meta);
+    const tournamentFooterNote = document.getElementById(tournament-footer-note);
 
-    // Экран матчей
-    const matchesTitle = document.getElementById("matches-title");
-    const matchesSubtitle = document.getElementById("matches-subtitle");
-    const americanoRoundInfo = document.getElementById("americano-round-info");
+    const historyListEl = document.getElementById(history-list);
+    const historyEmptyEl = document.getElementById(history-empty);
 
-    const pairsStatsList = document.getElementById("pairs-stats-list");
+    const matchesTitle = document.getElementById(matches-title);
+    const matchesSubtitle = document.getElementById(matches-subtitle);
+    const americanoRoundInfo = document.getElementById(americano-round-info);
 
-    const pairsConfigBlock = document.getElementById("pairs-config-block");
-    const matchesConfigNote = document.getElementById("matches-config-note");
-    const matchesRulesHint = document.getElementById("matches-rules-hint");
-    const matchPairsSelectRow = document.getElementById("match-pairs-select-row");
-    const matchPair1Select = document.getElementById("match-pair1-select");
-    const matchPair2Select = document.getElementById("match-pair2-select");
-    const setsInputsContainer = document.getElementById("sets-inputs-container");
+    const pairsStatsList = document.getElementById(pairs-stats-list);
 
-    const americanoConfigBlock = document.getElementById("americano-config-block");
-    const americanoConfigNote = document.getElementById("americano-config-note");
-    const americanoCurrentGameEl = document.getElementById("americano-current-game");
-    const americanoRemainingList = document.getElementById("americano-remaining-list");
-    const amScoreA = document.getElementById("am-scoreA");
-    const amScoreB = document.getElementById("am-scoreB");
-    const amRoundButtons = document.getElementById("am-round-buttons");
+    const pairsConfigBlock = document.getElementById(pairs-config-block);
+    const matchesConfigNote = document.getElementById(matches-config-note);
+    const matchesRulesHint = document.getElementById(matches-rules-hint);
+    const matchPairsSelectRow = document.getElementById(match-pairs-select-row);
+    const matchPair1Select = document.getElementById(match-pair1-select);
+    const matchPair2Select = document.getElementById(match-pair2-select);
+    const setsInputsContainer = document.getElementById(sets-inputs-container);
 
-    const matchesList = document.getElementById("matches-list");
+    const americanoConfigBlock = document.getElementById(americano-config-block);
+    const americanoConfigNote = document.getElementById(americano-config-note);
+    const americanoCurrentGameEl = document.getElementById(americano-current-game);
+    const americanoRemainingList = document.getElementById(americano-remaining-list);
+    const amScoreA = document.getElementById(am-scoreA);
+    const amScoreB = document.getElementById(am-scoreB);
+    const amRoundButtons = document.getElementById(am-round-buttons);
 
-    // Экран таблицы
-    const tableTitle = document.getElementById("table-title");
-    const tableSubtitle = document.getElementById("table-subtitle");
-    const tableList = document.getElementById("table-list");
+    const matchesList = document.getElementById(matches-list);
 
-    // Экран завершённых игр
-    const finishedTitle = document.getElementById("finished-title");
-    const finishedSubtitle = document.getElementById("finished-subtitle");
-    const finishedList = document.getElementById("finished-list");
+    const tableTitle = document.getElementById(table-title);
+    const tableSubtitle = document.getElementById(table-subtitle);
+    const tableList = document.getElementById(table-list);
 
-    // Текущее состояние
+    const finishedTitle = document.getElementById(finished-title);
+    const finishedSubtitle = document.getElementById(finished-subtitle);
+    const finishedList = document.getElementById(finished-list);
+
     let tournaments = [];
     let currentTournament = null;
     let activeTournament = null;
@@ -817,33 +982,56 @@
     let isUpdatingAmScore = false;
     let editingMatchId = null;
 
-    function showScreen(screen) {
-      screenHome.classList.add("hidden");
-      screenNew.classList.add("hidden");
-      screenPlayers.classList.add("hidden");
-      screenTournament.classList.add("hidden");
-      screenMatches.classList.add("hidden");
-      screenHistory.classList.add("hidden");
-      screenTable.classList.add("hidden");
-      screenFinished.classList.add("hidden");
+    function applyTheme(theme) {
+      const safeTheme = [day, night, red].includes(theme)  theme  night;
+      document.body.classList.remove(theme-day, theme-night, theme-red);
+      document.body.classList.add(`theme-${safeTheme}`);
 
-      if (screen === "home") screenHome.classList.remove("hidden");
-      if (screen === "new") screenNew.classList.remove("hidden");
-      if (screen === "players") screenPlayers.classList.remove("hidden");
-      if (screen === "tournament") screenTournament.classList.remove("hidden");
-      if (screen === "matches") screenMatches.classList.remove("hidden");
-      if (screen === "history") screenHistory.classList.remove("hidden");
-      if (screen === "table") screenTable.classList.remove("hidden");
-      if (screen === "finished") screenFinished.classList.remove("hidden");
+      themeDayBtn.classList.toggle(active, safeTheme === day);
+      themeNightBtn.classList.toggle(active, safeTheme === night);
+      themeRedBtn.classList.toggle(active, safeTheme === red);
+
+      try {
+        localStorage.setItem(THEME_KEY, safeTheme);
+      } catch (e) {
+        console.error(Ошибка сохранения темы, e);
+      }
+    }
+
+    function loadTheme() {
+      try {
+        const savedTheme = localStorage.getItem(THEME_KEY)  night;
+        applyTheme(savedTheme);
+      } catch (e) {
+        applyTheme(night);
+      }
+    }
+
+    function showScreen(screen) {
+      screenHome.classList.add(hidden);
+      screenNew.classList.add(hidden);
+      screenPlayers.classList.add(hidden);
+      screenTournament.classList.add(hidden);
+      screenMatches.classList.add(hidden);
+      screenHistory.classList.add(hidden);
+      screenTable.classList.add(hidden);
+      screenFinished.classList.add(hidden);
+
+      if (screen === home) screenHome.classList.remove(hidden);
+      if (screen === new) screenNew.classList.remove(hidden);
+      if (screen === players) screenPlayers.classList.remove(hidden);
+      if (screen === tournament) screenTournament.classList.remove(hidden);
+      if (screen === matches) screenMatches.classList.remove(hidden);
+      if (screen === history) screenHistory.classList.remove(hidden);
+      if (screen === table) screenTable.classList.remove(hidden);
+      if (screen === finished) screenFinished.classList.remove(hidden);
     }
 
     function modeLabel(mode) {
-      if (mode === "americano") return "Американо";
-      if (mode === "pairs") return "Пары (до 3 пар)";
+      if (mode === americano) return Американо;
+      if (mode === pairs) return Пары (до 3 пар);
       return mode;
     }
-
-    // --- Сохранение / загрузка состояния (localStorage) ---
 
     function saveState() {
       try {
@@ -853,7 +1041,7 @@
         };
         localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
       } catch (e) {
-        console.error("Ошибка сохранения состояния:", e);
+        console.error(Ошибка сохранения состояния, e);
       }
     }
 
@@ -865,23 +1053,23 @@
         if (Array.isArray(data.tournaments)) {
           tournaments = data.tournaments;
         }
-        if (typeof data.nextTournamentId === "number") {
+        if (typeof data.nextTournamentId === number) {
           nextTournamentId = data.nextTournamentId;
         } else {
           nextTournamentId =
             tournaments.length
-              ? Math.max(...tournaments.map((t) => t.id || 0)) + 1
-              : 1;
+               Math.max(...tournaments.map((t) = t.id  0)) + 1
+               1;
         }
       } catch (e) {
-        console.error("Ошибка загрузки состояния:", e);
+        console.error(Ошибка загрузки состояния, e);
       }
     }
 
     function setPlayersHintForMode(mode) {
-      if (mode === "pairs") {
+      if (mode === pairs) {
         playersHint.innerHTML =
-          'Для режима «Пары» нужно <span class="hint-strong">чётное</span> количество игроков: минимум 2 пары (4 игрока) и максимум ' +
+          'Для режима «Пары» нужно span class=hint-strongчётноеspan количество игроков минимум 2 пары (4 игрока) и максимум ' +
           MAX_PAIRS +
           ' пар (6 игроков).';
       } else {
@@ -892,28 +1080,28 @@
 
     function updateSettingsVisibility() {
       const mode = modeSelect.value;
-      if (mode === "pairs") {
-        pairsSettingsBlock.classList.remove("hidden");
-        americanoSettingsBlock.classList.add("hidden");
+      if (mode === pairs) {
+        pairsSettingsBlock.classList.remove(hidden);
+        americanoSettingsBlock.classList.add(hidden);
       } else {
-        pairsSettingsBlock.classList.add("hidden");
-        americanoSettingsBlock.classList.remove("hidden");
+        pairsSettingsBlock.classList.add(hidden);
+        americanoSettingsBlock.classList.remove(hidden);
       }
     }
 
     function updatePlayersInputVisibility(mode) {
-      if (mode === "pairs") {
-        singlePlayerBlock.classList.add("hidden");
-        pairInputBlock.classList.remove("hidden");
+      if (mode === pairs) {
+        singlePlayerBlock.classList.add(hidden);
+        pairInputBlock.classList.remove(hidden);
       } else {
-        singlePlayerBlock.classList.remove("hidden");
-        pairInputBlock.classList.add("hidden");
+        singlePlayerBlock.classList.remove(hidden);
+        pairInputBlock.classList.add(hidden);
       }
     }
 
     function getPlayersCountForTournament(t) {
-      if (t.mode === "pairs" && t.pairs && t.pairs.length) {
-        return t.pairs.length * 2;
+      if (t.mode === pairs && t.pairs && t.pairs.length) {
+        return t.pairs.length  2;
       }
       if (t.players && t.players.length) {
         return t.players.length;
@@ -922,39 +1110,39 @@
     }
 
     function renderHistory() {
-      historyListEl.innerHTML = "";
+      historyListEl.innerHTML = ;
 
       if (!tournaments.length) {
-        historyEmptyEl.classList.remove("hidden");
+        historyEmptyEl.classList.remove(hidden);
         return;
       } else {
-        historyEmptyEl.classList.add("hidden");
+        historyEmptyEl.classList.add(hidden);
       }
 
-      const sorted = [...tournaments].sort((a, b) => b.id - a.id);
+      const sorted = [...tournaments].sort((a, b) = b.id - a.id);
 
       for (const t of sorted) {
-        const item = document.createElement("div");
-        item.className = "history-item";
+        const item = document.createElement(div);
+        item.className = history-item;
 
-        const titleRow = document.createElement("div");
-        titleRow.className = "history-title-row";
+        const titleRow = document.createElement(div);
+        titleRow.className = history-title-row;
 
-        const nameEl = document.createElement("div");
-        nameEl.className = "history-name";
-        nameEl.textContent = t.name || "Без названия";
+        const nameEl = document.createElement(div);
+        nameEl.className = history-name;
+        nameEl.textContent = t.name  Без названия;
 
         titleRow.appendChild(nameEl);
 
         if (t.live) {
-          const livePill = document.createElement("div");
-          livePill.className = "pill pill-live";
+          const livePill = document.createElement(div);
+          livePill.className = pill pill-live;
 
-          const dot = document.createElement("div");
-          dot.className = "pill-live-dot";
+          const dot = document.createElement(div);
+          dot.className = pill-live-dot;
 
-          const text = document.createElement("span");
-          text.textContent = "Live";
+          const text = document.createElement(span);
+          text.textContent = Live;
 
           livePill.appendChild(dot);
           livePill.appendChild(text);
@@ -962,38 +1150,37 @@
           titleRow.appendChild(livePill);
         }
 
-        const meta = document.createElement("div");
-        meta.className = "history-meta";
+        const meta = document.createElement(div);
+        meta.className = history-meta;
 
         const playersCount = getPlayersCountForTournament(t);
 
         meta.innerHTML = `
-          <span>${t.createdAt || ""}</span>
-          <span>${modeLabel(t.mode)}</span>
-          <span>${t.courts || 1} корт(а)</span>
-          <span>${playersCount} игрок(ов)</span>
+          span${t.createdAt  }span
+          span${modeLabel(t.mode)}span
+          span${t.courts  1} корт(а)span
+          span${playersCount} игрок(ов)span
         `;
 
-        if (t.mode === "pairs" && t.gamesPerSet && t.setsPerMatch) {
-          const fmtSpan = document.createElement("span");
-          fmtSpan.textContent = `Формат: до ${t.gamesPerSet} геймов, ${t.setsPerMatch} сет(ов)`;
+        if (t.mode === pairs && t.gamesPerSet && t.setsPerMatch) {
+          const fmtSpan = document.createElement(span);
+          fmtSpan.textContent = `Формат до ${t.gamesPerSet} геймов, ${t.setsPerMatch} сет(ов)`;
           meta.appendChild(fmtSpan);
         }
 
-        if (t.mode === "americano" && t.pointsPerGame) {
-          const fmtSpan = document.createElement("span");
-          fmtSpan.textContent = `Американо: сумма очков в матче ${t.pointsPerGame}`;
+        if (t.mode === americano && t.pointsPerGame) {
+          const fmtSpan = document.createElement(span);
+          fmtSpan.textContent = `Американо сумма очков в матче ${t.pointsPerGame}`;
           meta.appendChild(fmtSpan);
         }
 
         item.appendChild(titleRow);
         item.appendChild(meta);
 
-        // Открываем и Live, и завершённые турниры на одном экране
-        item.addEventListener("click", () => {
+        item.addEventListener(click, () = {
           activeTournament = t;
           updateTournamentScreen();
-          showScreen("tournament");
+          showScreen(tournament);
         });
 
         historyListEl.appendChild(item);
@@ -1001,7 +1188,7 @@
     }
 
     function renderPlayers() {
-      playersListEl.innerHTML = "";
+      playersListEl.innerHTML = ;
 
       if (!currentTournament) return;
 
@@ -1009,34 +1196,34 @@
       setPlayersHintForMode(mode);
       updatePlayersInputVisibility(mode);
 
-      if (mode === "pairs") {
-        const pairs = currentTournament.pairs || [];
-        const playersCount = pairs.length * 2;
+      if (mode === pairs) {
+        const pairs = currentTournament.pairs  [];
+        const playersCount = pairs.length  2;
         playersCountBadge.textContent = playersCount.toString();
 
         if (!pairs.length) {
-          playersSubtitle.textContent = "Добавь пары для этого турнира.";
+          playersSubtitle.textContent = Добавь пары для этого турнира.;
         } else {
-          playersSubtitle.textContent = `Пары турнира "${currentTournament.name}"`;
+          playersSubtitle.textContent = `Пары турнира ${currentTournament.name}`;
         }
 
-        pairs.forEach((pair, index) => {
-          const row = document.createElement("div");
-          row.className = "player-item";
+        pairs.forEach((pair, index) = {
+          const row = document.createElement(div);
+          row.className = player-item;
 
-          const nameEl = document.createElement("div");
-          nameEl.className = "player-name";
-          nameEl.textContent = `Пара ${index + 1}: ${pair.name1} & ${pair.name2}`;
+          const nameEl = document.createElement(div);
+          nameEl.className = player-name;
+          nameEl.textContent = `Пара ${index + 1} ${pair.name1} & ${pair.name2}`;
 
-          const removeBtn = document.createElement("button");
-          removeBtn.className = "player-remove-btn";
-          removeBtn.innerHTML = "×";
-          removeBtn.title = "Удалить пару";
+          const removeBtn = document.createElement(button);
+          removeBtn.className = player-remove-btn;
+          removeBtn.innerHTML = ×;
+          removeBtn.title = Удалить пару;
 
-          removeBtn.addEventListener("click", (event) => {
+          removeBtn.addEventListener(click, (event) = {
             event.stopPropagation();
             currentTournament.pairs = currentTournament.pairs.filter(
-              (p) => p.id !== pair.id
+              (p) = p.id !== pair.id
             );
             renderPlayers();
           });
@@ -1047,43 +1234,43 @@
           playersListEl.appendChild(row);
         });
 
-        if (pairs.length >= MAX_PAIRS) {
-          pairInputBlock.classList.add("hidden");
+        if (pairs.length = MAX_PAIRS) {
+          pairInputBlock.classList.add(hidden);
           playersHint.innerHTML =
             `Добавлено максимум ${MAX_PAIRS} пар (6 игроков). ` +
             `Для этого режима больше пары добавить нельзя.`;
         } else {
-          pairInputBlock.classList.remove("hidden");
+          pairInputBlock.classList.remove(hidden);
           pairLabel.textContent = `Пара ${pairs.length + 1}`;
           setPlayersHintForMode(mode);
         }
       } else {
-        const players = currentTournament.players || [];
+        const players = currentTournament.players  [];
         playersCountBadge.textContent = players.length.toString();
 
         if (!players.length) {
-          playersSubtitle.textContent = "Добавь игроков для этого турнира.";
+          playersSubtitle.textContent = Добавь игроков для этого турнира.;
         } else {
-          playersSubtitle.textContent = `Игроки турнира "${currentTournament.name}"`;
+          playersSubtitle.textContent = `Игроки турнира ${currentTournament.name}`;
         }
 
         for (const p of players) {
-          const row = document.createElement("div");
-          row.className = "player-item";
+          const row = document.createElement(div);
+          row.className = player-item;
 
-          const nameEl = document.createElement("div");
-          nameEl.className = "player-name";
+          const nameEl = document.createElement(div);
+          nameEl.className = player-name;
           nameEl.textContent = p.name;
 
-          const removeBtn = document.createElement("button");
-          removeBtn.className = "player-remove-btn";
-          removeBtn.innerHTML = "×";
-          removeBtn.title = "Удалить игрока";
+          const removeBtn = document.createElement(button);
+          removeBtn.className = player-remove-btn;
+          removeBtn.innerHTML = ×;
+          removeBtn.title = Удалить игрока;
 
-          removeBtn.addEventListener("click", (event) => {
+          removeBtn.addEventListener(click, (event) = {
             event.stopPropagation();
             currentTournament.players = currentTournament.players.filter(
-              (pl) => pl.id !== p.id
+              (pl) = pl.id !== p.id
             );
             renderPlayers();
           });
@@ -1097,11 +1284,11 @@
     }
 
     function pad2(n) {
-      return String(n).padStart(2, "0");
+      return String(n).padStart(2, 0);
     }
 
     function createCurrentTournamentFromForm() {
-      const name = nameInput.value.trim() || "Новый турнир";
+      const name = nameInput.value.trim()  Новый турнир;
       const mode = modeSelect.value;
       const courts = parseInt(courtsSelect.value, 10);
 
@@ -1109,59 +1296,58 @@
       const createdAt =
         `${now.getFullYear()}-${pad2(now.getMonth() + 1)}-${pad2(
           now.getDate()
-        )} ` + `${pad2(now.getHours())}:${pad2(now.getMinutes())}`;
+        )} ` + `${pad2(now.getHours())}${pad2(now.getMinutes())}`;
 
       let gamesPerSet = null;
       let setsPerMatch = null;
       let pointsPerGame = null;
 
-      if (mode === "pairs") {
+      if (mode === pairs) {
         gamesPerSet = parseInt(gamesPerSetSelect.value, 10);
         setsPerMatch = parseInt(setsPerMatchSelect.value, 10);
-      } else if (mode === "americano") {
+      } else if (mode === americano) {
         pointsPerGame = parseInt(pointsPerGameSelect.value, 10);
       }
 
       currentTournament = {
-        id: nextTournamentId,
+        id nextTournamentId,
         name,
         mode,
         courts,
         gamesPerSet,
         setsPerMatch,
         pointsPerGame,
-        pairsModeType: null,
-        americanoGamesPerRound: null,
-        americanoCurrentRound: 1,
-        americanoSchedule: [],
-        americanoCurrentGameId: null,
+        pairsModeType null,
+        americanoGamesPerRound null,
+        americanoCurrentRound 1,
+        americanoSchedule [],
+        americanoCurrentGameId null,
         createdAt,
-        live: true,
-        players: [],
-        pairs: [],
-        matches: [],
+        live true,
+        players [],
+        pairs [],
+        matches [],
       };
     }
 
     function updatePairsModeType(t) {
-      if (t.mode !== "pairs") {
+      if (t.mode !== pairs) {
         t.pairsModeType = null;
         return;
       }
-      const pairsCount = t.pairs ? t.pairs.length : 0;
+      const pairsCount = t.pairs  t.pairs.length  0;
       if (pairsCount === 2) {
-        t.pairsModeType = "two_pairs";
+        t.pairsModeType = two_pairs;
       } else if (pairsCount === 3) {
-        t.pairsModeType = "three_pairs_winner_stays";
+        t.pairsModeType = three_pairs_winner_stays;
       } else {
         t.pairsModeType = null;
       }
     }
 
-    // Кол-во игр в одном туре Американо: 3 * количество игроков
     function computeAmericanoGamesPerRound(playersCount) {
-      if (playersCount < 4) return 0;
-      return playersCount * 3;
+      if (playersCount  4) return 0;
+      return playersCount  3;
     }
 
     function combinations(arr, k) {
@@ -1172,7 +1358,7 @@
           res.push([...combo]);
           return;
         }
-        for (let i = start; i < n; i++) {
+        for (let i = start; i  n; i++) {
           combo.push(arr[i]);
           helper(i + 1, combo);
           combo.pop();
@@ -1182,45 +1368,44 @@
       return res;
     }
 
-    // Генерация расписания Американо с балансом партнёрств
     function generateAmericanoSchedule(playerIds, gamesCount) {
       const schedule = [];
       const gamesPlayed = {};
       const partnerCount = {};
       const N = playerIds.length;
 
-      playerIds.forEach((id) => {
+      playerIds.forEach((id) = {
         gamesPlayed[id] = 0;
         partnerCount[id] = {};
       });
 
-      const pairTarget = N > 1 ? 12 / (N - 1) : 0;
+      const pairTarget = N  1  12  (N - 1)  0;
 
       function getPairCount(a, b) {
         const x = Math.min(a, b);
         const y = Math.max(a, b);
-        return (partnerCount[x] && partnerCount[x][y]) || 0;
+        return (partnerCount[x] && partnerCount[x][y])  0;
       }
 
       function incPairCount(a, b) {
         const x = Math.min(a, b);
         const y = Math.max(a, b);
         if (!partnerCount[x]) partnerCount[x] = {};
-        partnerCount[x][y] = (partnerCount[x][y] || 0) + 1;
+        partnerCount[x][y] = (partnerCount[x][y]  0) + 1;
       }
 
       const allCombos = combinations(playerIds, 4);
 
-      for (let gameIndex = 1; gameIndex <= gamesCount; gameIndex++) {
+      for (let gameIndex = 1; gameIndex = gamesCount; gameIndex++) {
         let best = null;
 
         for (const combo of allCombos) {
           const [a, b, c, d] = combo;
 
           const variants = [
-            { teamA: [a, b], teamB: [c, d] },
-            { teamA: [a, c], teamB: [b, d] },
-            { teamA: [a, d], teamB: [b, c] },
+            { teamA [a, b], teamB [c, d] },
+            { teamA [a, c], teamB [b, d] },
+            { teamA [a, d], teamB [b, c] },
           ];
 
           for (const variant of variants) {
@@ -1231,10 +1416,10 @@
             let minNext = Infinity;
             let maxNext = -Infinity;
 
-            playerIds.forEach((id) => {
-              const val = gamesPlayed[id] + (playersInGame.includes(id) ? 1 : 0);
-              if (val < minNext) minNext = val;
-              if (val > maxNext) maxNext = val;
+            playerIds.forEach((id) = {
+              const val = gamesPlayed[id] + (playersInGame.includes(id)  1  0);
+              if (val  minNext) minNext = val;
+              if (val  maxNext) maxNext = val;
             });
 
             const gamesSpread = maxNext - minNext;
@@ -1245,17 +1430,17 @@
               const current = getPairCount(p, q);
               const next = current + 1;
               const over = next - pairTarget;
-              if (over > 0) {
-                partnerPenalty += over * over;
+              if (over  0) {
+                partnerPenalty += over  over;
               }
             }
 
             const score =
-              partnerPenalty * 10 +
-              gamesSpread * 2 +
-              Math.random() * 0.1;
+              partnerPenalty  10 +
+              gamesSpread  2 +
+              Math.random()  0.1;
 
-            if (!best || score < best.score) {
+            if (!best  score  best.score) {
               best = {
                 score,
                 teamA,
@@ -1268,18 +1453,18 @@
 
         if (!best) break;
 
-        best.playersInGame.forEach((id) => {
+        best.playersInGame.forEach((id) = {
           gamesPlayed[id] += 1;
         });
         incPairCount(best.teamA[0], best.teamA[1]);
         incPairCount(best.teamB[0], best.teamB[1]);
 
-        const rest = playerIds.filter((id) => !best.playersInGame.includes(id));
+        const rest = playerIds.filter((id) = !best.playersInGame.includes(id));
 
         schedule.push({
-          id: gameIndex,
-          teamA: best.teamA,
-          teamB: best.teamB,
+          id gameIndex,
+          teamA best.teamA,
+          teamB best.teamB,
           rest,
         });
       }
@@ -1288,9 +1473,9 @@
     }
 
     function ensureAmericanoSchedule(t) {
-      if (!t || t.mode !== "americano") return;
-      const players = t.players || [];
-      if (players.length < 4) {
+      if (!t  t.mode !== americano) return;
+      const players = t.players  [];
+      if (players.length  4) {
         t.americanoSchedule = [];
         t.americanoGamesPerRound = 0;
         t.americanoCurrentGameId = null;
@@ -1305,14 +1490,14 @@
         t.americanoGamesPerRound = computeAmericanoGamesPerRound(players.length);
       }
 
-      if (!t.americanoSchedule || !t.americanoSchedule.length) {
+      if (!t.americanoSchedule  !t.americanoSchedule.length) {
         t.americanoSchedule = generateAmericanoSchedule(
-          players.map((p) => p.id),
+          players.map((p) = p.id),
           t.americanoGamesPerRound
         );
         t.americanoCurrentGameId = t.americanoSchedule.length
-          ? t.americanoSchedule[0].id
-          : null;
+           t.americanoSchedule[0].id
+           null;
       }
 
       if (!t.americanoCurrentRound) {
@@ -1321,8 +1506,8 @@
     }
 
     function isAmericanoGamePlayed(t, round, gameId) {
-      return (t.matches || []).some(
-        (m) => m.round === round && m.gameId === gameId
+      return (t.matches  []).some(
+        (m) = m.round === round && m.gameId === gameId
       );
     }
 
@@ -1331,91 +1516,89 @@
 
       const isLive = !!activeTournament.live;
 
-      tournamentHeaderTitle.textContent = activeTournament.name || "Турнир";
+      tournamentHeaderTitle.textContent = activeTournament.name  Турнир;
       tournamentHeaderSubtitle.textContent = isLive
-        ? "Турнир в статусе Live. Можно играть матчи и смотреть таблицу."
-        : "Турнир завершён. Можно просматривать матчи, завершённые игры и таблицу.";
+         Турнир в статусе Live. Можно играть матчи и смотреть таблицу.
+         Турнир завершён. Можно просматривать матчи, завершённые игры и таблицу.;
 
       const playersCount = getPlayersCountForTournament(activeTournament);
 
       let baseMeta = `
-        <span>${activeTournament.createdAt || ""}</span>
-        <span>${modeLabel(activeTournament.mode)}</span>
-        <span>${activeTournament.courts || 1} корт(а)</span>
-        <span>${playersCount} игрок(ов)</span>
+        span${activeTournament.createdAt  }span
+        span${modeLabel(activeTournament.mode)}span
+        span${activeTournament.courts  1} корт(а)span
+        span${playersCount} игрок(ов)span
       `;
 
       if (
-        activeTournament.mode === "pairs" &&
+        activeTournament.mode === pairs &&
         activeTournament.gamesPerSet &&
         activeTournament.setsPerMatch
       ) {
-        baseMeta += `<span>Формат: до ${activeTournament.gamesPerSet} геймов, ${activeTournament.setsPerMatch} сет(ов)</span>`;
-        baseMeta += `<span>Система очков: 3 / 1 / 0</span>`;
+        baseMeta += `spanФормат до ${activeTournament.gamesPerSet} геймов, ${activeTournament.setsPerMatch} сет(ов)span`;
+        baseMeta += `spanСистема очков 3  1  0span`;
 
-        if (activeTournament.pairsModeType === "two_pairs") {
-          baseMeta += `<span>Тип: 2 пары</span>`;
-        } else if (activeTournament.pairsModeType === "three_pairs_winner_stays") {
-          baseMeta += `<span>Тип: 3 пары (Winner stays, макс. 2 игры подряд)</span>`;
+        if (activeTournament.pairsModeType === two_pairs) {
+          baseMeta += `spanТип 2 парыspan`;
+        } else if (activeTournament.pairsModeType === three_pairs_winner_stays) {
+          baseMeta += `spanТип 3 пары (Winner stays, макс. 2 игры подряд)span`;
         }
       }
 
-      if (activeTournament.mode === "americano" && activeTournament.pointsPerGame) {
-        baseMeta += `<span>Американо: сумма очков в матче ${activeTournament.pointsPerGame}</span>`;
+      if (activeTournament.mode === americano && activeTournament.pointsPerGame) {
+        baseMeta += `spanАмерикано сумма очков в матче ${activeTournament.pointsPerGame}span`;
         if (activeTournament.americanoGamesPerRound) {
-          baseMeta += `<span>Игры в круге: ${activeTournament.americanoGamesPerRound}</span>`;
+          baseMeta += `spanИгры в круге ${activeTournament.americanoGamesPerRound}span`;
         }
       }
 
       tournamentHeaderMeta.innerHTML = baseMeta;
 
       if (isLive) {
-        tournamentFinishBtn.classList.remove("hidden");
-        tournamentFooterNote.textContent = "Турнир Live — можно продолжать играть матчи.";
+        tournamentFinishBtn.classList.remove(hidden);
+        tournamentFooterNote.textContent = Турнир Live — можно продолжать играть матчи.;
       } else {
-        tournamentFinishBtn.classList.add("hidden");
+        tournamentFinishBtn.classList.add(hidden);
         tournamentFooterNote.textContent =
-          "Это завершённый турнир. Результаты можно смотреть, но не редактировать.";
+          Это завершённый турнир. Результаты можно смотреть, но не редактировать.;
       }
     }
 
-    // --- Статистика (используется в таблице) ---
-
     function computePairsStats(t) {
-      const pairs = t.pairs || [];
+      const pairs = t.pairs  [];
       const statsById = {};
 
-      pairs.forEach((pair, index) => {
+      pairs.forEach((pair, index) = {
         statsById[pair.id] = {
-          pairId: pair.id,
-          label: `Пара ${index + 1}`,
-          names: `${pair.name1} & ${pair.name2}`,
-          played: 0,
-          wins: 0,
-          draws: 0,
-          losses: 0,
-          points: 0,
+          pairId pair.id,
+          label `Пара ${index + 1}`,
+          names `${pair.name1} & ${pair.name2}`,
+          played 0,
+          wins 0,
+          draws 0,
+          losses 0,
+          points 0,
         };
       });
 
-      const matches = t.matches || [];
-      matches.forEach((m) => {
+      const matches = t.matches  [];
+      matches.forEach((m) = {
         const s1 = statsById[m.pair1Id];
         const s2 = statsById[m.pair2Id];
-        if (!s1 || !s2) return;
+        if (!s1  !s2) return;
 
         s1.played += 1;
         s2.played += 1;
 
-        if (m.result === "p1") {
+        if (m.result === p1) {
           s1.wins += 1;
           s2.losses += 1;
           s1.points += 3;
-        } else if (m.result === "p2") {
+        } else if (m.result === p2) {
           s2.wins += 1;
           s1.losses += 1;
           s2.points += 3;
-        } else if (m.result === "draw") {
+        } else if (m.result === draw) {
           s1.draws += 1;
           s2.draws += 1;
           s1.points += 1;
@@ -1423,32 +1606,32 @@
         }
       });
 
-      return Object.values(statsById).sort((a, b) => b.points - a.points);
+      return Object.values(statsById).sort((a, b) = b.points - a.points);
     }
 
     function computeAmericanoStats(t) {
-      const players = t.players || [];
+      const players = t.players  [];
       const statsById = {};
 
-      players.forEach((pl) => {
+      players.forEach((pl) = {
         statsById[pl.id] = {
-          playerId: pl.id,
-          name: pl.name,
-          games: 0,
-          scored: 0,
-          conceded: 0,
-          diff: 0,
+          playerId pl.id,
+          name pl.name,
+          games 0,
+          scored 0,
+          conceded 0,
+          diff 0,
         };
       });
 
-      const matches = t.matches || [];
-      matches.forEach((m) => {
-        const teamA = m.teamA || [];
-        const teamB = m.teamB || [];
-        const scoreA = m.scoreA || 0;
-        const scoreB = m.scoreB || 0;
+      const matches = t.matches  [];
+      matches.forEach((m) = {
+        const teamA = m.teamA  [];
+        const teamB = m.teamB  [];
+        const scoreA = m.scoreA  0;
+        const scoreB = m.scoreB  0;
 
-        teamA.forEach((id) => {
+        teamA.forEach((id) = {
           const s = statsById[id];
           if (!s) return;
           s.games += 1;
@@ -1456,7 +1639,7 @@
           s.conceded += scoreB;
         });
 
-        teamB.forEach((id) => {
+        teamB.forEach((id) = {
           const s = statsById[id];
           if (!s) return;
           s.games += 1;
@@ -1465,29 +1648,29 @@
         });
       });
 
-      Object.values(statsById).forEach((s) => {
+      Object.values(statsById).forEach((s) = {
         s.diff = s.scored - s.conceded;
       });
 
       return Object.values(statsById).sort(
-        (a, b) => b.scored - a.scored || b.diff - a.diff
+        (a, b) = b.scored - a.scored  b.diff - a.diff
       );
     }
 
     function fillMatchPairSelectsFixedTwo(pairs) {
-      matchPair1Select.innerHTML = "";
-      matchPair2Select.innerHTML = "";
-      if (pairs.length < 2) return;
+      matchPair1Select.innerHTML = ;
+      matchPair2Select.innerHTML = ;
+      if (pairs.length  2) return;
       const p1 = pairs[0];
       const p2 = pairs[1];
 
-      const opt1 = document.createElement("option");
+      const opt1 = document.createElement(option);
       opt1.value = p1.id;
-      opt1.textContent = `Пара 1: ${p1.name1} & ${p1.name2}`;
+      opt1.textContent = `Пара 1 ${p1.name1} & ${p1.name2}`;
 
-      const opt2 = document.createElement("option");
+      const opt2 = document.createElement(option);
       opt2.value = p2.id;
-      opt2.textContent = `Пара 2: ${p2.name1} & ${p2.name2}`;
+      opt2.textContent = `Пара 2 ${p2.name1} & ${p2.name2}`;
 
       matchPair1Select.appendChild(opt1);
       matchPair2Select.appendChild(opt2);
@@ -1499,16 +1682,16 @@
     function fillMatchPairSelectsFree(pairs) {
       matchPair1Select.disabled = false;
       matchPair2Select.disabled = false;
-      matchPair1Select.innerHTML = "";
-      matchPair2Select.innerHTML = "";
+      matchPair1Select.innerHTML = ;
+      matchPair2Select.innerHTML = ;
 
-      pairs.forEach((pair, index) => {
-        const text = `Пара ${index + 1}: ${pair.name1} & ${pair.name2}`;
-        const opt1 = document.createElement("option");
+      pairs.forEach((pair, index) = {
+        const text = `Пара ${index + 1} ${pair.name1} & ${pair.name2}`;
+        const opt1 = document.createElement(option);
         opt1.value = pair.id;
         opt1.textContent = text;
 
-        const opt2 = document.createElement("option");
+        const opt2 = document.createElement(option);
         opt2.value = pair.id;
         opt2.textContent = text;
 
@@ -1516,14 +1699,14 @@
         matchPair2Select.appendChild(opt2);
       });
 
-      if (pairs.length >= 2) {
+      if (pairs.length = 2) {
         matchPair2Select.selectedIndex = 1;
       }
 
       function ensureDifferent() {
         if (
           matchPair1Select.value === matchPair2Select.value &&
-          matchPair2Select.options.length > 1
+          matchPair2Select.options.length  1
         ) {
           const newIndex =
             (matchPair2Select.selectedIndex + 1) % matchPair2Select.options.length;
@@ -1536,26 +1719,26 @@
     }
 
     function autoSuggestNextMatchForThreePairs(t) {
-      const pairs = t.pairs || [];
+      const pairs = t.pairs  [];
       if (pairs.length !== 3) return;
 
-      const matches = t.matches || [];
+      const matches = t.matches  [];
       if (!matches.length) return;
 
-      const pairIds = pairs.map((p) => p.id);
+      const pairIds = pairs.map((p) = p.id);
 
       const streaks = {};
-      pairIds.forEach((id) => (streaks[id] = 0));
+      pairIds.forEach((id) = (streaks[id] = 0));
       let prevParticipants = new Set();
       let streaksBeforeLast = {};
       const len = matches.length;
 
-      matches.forEach((m, index) => {
+      matches.forEach((m, index) = {
         const currentParticipants = new Set([m.pair1Id, m.pair2Id]);
-        pairIds.forEach((id) => {
+        pairIds.forEach((id) = {
           if (currentParticipants.has(id)) {
             if (prevParticipants.has(id)) {
-              streaks[id] = (streaks[id] || 0) + 1;
+              streaks[id] = (streaks[id]  0) + 1;
             } else {
               streaks[id] = 1;
             }
@@ -1574,29 +1757,29 @@
       const lastMatch = matches[matches.length - 1];
       const p1 = lastMatch.pair1Id;
       const p2 = lastMatch.pair2Id;
-      const third = pairIds.find((id) => id !== p1 && id !== p2);
+      const third = pairIds.find((id) = id !== p1 && id !== p2);
       if (third == null) return;
 
       let next1, next2;
 
-      if (lastMatch.result === "p1" || lastMatch.result === "p2") {
-        let winnerId = lastMatch.result === "p1" ? p1 : p2;
-        let loserId = lastMatch.result === "p1" ? p2 : p1;
+      if (lastMatch.result === p1  lastMatch.result === p2) {
+        let winnerId = lastMatch.result === p1  p1  p2;
+        let loserId = lastMatch.result === p1  p2  p1;
 
-        if (streaks[winnerId] >= 2) {
+        if (streaks[winnerId] = 2) {
           next1 = loserId;
           next2 = third;
         } else {
           next1 = winnerId;
           next2 = third;
         }
-      } else if (lastMatch.result === "draw") {
-        const s1Before = streaksBeforeLast[p1] || 0;
-        const s2Before = streaksBeforeLast[p2] || 0;
+      } else if (lastMatch.result === draw) {
+        const s1Before = streaksBeforeLast[p1]  0;
+        const s2Before = streaksBeforeLast[p2]  0;
 
         let stayId;
-        if (s1Before < s2Before) stayId = p1;
-        else if (s2Before < s1Before) stayId = p2;
+        if (s1Before  s2Before) stayId = p1;
+        else if (s2Before  s1Before) stayId = p2;
         else stayId = p1;
 
         next1 = stayId;
@@ -1610,93 +1793,93 @@
     }
 
     function renderMatchConfigPairs() {
-      if (!activeTournament || activeTournament.mode !== "pairs") {
+      if (!activeTournament  activeTournament.mode !== pairs) {
         matchesConfigNote.textContent =
-          "Экран матчей для пар активен только в режиме «Пары».";
-        matchPairsSelectRow.classList.add("hidden");
-        firstMatchRandomBtn.classList.add("hidden");
+          Экран матчей для пар активен только в режиме «Пары».;
+        matchPairsSelectRow.classList.add(hidden);
+        firstMatchRandomBtn.classList.add(hidden);
         saveMatchBtn.disabled = false;
         return;
       }
 
-      const pairs = activeTournament.pairs || [];
+      const pairs = activeTournament.pairs  [];
       const matchesCount = activeTournament.matches
-        ? activeTournament.matches.length
-        : 0;
+         activeTournament.matches.length
+         0;
 
-      if (pairs.length < 2) {
+      if (pairs.length  2) {
         matchesConfigNote.textContent =
-          "Добавь минимум 2 пары, чтобы создавать матчи.";
-        matchPairsSelectRow.classList.add("hidden");
-        firstMatchRandomBtn.classList.add("hidden");
+          Добавь минимум 2 пары, чтобы создавать матчи.;
+        matchPairsSelectRow.classList.add(hidden);
+        firstMatchRandomBtn.classList.add(hidden);
         return;
       }
 
-      matchPairsSelectRow.classList.remove("hidden");
+      matchPairsSelectRow.classList.remove(hidden);
 
-      if (activeTournament.pairsModeType === "two_pairs") {
+      if (activeTournament.pairsModeType === two_pairs) {
         matchesConfigNote.textContent =
-          "Формат: 2 пары — всегда играют друг с другом.";
-        firstMatchRandomBtn.classList.add("hidden");
+          Формат 2 пары — всегда играют друг с другом.;
+        firstMatchRandomBtn.classList.add(hidden);
         fillMatchPairSelectsFixedTwo(pairs);
-      } else if (activeTournament.pairsModeType === "three_pairs_winner_stays") {
+      } else if (activeTournament.pairsModeType === three_pairs_winner_stays) {
         matchesConfigNote.textContent =
-          "Формат: 3 пары — победитель остаётся, проигравший выходит, ни одна пара не играет более двух матчей подряд. Пары на следующую игру подбираются автоматически.";
+          Формат 3 пары — победитель остаётся, проигравший выходит, ни одна пара не играет более двух матчей подряд. Пары на следующую игру подбираются автоматически.;
         if (matchesCount === 0) {
-          firstMatchRandomBtn.classList.remove("hidden");
+          firstMatchRandomBtn.classList.remove(hidden);
         } else {
-          firstMatchRandomBtn.classList.add("hidden");
+          firstMatchRandomBtn.classList.add(hidden);
         }
         fillMatchPairSelectsFree(pairs);
-        if (matchesCount > 0) {
+        if (matchesCount  0) {
           autoSuggestNextMatchForThreePairs(activeTournament);
         }
       } else {
         matchesConfigNote.textContent =
-          "Режим «Пары» сейчас поддерживает только 2 или 3 пары.";
-        firstMatchRandomBtn.classList.add("hidden");
+          Режим «Пары» сейчас поддерживает только 2 или 3 пары.;
+        firstMatchRandomBtn.classList.add(hidden);
         fillMatchPairSelectsFree(pairs);
       }
 
-      if (activeTournament.pairsModeType === "three_pairs_winner_stays") {
+      if (activeTournament.pairsModeType === three_pairs_winner_stays) {
         matchesRulesHint.textContent =
-          "Первая игра — без ничьей (нужен тай-брейк). Со второй игры ничья возможна: обе пары получают по 1 очку, а на корте остаётся та пара, для которой это была первая подряд игра. Максимум 2 игры подряд для одной пары.";
+          Первая игра — без ничьей (нужен тай-брейк). Со второй игры ничья возможна обе пары получают по 1 очку, а на корте остаётся та пара, для которой это была первая подряд игра. Максимум 2 игры подряд для одной пары.;
       } else {
         matchesRulesHint.textContent =
-          "Очки за матч: победа — 3, ничья — 1, поражение — 0.";
+          Очки за матч победа — 3, ничья — 1, поражение — 0.;
       }
     }
 
     function renderSetsInputs() {
-      setsInputsContainer.innerHTML = "";
-      if (!activeTournament || activeTournament.mode !== "pairs") return;
+      setsInputsContainer.innerHTML = ;
+      if (!activeTournament  activeTournament.mode !== pairs) return;
 
-      const setsCount = activeTournament.setsPerMatch || 1;
+      const setsCount = activeTournament.setsPerMatch  1;
 
-      for (let i = 1; i <= setsCount; i++) {
-        const wrapper = document.createElement("div");
-        wrapper.style.marginBottom = "6px";
+      for (let i = 1; i = setsCount; i++) {
+        const wrapper = document.createElement(div);
+        wrapper.style.marginBottom = 6px;
 
-        const label = document.createElement("div");
-        label.className = "field-label";
+        const label = document.createElement(div);
+        label.className = field-label;
         label.textContent = `Сет ${i}`;
 
-        const row = document.createElement("div");
-        row.className = "field-row";
+        const row = document.createElement(div);
+        row.className = field-row;
 
-        const inputA = document.createElement("input");
-        inputA.type = "number";
-        inputA.min = "0";
-        inputA.className = "field";
+        const inputA = document.createElement(input);
+        inputA.type = number;
+        inputA.min = 0;
+        inputA.className = field;
         inputA.id = `set-a-${i}`;
-        inputA.placeholder = "Геймы пары 1";
+        inputA.placeholder = Геймы пары 1;
 
-        const inputB = document.createElement("input");
-        inputB.type = "number";
-        inputB.min = "0";
-        inputB.className = "field";
+        const inputB = document.createElement(input);
+        inputB.type = number;
+        inputB.min = 0;
+        inputB.className = field;
         inputB.id = `set-b-${i}`;
-        inputB.placeholder = "Геймы пары 2";
+        inputB.placeholder = Геймы пары 2;
 
         row.appendChild(inputA);
         row.appendChild(inputB);
@@ -1709,96 +1892,95 @@
     }
 
     function renderMatchesListPairs() {
-      matchesList.innerHTML = "";
-      if (!activeTournament || activeTournament.mode !== "pairs") {
-        const msg = document.createElement("div");
-        msg.className = "hint";
-        msg.textContent = "Матчи пар доступны только для режима «Пары».";
+      matchesList.innerHTML = ;
+      if (!activeTournament  activeTournament.mode !== pairs) {
+        const msg = document.createElement(div);
+        msg.className = hint;
+        msg.textContent = Матчи пар доступны только для режима «Пары».;
         matchesList.appendChild(msg);
         return;
       }
 
-      const matches = activeTournament.matches || [];
-      const pairs = activeTournament.pairs || [];
+      const matches = activeTournament.matches  [];
+      const pairs = activeTournament.pairs  [];
 
       if (!matches.length) {
-        const msg = document.createElement("div");
-        msg.className = "hint";
-        msg.textContent = "Матчи ещё не сыграны.";
+        const msg = document.createElement(div);
+        msg.className = hint;
+        msg.textContent = Матчи ещё не сыграны.;
         matchesList.appendChild(msg);
         return;
       }
 
       const pairById = {};
-      pairs.forEach((p, index) => {
+      pairs.forEach((p, index) = {
         pairById[p.id] = {
           ...p,
-          label: `Пара ${index + 1}`,
+          label `Пара ${index + 1}`,
         };
       });
 
-      matches.forEach((m, idx) => {
-        const row = document.createElement("div");
-        row.className = "player-item";
+      matches.forEach((m, idx) = {
+        const row = document.createElement(div);
+        row.className = player-item;
 
         const p1 = pairById[m.pair1Id];
         const p2 = pairById[m.pair2Id];
 
-        const nameEl = document.createElement("div");
-        nameEl.className = "player-name";
+        const nameEl = document.createElement(div);
+        nameEl.className = player-name;
 
-        let title = `Матч ${idx + 1}: `;
+        let title = `Матч ${idx + 1} `;
         if (p1 && p2) {
-          title += `${p1.label}: ${p1.name1} & ${p1.name2} vs ${p2.label}: ${p2.name1} & ${p2.name2}`;
+          title += `${p1.label} ${p1.name1} & ${p1.name2} vs ${p2.label} ${p2.name1} & ${p2.name2}`;
         } else {
-          title += "неизвестные пары";
+          title += неизвестные пары;
         }
         nameEl.textContent = title;
 
-        const infoEl = document.createElement("div");
-        infoEl.style.fontSize = "11px";
-        infoEl.style.textAlign = "right";
+        const infoEl = document.createElement(div);
+        infoEl.style.fontSize = 11px;
+        infoEl.style.textAlign = right;
 
-        const setsWonA = m.sets.filter((s) => s.gamesA > s.gamesB).length;
-        const setsWonB = m.sets.filter((s) => s.gamesB > s.gamesA).length;
-        const setsScoreText = `${setsWonA}:${setsWonB} по сетам`;
+        const setsWonA = m.sets.filter((s) = s.gamesA  s.gamesB).length;
+        const setsWonB = m.sets.filter((s) = s.gamesB  s.gamesA).length;
+        const setsScoreText = `${setsWonA}${setsWonB} по сетам`;
 
-        let resultText = "";
-        if (m.result === "p1") resultText = "Победа пары 1";
-        else if (m.result === "p2") resultText = "Победа пары 2";
-        else if (m.result === "draw") resultText = "Ничья";
+        let resultText = ;
+        if (m.result === p1) resultText = Победа пары 1;
+        else if (m.result === p2) resultText = Победа пары 2;
+        else if (m.result === draw) resultText = Ничья;
 
-        const setsDetails = m.sets.map((s) => `${s.gamesA}:${s.gamesB}`).join(", ");
+        const setsDetails = m.sets.map((s) = `${s.gamesA}${s.gamesB}`).join(, );
 
-        infoEl.innerHTML = `${setsScoreText}<br>${setsDetails}<br>${resultText}<br>${m.playedAt || ""}`;
+        infoEl.innerHTML = `${setsScoreText}br${setsDetails}br${resultText}br${m.playedAt  }`;
 
         row.appendChild(nameEl);
         row.appendChild(infoEl);
 
-        // клик по матчу — редактирование только если Live
-        row.addEventListener("click", () => {
-          if (!activeTournament || !activeTournament.live) return;
-          if (activeTournament.mode !== "pairs") return;
+        row.addEventListener(click, () = {
+          if (!activeTournament  !activeTournament.live) return;
+          if (activeTournament.mode !== pairs) return;
           editingMatchId = m.id;
-          saveMatchBtn.textContent = "Обновить матч";
+          saveMatchBtn.textContent = Обновить матч;
 
-          if (activeTournament.pairsModeType !== "two_pairs") {
+          if (activeTournament.pairsModeType !== two_pairs) {
             matchPair1Select.value = String(m.pair1Id);
             matchPair2Select.value = String(m.pair2Id);
           }
 
-          const setsCount = activeTournament.setsPerMatch || 1;
-          for (let i = 1; i <= setsCount; i++) {
+          const setsCount = activeTournament.setsPerMatch  1;
+          for (let i = 1; i = setsCount; i++) {
             const inputA = document.getElementById(`set-a-${i}`);
             const inputB = document.getElementById(`set-b-${i}`);
-            if (!inputA || !inputB) continue;
-            const set = m.sets.find((s) => s.setIndex === i);
+            if (!inputA  !inputB) continue;
+            const set = m.sets.find((s) = s.setIndex === i);
             if (set) {
               inputA.value = set.gamesA;
               inputB.value = set.gamesB;
             } else {
-              inputA.value = "";
-              inputB.value = "";
+              inputA.value = ;
+              inputB.value = ;
             }
           }
         });
@@ -1808,73 +1990,72 @@
     }
 
     function renderMatchesListAmericano() {
-      matchesList.innerHTML = "";
-      if (!activeTournament || activeTournament.mode !== "americano") {
-        const msg = document.createElement("div");
-        msg.className = "hint";
-        msg.textContent = "Матчи Американо доступны только для соответствующего режима.";
+      matchesList.innerHTML = ;
+      if (!activeTournament  activeTournament.mode !== americano) {
+        const msg = document.createElement(div);
+        msg.className = hint;
+        msg.textContent = Матчи Американо доступны только для соответствующего режима.;
         matchesList.appendChild(msg);
         return;
       }
 
-      const matches = activeTournament.matches || [];
-      const players = activeTournament.players || [];
+      const matches = activeTournament.matches  [];
+      const players = activeTournament.players  [];
 
       if (!matches.length) {
-        const msg = document.createElement("div");
-        msg.className = "hint";
-        msg.textContent = "Матчи ещё не сыграны.";
+        const msg = document.createElement(div);
+        msg.className = hint;
+        msg.textContent = Матчи ещё не сыграны.;
         matchesList.appendChild(msg);
         return;
       }
 
       const playerById = {};
-      players.forEach((p) => {
+      players.forEach((p) = {
         playerById[p.id] = p;
       });
 
-      matches.forEach((m, idx) => {
-        const row = document.createElement("div");
-        row.className = "player-item";
+      matches.forEach((m, idx) = {
+        const row = document.createElement(div);
+        row.className = player-item;
 
-        const teamAPlayers = (m.teamA || [])
-          .map((id) => (playerById[id] ? playerById[id].name : "?"))
-          .join(" & ");
-        const teamBPlayers = (m.teamB || [])
-          .map((id) => (playerById[id] ? playerById[id].name : "?"))
-          .join(" & ");
+        const teamAPlayers = (m.teamA  [])
+          .map((id) = (playerById[id]  playerById[id].name  ))
+          .join( & );
+        const teamBPlayers = (m.teamB  [])
+          .map((id) = (playerById[id]  playerById[id].name  ))
+          .join( & );
 
-        const nameEl = document.createElement("div");
-        nameEl.className = "player-name";
-        const roundInfo = m.round ? ` (круг ${m.round})` : "";
-        nameEl.textContent = `Матч ${idx + 1}${roundInfo}: ${teamAPlayers} vs ${teamBPlayers}`;
+        const nameEl = document.createElement(div);
+        nameEl.className = player-name;
+        const roundInfo = m.round  ` (круг ${m.round})`  ;
+        nameEl.textContent = `Матч ${idx + 1}${roundInfo} ${teamAPlayers} vs ${teamBPlayers}`;
 
-        const infoEl = document.createElement("div");
-        infoEl.style.fontSize = "11px";
-        infoEl.style.textAlign = "right";
+        const infoEl = document.createElement(div);
+        infoEl.style.fontSize = 11px;
+        infoEl.style.textAlign = right;
 
-        let resultText = "";
-        if ((m.scoreA || 0) > (m.scoreB || 0)) resultText = "Победа команды 1";
-        else if ((m.scoreB || 0) > (m.scoreA || 0)) resultText = "Победа команды 2";
-        else resultText = "Ничья";
+        let resultText = ;
+        if ((m.scoreA  0)  (m.scoreB  0)) resultText = Победа команды 1;
+        else if ((m.scoreB  0)  (m.scoreA  0)) resultText = Победа команды 2;
+        else resultText = Ничья;
 
-        infoEl.innerHTML = `${m.scoreA || 0}:${m.scoreB || 0} очков<br>${resultText}<br>${m.playedAt || ""}`;
+        infoEl.innerHTML = `${m.scoreA  0}${m.scoreB  0} очковbr${resultText}br${m.playedAt  }`;
 
         row.appendChild(nameEl);
         row.appendChild(infoEl);
 
-        // клик по матчу — редактирование только если Live
-        row.addEventListener("click", () => {
-          if (!activeTournament || !activeTournament.live) return;
-          if (!activeTournament || activeTournament.mode !== "americano") return;
+        row.addEventListener(click, () = {
+          if (!activeTournament  !activeTournament.live) return;
+          if (!activeTournament  activeTournament.mode !== americano) return;
           editingMatchId = m.id;
-          saveMatchBtn.textContent = "Обновить матч";
+          saveMatchBtn.textContent = Обновить матч;
 
-          activeTournament.americanoCurrentRound = m.round || 1;
+          activeTournament.americanoCurrentRound = m.round  1;
           activeTournament.americanoCurrentGameId = m.gameId;
 
-          amScoreA.value = m.scoreA || "";
-          amScoreB.value = m.scoreB || "";
+          amScoreA.value = m.scoreA  ;
+          amScoreB.value = m.scoreB  ;
 
           renderAmericanoRoundInfo();
           renderAmericanoConfig();
@@ -1885,112 +2066,111 @@
     }
 
     function renderAmericanoConfig() {
-      if (!activeTournament || activeTournament.mode !== "americano") {
+      if (!activeTournament  activeTournament.mode !== americano) {
         americanoConfigNote.textContent =
-          "Американо доступен только для соответствующего режима.";
+          Американо доступен только для соответствующего режима.;
         saveMatchBtn.disabled = false;
-        americanoCurrentGameEl.textContent = "";
-        americanoRemainingList.innerHTML = "";
+        americanoCurrentGameEl.textContent = ;
+        americanoRemainingList.innerHTML = ;
         return;
       }
 
       ensureAmericanoSchedule(activeTournament);
 
-      const players = activeTournament.players || [];
-      if (players.length < 4) {
+      const players = activeTournament.players  [];
+      if (players.length  4) {
         americanoConfigNote.textContent =
-          "Нужно минимум 4 игрока, чтобы сыграть матч Американо.";
-        americanoCurrentGameEl.textContent = "";
-        americanoRemainingList.innerHTML = "";
+          Нужно минимум 4 игрока, чтобы сыграть матч Американо.;
+        americanoCurrentGameEl.textContent = ;
+        americanoRemainingList.innerHTML = ;
         return;
       }
 
       const playerById = {};
-      players.forEach((p) => {
+      players.forEach((p) = {
         playerById[p.id] = p;
       });
 
-      const schedule = activeTournament.americanoSchedule || [];
-      const target = activeTournament.pointsPerGame || 16;
-      const round = activeTournament.americanoCurrentRound || 1;
+      const schedule = activeTournament.americanoSchedule  [];
+      const target = activeTournament.pointsPerGame  16;
+      const round = activeTournament.americanoCurrentRound  1;
 
       if (!schedule.length) {
         americanoConfigNote.textContent =
-          "Не удалось сгенерировать расписание игр для этого количества игроков.";
-        americanoCurrentGameEl.textContent = "";
-        americanoRemainingList.innerHTML = "";
+          Не удалось сгенерировать расписание игр для этого количества игроков.;
+        americanoCurrentGameEl.textContent = ;
+        americanoRemainingList.innerHTML = ;
         return;
       }
 
       let currentGame =
-        schedule.find((g) => g.id === activeTournament.americanoCurrentGameId) ||
+        schedule.find((g) = g.id === activeTournament.americanoCurrentGameId) 
         null;
 
       if (!currentGame) {
         currentGame =
           schedule.find(
-            (g) => !isAmericanoGamePlayed(activeTournament, round, g.id)
-          ) || schedule[0];
+            (g) = !isAmericanoGamePlayed(activeTournament, round, g.id)
+          )  schedule[0];
         activeTournament.americanoCurrentGameId = currentGame.id;
       }
 
       const idxInSchedule = schedule.findIndex(
-        (g) => g.id === currentGame.id
+        (g) = g.id === currentGame.id
       );
 
       const nameA = currentGame.teamA
-        .map((id) => (playerById[id] ? playerById[id].name : "?"))
-        .join(" & ");
+        .map((id) = (playerById[id]  playerById[id].name  ))
+        .join( & );
       const nameB = currentGame.teamB
-        .map((id) => (playerById[id] ? playerById[id].name : "?"))
-        .join(" & ");
+        .map((id) = (playerById[id]  playerById[id].name  ))
+        .join( & );
       const restNames = currentGame.rest
-        .map((id) => (playerById[id] ? playerById[id].name : "?"))
-        .join(", ");
+        .map((id) = (playerById[id]  playerById[id].name  ))
+        .join(, );
 
-      let currentText = `Круг ${round}, игра ${idxInSchedule + 1}: ${nameA} vs ${nameB}`;
+      let currentText = `Круг ${round}, игра ${idxInSchedule + 1} ${nameA} vs ${nameB}`;
       if (restNames) {
-        currentText += ` (отдыхает: ${restNames})`;
+        currentText += ` (отдыхает ${restNames})`;
       }
       americanoCurrentGameEl.textContent = currentText;
 
       americanoConfigNote.textContent =
         `Сумма очков двух команд должна быть ровно ${target}. Введите очки любой команды — вторая заполнится автоматически.`;
 
-      // Оставшиеся игры
-      americanoRemainingList.innerHTML = "";
+      americanoRemainingList.innerHTML = ;
 
-      schedule.forEach((g, idx) => {
+      schedule.forEach((g, idx) = {
         const played = isAmericanoGamePlayed(activeTournament, round, g.id);
         if (played) return;
 
-        const btn = document.createElement("button");
-        btn.className = "btn btn-secondary";
-        btn.style.marginBottom = "6px";
-        btn.style.width = "100%";
+        const btn = document.createElement(button);
+        btn.className = btn btn-secondary;
+        btn.style.marginBottom = 6px;
+        btn.style.width = 100%;
 
         const gNameA = g.teamA
-          .map((id) => (playerById[id] ? playerById[id].name : "?"))
-          .join(" & ");
+          .map((id) = (playerById[id]  playerById[id].name  ))
+          .join( & );
         const gNameB = g.teamB
-          .map((id) => (playerById[id] ? playerById[id].name : "?"))
-          .join(" & ");
+          .map((id) = (playerById[id]  playerById[id].name  ))
+          .join( & );
         const gRest = g.rest
-          .map((id) => (playerById[id] ? playerById[id].name : "?"))
-          .join(", ");
+          .map((id) = (playerById[id]  playerById[id].name  ))
+          .join(, );
 
-        let text = `Игра ${idx + 1}: ${gNameA} vs ${gNameB}`;
+        let text = `Игра ${idx + 1} ${gNameA} vs ${gNameB}`;
         if (gRest) {
-          text += ` (отдыхает: ${gRest})`;
+          text += ` (отдыхает ${gRest})`;
         }
 
         btn.textContent = text;
-        btn.addEventListener("click", () => {
+        btn.addEventListener(click, () = {
           activeTournament.americanoCurrentGameId = g.id;
           editingMatchId = null;
-          saveMatchBtn.textContent = "Сохранить матч";
-          amScoreA.value = "";
-          amScoreB.value = "";
+          saveMatchBtn.textContent = Сохранить матч;
+          amScoreA.value = ;
+          amScoreB.value = ;
           renderMatchesScreen();
         });
 
@@ -1998,207 +2178,207 @@
       });
 
       if (!americanoRemainingList.childNodes.length) {
-        const msg = document.createElement("div");
-        msg.className = "hint";
-        msg.textContent = "Все игры этого круга сыграны.";
+        const msg = document.createElement(div);
+        msg.className = hint;
+        msg.textContent = Все игры этого круга сыграны.;
         americanoRemainingList.appendChild(msg);
       }
     }
 
     function renderAmericanoRoundInfo() {
-      if (!activeTournament || activeTournament.mode !== "americano") {
-        americanoRoundInfo.textContent = "";
-        amRoundButtons.classList.add("hidden");
+      if (!activeTournament  activeTournament.mode !== americano) {
+        americanoRoundInfo.textContent = ;
+        amRoundButtons.classList.add(hidden);
         return;
       }
 
       ensureAmericanoSchedule(activeTournament);
 
-      const total = activeTournament.americanoGamesPerRound || 0;
-      const round = activeTournament.americanoCurrentRound || 1;
-      const played = (activeTournament.matches || []).filter(
-        (m) => m.round === round
+      const total = activeTournament.americanoGamesPerRound  0;
+      const round = activeTournament.americanoCurrentRound  1;
+      const played = (activeTournament.matches  []).filter(
+        (m) = m.round === round
       ).length;
 
       if (!total) {
         americanoRoundInfo.textContent =
-          "Количество игр в круге не рассчитано для такого числа игроков.";
-        amRoundButtons.classList.add("hidden");
+          Количество игр в круге не рассчитано для такого числа игроков.;
+        amRoundButtons.classList.add(hidden);
         return;
       }
 
       const remaining = Math.max(0, total - played);
 
       americanoRoundInfo.textContent =
-        `Круг ${round}: сыграно ${played} из ${total} игр (осталось ${remaining}).`;
+        `Круг ${round} сыграно ${played} из ${total} игр (осталось ${remaining}).`;
 
-      if (remaining <= 0 && activeTournament.live) {
-        amRoundButtons.classList.remove("hidden");
+      if (remaining = 0 && activeTournament.live) {
+        amRoundButtons.classList.remove(hidden);
       } else {
-        amRoundButtons.classList.add("hidden");
+        amRoundButtons.classList.add(hidden);
       }
     }
 
     function renderMatchesScreen() {
       if (!activeTournament) {
-        matchesTitle.textContent = "Матчи";
-        matchesSubtitle.textContent = "Сначала создай и открой турнир.";
-        matchesList.innerHTML = "";
-        pairsConfigBlock.classList.add("hidden");
-        americanoConfigBlock.classList.add("hidden");
-        americanoRoundInfo.textContent = "";
-        amRoundButtons.classList.add("hidden");
+        matchesTitle.textContent = Матчи;
+        matchesSubtitle.textContent = Сначала создай и открой турнир.;
+        matchesList.innerHTML = ;
+        pairsConfigBlock.classList.add(hidden);
+        americanoConfigBlock.classList.add(hidden);
+        americanoRoundInfo.textContent = ;
+        amRoundButtons.classList.add(hidden);
         return;
       }
 
       const isLive = !!activeTournament.live;
 
       editingMatchId = null;
-      saveMatchBtn.textContent = "Сохранить матч";
+      saveMatchBtn.textContent = Сохранить матч;
       saveMatchBtn.disabled = !isLive;
       if (!isLive) {
-        saveMatchBtn.textContent = "Редактирование недоступно (турнир завершён)";
+        saveMatchBtn.textContent = Редактирование недоступно (турнир завершён);
       }
 
-      if (activeTournament.mode === "pairs") {
-        pairsConfigBlock.classList.remove("hidden");
-        americanoConfigBlock.classList.add("hidden");
-        americanoRoundInfo.textContent = "";
-        amRoundButtons.classList.add("hidden");
+      if (activeTournament.mode === pairs) {
+        pairsConfigBlock.classList.remove(hidden);
+        americanoConfigBlock.classList.add(hidden);
+        americanoRoundInfo.textContent = ;
+        amRoundButtons.classList.add(hidden);
 
-        matchesTitle.textContent = `Матчи — ${activeTournament.name || ""}`;
+        matchesTitle.textContent = `Матчи — ${activeTournament.name  }`;
 
-        if (activeTournament.pairsModeType === "three_pairs_winner_stays") {
+        if (activeTournament.pairsModeType === three_pairs_winner_stays) {
           matchesSubtitle.textContent =
-            "3 пары — формат Winner stays. Победитель остаётся максимум на 2 игры подряд, со второй игры возможна ничья (по 1 очку каждой паре).";
-        } else if (activeTournament.pairsModeType === "two_pairs") {
+            3 пары — формат Winner stays. Победитель остаётся максимум на 2 игры подряд, со второй игры возможна ничья (по 1 очку каждой паре).;
+        } else if (activeTournament.pairsModeType === two_pairs) {
           matchesSubtitle.textContent =
-            "2 пары — играют между собой. Очки 3 / 1 / 0 идут в итоговую таблицу.";
+            2 пары — играют между собой. Очки 3  1  0 идут в итоговую таблицу.;
         } else {
           matchesSubtitle.textContent =
-            "Режим пар. Каждая победа — 3 очка, ничья — 1, поражение — 0.";
+            Режим пар. Каждая победа — 3 очка, ничья — 1, поражение — 0.;
         }
 
         renderMatchConfigPairs();
         renderSetsInputs();
         renderMatchesListPairs();
-      } else if (activeTournament.mode === "americano") {
-        pairsConfigBlock.classList.add("hidden");
-        americanoConfigBlock.classList.remove("hidden");
+      } else if (activeTournament.mode === americano) {
+        pairsConfigBlock.classList.add(hidden);
+        americanoConfigBlock.classList.remove(hidden);
 
-        matchesTitle.textContent = `Матчи — ${activeTournament.name || ""}`;
+        matchesTitle.textContent = `Матчи — ${activeTournament.name  }`;
         matchesSubtitle.textContent =
-          "Американо. Выберите игру и введите счёт.";
+          Американо. Выберите игру и введите счёт.;
 
         renderAmericanoRoundInfo();
         renderAmericanoConfig();
         renderMatchesListAmericano();
 
         if (!isLive) {
-          amRoundButtons.classList.add("hidden");
+          amRoundButtons.classList.add(hidden);
         }
       } else {
-        pairsConfigBlock.classList.add("hidden");
-        americanoConfigBlock.classList.add("hidden");
-        matchesTitle.textContent = "Матчи";
+        pairsConfigBlock.classList.add(hidden);
+        americanoConfigBlock.classList.add(hidden);
+        matchesTitle.textContent = Матчи;
         matchesSubtitle.textContent =
-          "Экран матчей пока поддерживает только режимы «Пары» и «Американо».";
-        matchesList.innerHTML = "";
-        americanoRoundInfo.textContent = "";
-        amRoundButtons.classList.add("hidden");
+          Экран матчей пока поддерживает только режимы «Пары» и «Американо».;
+        matchesList.innerHTML = ;
+        americanoRoundInfo.textContent = ;
+        amRoundButtons.classList.add(hidden);
       }
     }
 
     function renderTableScreen() {
-      tableList.innerHTML = "";
+      tableList.innerHTML = ;
 
       if (!activeTournament) {
-        tableTitle.textContent = "Таблица";
+        tableTitle.textContent = Таблица;
         tableSubtitle.textContent =
-          "Сначала создай и открой турнир.";
-        const msg = document.createElement("div");
-        msg.className = "hint";
-        msg.textContent = "Создай турнир и сыграй хотя бы один матч.";
+          Сначала создай и открой турнир.;
+        const msg = document.createElement(div);
+        msg.className = hint;
+        msg.textContent = Создай турнир и сыграй хотя бы один матч.;
         tableList.appendChild(msg);
         return;
       }
 
-      if (activeTournament.mode === "pairs") {
-        tableTitle.textContent = `Таблица — ${activeTournament.name || ""}`;
+      if (activeTournament.mode === pairs) {
+        tableTitle.textContent = `Таблица — ${activeTournament.name  }`;
         tableSubtitle.textContent =
-          "Рейтинг пар по очкам: победа — 3, ничья — 1, поражение — 0.";
+          Рейтинг пар по очкам победа — 3, ничья — 1, поражение — 0.;
 
         const stats = computePairsStats(activeTournament);
 
         if (!stats.length) {
-          const msg = document.createElement("div");
-          msg.className = "hint";
-          msg.textContent = "Пока нет матчей, таблица пустая.";
+          const msg = document.createElement(div);
+          msg.className = hint;
+          msg.textContent = Пока нет матчей, таблица пустая.;
           tableList.appendChild(msg);
           return;
         }
 
-        stats.forEach((s, index) => {
-          const row = document.createElement("div");
-          row.className = "player-item";
+        stats.forEach((s, index) = {
+          const row = document.createElement(div);
+          row.className = player-item;
 
-          const nameEl = document.createElement("div");
-          nameEl.className = "player-name";
-          nameEl.textContent = `${index + 1}. ${s.label}: ${s.names}`;
+          const nameEl = document.createElement(div);
+          nameEl.className = player-name;
+          nameEl.textContent = `${index + 1}. ${s.label} ${s.names}`;
 
-          const infoEl = document.createElement("div");
-          infoEl.style.fontSize = "11px";
-          infoEl.style.textAlign = "right";
-          infoEl.innerHTML = `${s.points} очк(а/ов)<br>${s.played} м. • W${s.wins}-D${s.draws}-L${s.losses}`;
+          const infoEl = document.createElement(div);
+          infoEl.style.fontSize = 11px;
+          infoEl.style.textAlign = right;
+          infoEl.innerHTML = `${s.points} очк(аов)br${s.played} м. • W${s.wins}-D${s.draws}-L${s.losses}`;
 
           row.appendChild(nameEl);
           row.appendChild(infoEl);
 
           tableList.appendChild(row);
         });
-      } else if (activeTournament.mode === "americano") {
-        tableTitle.textContent = `Таблица — ${activeTournament.name || ""}`;
+      } else if (activeTournament.mode === americano) {
+        tableTitle.textContent = `Таблица — ${activeTournament.name  }`;
         tableSubtitle.textContent =
-          "Американо: рейтинг игроков по забитым очкам и разнице +/−.";
+          Американо рейтинг игроков по забитым очкам и разнице +−.;
 
         const stats = computeAmericanoStats(activeTournament);
 
         if (!stats.length) {
-          const msg = document.createElement("div");
-          msg.className = "hint";
-          msg.textContent = "Пока нет матчей, таблица пустая.";
+          const msg = document.createElement(div);
+          msg.className = hint;
+          msg.textContent = Пока нет матчей, таблица пустая.;
           tableList.appendChild(msg);
           return;
         }
 
-        const headerRow = document.createElement("div");
-        headerRow.className = "player-item";
+        const headerRow = document.createElement(div);
+        headerRow.className = player-item;
 
-        const hName = document.createElement("div");
-        hName.className = "player-name";
-        hName.textContent = "Игрок";
+        const hName = document.createElement(div);
+        hName.className = player-name;
+        hName.textContent = Игрок;
 
-        const hInfo = document.createElement("div");
-        hInfo.style.fontSize = "11px";
-        hInfo.style.textAlign = "right";
-        hInfo.innerHTML = "Игры · +/- · + · -";
+        const hInfo = document.createElement(div);
+        hInfo.style.fontSize = 11px;
+        hInfo.style.textAlign = right;
+        hInfo.innerHTML = Игры · +- · + · -;
 
         headerRow.appendChild(hName);
         headerRow.appendChild(hInfo);
         tableList.appendChild(headerRow);
 
-        stats.forEach((s, index) => {
-          const row = document.createElement("div");
-          row.className = "player-item";
+        stats.forEach((s, index) = {
+          const row = document.createElement(div);
+          row.className = player-item;
 
-          const nameEl = document.createElement("div");
-          nameEl.className = "player-name";
+          const nameEl = document.createElement(div);
+          nameEl.className = player-name;
           nameEl.textContent = `${index + 1}. ${s.name}`;
 
-          const infoEl = document.createElement("div");
-          infoEl.style.fontSize = "11px";
-          infoEl.style.textAlign = "right";
-          const diffText = s.diff > 0 ? `+${s.diff}` : `${s.diff}`;
+          const infoEl = document.createElement(div);
+          infoEl.style.fontSize = 11px;
+          infoEl.style.textAlign = right;
+          const diffText = s.diff  0  `+${s.diff}`  `${s.diff}`;
           infoEl.innerHTML = `${s.games} • ${diffText} • ${s.scored} • ${s.conceded}`;
 
           row.appendChild(nameEl);
@@ -2207,135 +2387,135 @@
           tableList.appendChild(row);
         });
       } else {
-        tableTitle.textContent = "Таблица";
+        tableTitle.textContent = Таблица;
         tableSubtitle.textContent =
-          "Таблица пока поддерживает только турниры Американо и Пары.";
-        const msg = document.createElement("div");
-        msg.className = "hint";
-        msg.textContent = "Создай турнир в подходящем режиме.";
+          Таблица пока поддерживает только турниры Американо и Пары.;
+        const msg = document.createElement(div);
+        msg.className = hint;
+        msg.textContent = Создай турнир в подходящем режиме.;
         tableList.appendChild(msg);
       }
     }
 
     function renderFinishedScreen() {
-      finishedList.innerHTML = "";
+      finishedList.innerHTML = ;
 
       if (!activeTournament) {
-        finishedTitle.textContent = "Завершённые игры";
+        finishedTitle.textContent = Завершённые игры;
         finishedSubtitle.textContent =
-          "Сначала создай и открой турнир.";
-        const msg = document.createElement("div");
-        msg.className = "hint";
-        msg.textContent = "Создай турнир и сыграй хотя бы один матч.";
+          Сначала создай и открой турнир.;
+        const msg = document.createElement(div);
+        msg.className = hint;
+        msg.textContent = Создай турнир и сыграй хотя бы один матч.;
         finishedList.appendChild(msg);
         return;
       }
 
-      finishedTitle.textContent = `Завершённые игры — ${activeTournament.name || ""}`;
+      finishedTitle.textContent = `Завершённые игры — ${activeTournament.name  }`;
       finishedSubtitle.textContent =
-        activeTournament.mode === "americano"
-          ? "Все сыгранные матчи Американо (по кругам)."
-          : "Все сыгранные матчи в режиме пар.";
+        activeTournament.mode === americano
+           Все сыгранные матчи Американо (по кругам).
+           Все сыгранные матчи в режиме пар.;
 
-      const matches = activeTournament.matches || [];
+      const matches = activeTournament.matches  [];
       if (!matches.length) {
-        const msg = document.createElement("div");
-        msg.className = "hint";
-        msg.textContent = "Пока нет сыгранных матчей.";
+        const msg = document.createElement(div);
+        msg.className = hint;
+        msg.textContent = Пока нет сыгранных матчей.;
         finishedList.appendChild(msg);
         return;
       }
 
-      if (activeTournament.mode === "pairs") {
-        const pairs = activeTournament.pairs || [];
+      if (activeTournament.mode === pairs) {
+        const pairs = activeTournament.pairs  [];
         const pairById = {};
-        pairs.forEach((p, index) => {
+        pairs.forEach((p, index) = {
           pairById[p.id] = {
             ...p,
-            label: `Пара ${index + 1}`,
+            label `Пара ${index + 1}`,
           };
         });
 
-        matches.forEach((m, idx) => {
-          const row = document.createElement("div");
-          row.className = "player-item";
+        matches.forEach((m, idx) = {
+          const row = document.createElement(div);
+          row.className = player-item;
 
           const p1 = pairById[m.pair1Id];
           const p2 = pairById[m.pair2Id];
 
-          const nameEl = document.createElement("div");
-          nameEl.className = "player-name";
+          const nameEl = document.createElement(div);
+          nameEl.className = player-name;
 
-          let title = `Матч ${idx + 1}: `;
+          let title = `Матч ${idx + 1} `;
           if (p1 && p2) {
-            title += `${p1.label}: ${p1.name1} & ${p1.name2} vs ${p2.label}: ${p2.name1} & ${p2.name2}`;
+            title += `${p1.label} ${p1.name1} & ${p1.name2} vs ${p2.label} ${p2.name1} & ${p2.name2}`;
           } else {
-            title += "неизвестные пары";
+            title += неизвестные пары;
           }
           nameEl.textContent = title;
 
-          const infoEl = document.createElement("div");
-          infoEl.style.fontSize = "11px";
-          infoEl.style.textAlign = "right";
+          const infoEl = document.createElement(div);
+          infoEl.style.fontSize = 11px;
+          infoEl.style.textAlign = right;
 
-          const setsWonA = m.sets.filter((s) => s.gamesA > s.gamesB).length;
-          const setsWonB = m.sets.filter((s) => s.gamesB > s.gamesA).length;
-          const setsScoreText = `${setsWonA}:${setsWonB} по сетам`;
+          const setsWonA = m.sets.filter((s) = s.gamesA  s.gamesB).length;
+          const setsWonB = m.sets.filter((s) = s.gamesB  s.gamesA).length;
+          const setsScoreText = `${setsWonA}${setsWonB} по сетам`;
 
-          let resultText = "";
-          if (m.result === "p1") resultText = "Победа пары 1";
-          else if (m.result === "p2") resultText = "Победа пары 2";
-          else if (m.result === "draw") resultText = "Ничья";
+          let resultText = ;
+          if (m.result === p1) resultText = Победа пары 1;
+          else if (m.result === p2) resultText = Победа пары 2;
+          else if (m.result === draw) resultText = Ничья;
 
-          const setsDetails = m.sets.map((s) => `${s.gamesA}:${s.gamesB}`).join(", ");
+          const setsDetails = m.sets.map((s) = `${s.gamesA}${s.gamesB}`).join(, );
 
-          infoEl.innerHTML = `${setsScoreText}<br>${setsDetails}<br>${resultText}<br>${m.playedAt || ""}`;
+          infoEl.innerHTML = `${setsScoreText}br${setsDetails}br${resultText}br${m.playedAt  }`;
 
           row.appendChild(nameEl);
           row.appendChild(infoEl);
 
           finishedList.appendChild(row);
         });
-      } else if (activeTournament.mode === "americano") {
-        const players = activeTournament.players || [];
+      } else if (activeTournament.mode === americano) {
+        const players = activeTournament.players  [];
         const playerById = {};
-        players.forEach((p) => {
+        players.forEach((p) = {
           playerById[p.id] = p;
         });
 
-        const sorted = [...matches].sort((a, b) => {
-          const ra = a.round || 1;
-          const rb = b.round || 1;
+        const sorted = [...matches].sort((a, b) = {
+          const ra = a.round  1;
+          const rb = b.round  1;
           if (ra !== rb) return ra - rb;
-          return (a.id || 0) - (b.id || 0);
+          return (a.id  0) - (b.id  0);
         });
 
-        sorted.forEach((m, idx) => {
-          const row = document.createElement("div");
-          row.className = "player-item";
+        sorted.forEach((m, idx) = {
+          const row = document.createElement(div);
+          row.className = player-item;
 
-          const teamAPlayers = (m.teamA || [])
-            .map((id) => (playerById[id] ? playerById[id].name : "?"))
-            .join(" & ");
-          const teamBPlayers = (m.teamB || [])
-            .map((id) => (playerById[id] ? playerById[id].name : "?"))
-            .join(" & ");
+          const teamAPlayers = (m.teamA  [])
+            .map((id) = (playerById[id]  playerById[id].name  ))
+            .join( & );
+          const teamBPlayers = (m.teamB  [])
+            .map((id) = (playerById[id]  playerById[id].name  ))
+            .join( & );
 
-          const nameEl = document.createElement("div");
-          nameEl.className = "player-name";
-          const roundInfo = m.round ? `Круг ${m.round}, ` : "";
-          nameEl.textContent = `${roundInfo}матч ${idx + 1}: ${teamAPlayers} vs ${teamBPlayers}`;
+          const nameEl = document.createElement(div);
+          nameEl.className = player-name;
+          const roundInfo = m.round  `Круг ${m.round}, `  ;
+          nameEl.textContent = `${roundInfo}матч ${idx + 1} ${teamAPlayers} vs ${teamBPlayers}`;
 
-          const infoEl = document.createElement("div");
-          infoEl.style.fontSize = "11px";
-          infoEl.style.textAlign = "right";
+          const infoEl = document.createElement(div);
+          infoEl.style.fontSize = 11px;
+          infoEl.style.textAlign = right;
 
-          let resultText = "";
-          if ((m.scoreA || 0) > (m.scoreB || 0)) resultText = "Победа команды 1";
-          else if ((m.scoreB || 0) > (m.scoreA || 0)) resultText = "Победа команды 2";
-          else resultText = "Ничья";
+          let resultText = ;
+          if ((m.scoreA  0)  (m.scoreB  0)) resultText = Победа команды 1;
+          else if ((m.scoreB  0)  (m.scoreA  0)) resultText = Победа команды 2;
+          else resultText = Ничья;
 
-          infoEl.innerHTML = `${m.scoreA || 0}:${m.scoreB || 0} очков<br>${resultText}<br>${m.playedAt || ""}`;
+          infoEl.innerHTML = `${m.scoreA  0}${m.scoreB  0} очковbr${resultText}br${m.playedAt  }`;
 
           row.appendChild(nameEl);
           row.appendChild(infoEl);
@@ -2343,121 +2523,123 @@
           finishedList.appendChild(row);
         });
       } else {
-        const msg = document.createElement("div");
-        msg.className = "hint";
-        msg.textContent = "Завершённые игры доступны только для режимов «Пары» и «Американо».";
+        const msg = document.createElement(div);
+        msg.className = hint;
+        msg.textContent = Завершённые игры доступны только для режимов «Пары» и «Американо».;
         finishedList.appendChild(msg);
       }
     }
 
-    // --- Обработчики кнопок ---
+    themeDayBtn.addEventListener(click, () = applyTheme(day));
+    themeNightBtn.addEventListener(click, () = applyTheme(night));
+    themeRedBtn.addEventListener(click, () = applyTheme(red));
 
-    newTournamentBtn.addEventListener("click", () => {
-      nameInput.value = "";
-      modeSelect.value = "americano";
-      courtsSelect.value = "1";
-      gamesPerSetSelect.value = "4";
-      setsPerMatchSelect.value = "1";
-      pointsPerGameSelect.value = "16";
+    newTournamentBtn.addEventListener(click, () = {
+      nameInput.value = ;
+      modeSelect.value = americano;
+      courtsSelect.value = 1;
+      gamesPerSetSelect.value = 4;
+      setsPerMatchSelect.value = 1;
+      pointsPerGameSelect.value = 16;
       currentTournament = null;
       activeTournament = null;
 
       updateSettingsVisibility();
-      showScreen("new");
+      showScreen(new);
     });
 
-    historyBtn.addEventListener("click", () => {
+    historyBtn.addEventListener(click, () = {
       renderHistory();
-      showScreen("history");
+      showScreen(history);
     });
 
-    backFromNewBtn.addEventListener("click", () => {
+    backFromNewBtn.addEventListener(click, () = {
       currentTournament = null;
-      showScreen("home");
+      showScreen(home);
     });
 
-    backFromPlayersBtn.addEventListener("click", () => {
-      showScreen("new");
+    backFromPlayersBtn.addEventListener(click, () = {
+      showScreen(new);
     });
 
-    backFromHistoryBtn.addEventListener("click", () => {
-      showScreen("home");
+    backFromHistoryBtn.addEventListener(click, () = {
+      showScreen(home);
     });
 
-    backFromTournamentBtn.addEventListener("click", () => {
+    backFromTournamentBtn.addEventListener(click, () = {
       renderHistory();
-      showScreen("history");
+      showScreen(history);
     });
 
-    backFromMatchesBtn.addEventListener("click", () => {
-      showScreen("tournament");
+    backFromMatchesBtn.addEventListener(click, () = {
+      showScreen(tournament);
     });
 
-    backFromTableBtn.addEventListener("click", () => {
-      showScreen("tournament");
+    backFromTableBtn.addEventListener(click, () = {
+      showScreen(tournament);
     });
 
-    backFromFinishedBtn.addEventListener("click", () => {
-      showScreen("tournament");
+    backFromFinishedBtn.addEventListener(click, () = {
+      showScreen(tournament);
     });
 
-    modeSelect.addEventListener("change", () => {
+    modeSelect.addEventListener(change, () = {
       updateSettingsVisibility();
     });
 
-    goToPlayersBtn.addEventListener("click", () => {
+    goToPlayersBtn.addEventListener(click, () = {
       createCurrentTournamentFromForm();
       renderPlayers();
-      showScreen("players");
+      showScreen(players);
     });
 
-    addPlayerBtn.addEventListener("click", () => {
+    addPlayerBtn.addEventListener(click, () = {
       if (!currentTournament) {
-        alert("Сначала настрой турнир.");
+        alert(Сначала настрой турнир.);
         return;
       }
 
-      if (currentTournament.mode === "pairs") {
-        alert("В режиме «Пары» добавляй участников блоком «Пара».");
+      if (currentTournament.mode === pairs) {
+        alert(В режиме «Пары» добавляй участников блоком «Пара».);
         return;
       }
 
       const name = playerNameInput.value.trim();
       if (!name) {
-        alert("Введите имя игрока.");
+        alert(Введите имя игрока.);
         return;
       }
 
       const newId =
         currentTournament.players.length
-          ? Math.max(...currentTournament.players.map((p) => p.id)) + 1
-          : 1;
+           Math.max(...currentTournament.players.map((p) = p.id)) + 1
+           1;
 
       currentTournament.players.push({
-        id: newId,
+        id newId,
         name,
       });
 
-      playerNameInput.value = "";
+      playerNameInput.value = ;
       renderPlayers();
     });
 
-    addPairBtn.addEventListener("click", () => {
+    addPairBtn.addEventListener(click, () = {
       if (!currentTournament) {
-        alert("Сначала настрой турнир.");
+        alert(Сначала настрой турнир.);
         return;
       }
 
-      if (currentTournament.mode !== "pairs") {
-        alert("Добавление пары доступно только в режиме «Пары».");
+      if (currentTournament.mode !== pairs) {
+        alert(Добавление пары доступно только в режиме «Пары».);
         return;
       }
 
       const existingPairsCount = currentTournament.pairs
-        ? currentTournament.pairs.length
-        : 0;
+         currentTournament.pairs.length
+         0;
 
-      if (existingPairsCount >= MAX_PAIRS) {
+      if (existingPairsCount = MAX_PAIRS) {
         alert(`Максимум ${MAX_PAIRS} пар. Формат поддерживает до 3 пар (6 игроков).`);
         return;
       }
@@ -2465,65 +2647,65 @@
       const name1 = pairPlayer1Input.value.trim();
       const name2 = pairPlayer2Input.value.trim();
 
-      if (!name1 || !name2) {
-        alert("Введите имена обоих игроков пары.");
+      if (!name1  !name2) {
+        alert(Введите имена обоих игроков пары.);
         return;
       }
 
       const newId =
         currentTournament.pairs.length
-          ? Math.max(...currentTournament.pairs.map((p) => p.id)) + 1
-          : 1;
+           Math.max(...currentTournament.pairs.map((p) = p.id)) + 1
+           1;
 
       currentTournament.pairs.push({
-        id: newId,
+        id newId,
         name1,
         name2,
       });
 
-      pairPlayer1Input.value = "";
-      pairPlayer2Input.value = "";
+      pairPlayer1Input.value = ;
+      pairPlayer2Input.value = ;
       renderPlayers();
     });
 
-    playersContinueBtn.addEventListener("click", () => {
+    playersContinueBtn.addEventListener(click, () = {
       if (!currentTournament) {
-        alert("Нет текущего турнира.");
+        alert(Нет текущего турнира.);
         return;
       }
 
       let count = 0;
       let pairsCount = 0;
 
-      if (currentTournament.mode === "pairs") {
-        pairsCount = currentTournament.pairs ? currentTournament.pairs.length : 0;
-        count = pairsCount * 2;
+      if (currentTournament.mode === pairs) {
+        pairsCount = currentTournament.pairs  currentTournament.pairs.length  0;
+        count = pairsCount  2;
       } else {
         count = currentTournament.players.length;
       }
 
-      if (currentTournament.mode === "pairs") {
-        if (pairsCount < 2) {
-          alert("Нужно минимум 2 пары (4 игрока) в режиме «Пары».");
+      if (currentTournament.mode === pairs) {
+        if (pairsCount  2) {
+          alert(Нужно минимум 2 пары (4 игрока) в режиме «Пары».);
           return;
         }
-        if (pairsCount > MAX_PAIRS) {
+        if (pairsCount  MAX_PAIRS) {
           alert(`Максимум ${MAX_PAIRS} пар (6 игроков) в режиме «Пары».`);
           return;
         }
       }
 
-      if (count < 4) {
-        alert("Нужно минимум 4 игрока.");
+      if (count  4) {
+        alert(Нужно минимум 4 игрока.);
         return;
       }
 
-      if (currentTournament.mode === "pairs" && count % 2 !== 0) {
-        alert("Для режима «Пары» нужно чётное количество игроков.");
+      if (currentTournament.mode === pairs && count % 2 !== 0) {
+        alert(Для режима «Пары» нужно чётное количество игроков.);
         return;
       }
 
-      if (currentTournament.mode === "americano") {
+      if (currentTournament.mode === americano) {
         currentTournament.americanoGamesPerRound = computeAmericanoGamesPerRound(
           count
         );
@@ -2542,43 +2724,43 @@
       renderHistory();
 
       alert(
-        `Турнир "${activeTournament.name}" создан. Дальше можно переходить к матчам, завершённым играм и таблице.`
+        `Турнир ${activeTournament.name} создан. Дальше можно переходить к матчам, завершённым играм и таблице.`
       );
-      showScreen("tournament");
+      showScreen(tournament);
     });
 
-    tournamentMatchesBtn.addEventListener("click", () => {
+    tournamentMatchesBtn.addEventListener(click, () = {
       if (!activeTournament) {
-        alert("Сначала создай и открой турнир.");
+        alert(Сначала создай и открой турнир.);
         return;
       }
 
       if (
-        activeTournament.mode !== "pairs" &&
-        activeTournament.mode !== "americano"
+        activeTournament.mode !== pairs &&
+        activeTournament.mode !== americano
       ) {
-        alert("Экран матчей реализован только для режимов «Пары» и «Американо».");
+        alert(Экран матчей реализован только для режимов «Пары» и «Американо».);
         return;
       }
 
       renderMatchesScreen();
-      showScreen("matches");
+      showScreen(matches);
     });
 
-    tournamentTableBtn.addEventListener("click", () => {
+    tournamentTableBtn.addEventListener(click, () = {
       renderTableScreen();
-      showScreen("table");
+      showScreen(table);
     });
 
-    tournamentFinishedGamesBtn.addEventListener("click", () => {
+    tournamentFinishedGamesBtn.addEventListener(click, () = {
       renderFinishedScreen();
-      showScreen("finished");
+      showScreen(finished);
     });
 
-    tournamentFinishBtn.addEventListener("click", () => {
+    tournamentFinishBtn.addEventListener(click, () = {
       if (!activeTournament) return;
       const confirmed = confirm(
-        `Завершить турнир "${activeTournament.name}"? Он перестанет считаться Live.`
+        `Завершить турнир ${activeTournament.name} Он перестанет считаться Live.`
       );
       if (!confirmed) return;
 
@@ -2586,27 +2768,27 @@
       saveState();
       updateTournamentScreen();
       renderHistory();
-      alert(`Турнир "${activeTournament.name}" завершён.`);
-      showScreen("history");
+      alert(`Турнир ${activeTournament.name} завершён.`);
+      showScreen(history);
     });
 
-    firstMatchRandomBtn.addEventListener("click", () => {
-      if (!activeTournament || activeTournament.mode !== "pairs") return;
-      if (activeTournament.pairsModeType !== "three_pairs_winner_stays") {
-        alert("Случайный выбор первых пар доступен только при 3 парах.");
+    firstMatchRandomBtn.addEventListener(click, () = {
+      if (!activeTournament  activeTournament.mode !== pairs) return;
+      if (activeTournament.pairsModeType !== three_pairs_winner_stays) {
+        alert(Случайный выбор первых пар доступен только при 3 парах.);
         return;
       }
 
-      const pairs = activeTournament.pairs || [];
+      const pairs = activeTournament.pairs  [];
       if (pairs.length !== 3) {
-        alert("Нужно ровно 3 пары для этого формата.");
+        alert(Нужно ровно 3 пары для этого формата.);
         return;
       }
 
-      const ids = pairs.map((p) => p.id);
+      const ids = pairs.map((p) = p.id);
       const chosen = [];
-      while (chosen.length < 2 && ids.length) {
-        const idx = Math.floor(Math.random() * ids.length);
+      while (chosen.length  2 && ids.length) {
+        const idx = Math.floor(Math.random()  ids.length);
         chosen.push(ids[idx]);
         ids.splice(idx, 1);
       }
@@ -2615,19 +2797,19 @@
       matchPair2Select.value = String(chosen[1]);
     });
 
-    amShowResultsBtn.addEventListener("click", () => {
+    amShowResultsBtn.addEventListener(click, () = {
       renderTableScreen();
-      showScreen("table");
+      showScreen(table);
     });
 
-    amNewRoundBtn.addEventListener("click", () => {
-      if (!activeTournament || activeTournament.mode !== "americano") return;
+    amNewRoundBtn.addEventListener(click, () = {
+      if (!activeTournament  activeTournament.mode !== americano) return;
       if (!activeTournament.live) {
-        alert("Турнир завершён, новые круги недоступны.");
+        alert(Турнир завершён, новые круги недоступны.);
         return;
       }
       activeTournament.americanoCurrentRound =
-        (activeTournament.americanoCurrentRound || 1) + 1;
+        (activeTournament.americanoCurrentRound  1) + 1;
       if (
         activeTournament.americanoSchedule &&
         activeTournament.americanoSchedule.length
@@ -2642,63 +2824,62 @@
       renderMatchesScreen();
     });
 
-    saveMatchBtn.addEventListener("click", () => {
+    saveMatchBtn.addEventListener(click, () = {
       if (!activeTournament) {
-        alert("Сначала создай и открой турнир.");
+        alert(Сначала создай и открой турнир.);
         return;
       }
 
       if (!activeTournament.live) {
-        alert("Турнир завершён, редактирование матчей недоступно.");
+        alert(Турнир завершён, редактирование матчей недоступно.);
         return;
       }
 
-      // --- Американо ---
-      if (activeTournament.mode === "americano") {
+      if (activeTournament.mode === americano) {
         ensureAmericanoSchedule(activeTournament);
-        const players = activeTournament.players || [];
-        if (players.length < 4) {
-          alert("Нужно минимум 4 игрока для матча.");
+        const players = activeTournament.players  [];
+        if (players.length  4) {
+          alert(Нужно минимум 4 игрока для матча.);
           return;
         }
 
-        const schedule = activeTournament.americanoSchedule || [];
+        const schedule = activeTournament.americanoSchedule  [];
         const gameId = activeTournament.americanoCurrentGameId;
-        const round = activeTournament.americanoCurrentRound || 1;
+        const round = activeTournament.americanoCurrentRound  1;
 
-        if (!schedule.length || !gameId) {
-          alert("Не выбрана текущая игра. Выберите игру из списка оставшихся или из истории.");
+        if (!schedule.length  !gameId) {
+          alert(Не выбрана текущая игра. Выберите игру из списка оставшихся или из истории.);
           return;
         }
 
         if (!editingMatchId && isAmericanoGamePlayed(activeTournament, round, gameId)) {
           alert(
-            "Эта игра текущего круга уже сохранена. Для изменения результата нажми на неё в истории матчей."
+            Эта игра текущего круга уже сохранена. Для изменения результата нажми на неё в истории матчей.
           );
           return;
         }
 
-        const currentGame = schedule.find((g) => g.id === gameId);
+        const currentGame = schedule.find((g) = g.id === gameId);
         if (!currentGame) {
-          alert("Не удалось найти текущую игру в расписании.");
+          alert(Не удалось найти текущую игру в расписании.);
           return;
         }
 
-        const sA = parseInt((amScoreA.value || "").trim() || "0", 10);
-        const sB = parseInt((amScoreB.value || "").trim() || "0", 10);
-        if (Number.isNaN(sA) || Number.isNaN(sB) || sA < 0 || sB < 0) {
-          alert("Введите корректный счёт (0 или больше) для обеих команд.");
+        const sA = parseInt((amScoreA.value  ).trim()  0, 10);
+        const sB = parseInt((amScoreB.value  ).trim()  0, 10);
+        if (Number.isNaN(sA)  Number.isNaN(sB)  sA  0  sB  0) {
+          alert(Введите корректный счёт (0 или больше) для обеих команд.);
           return;
         }
         if (sA === 0 && sB === 0) {
-          alert("Счёт не может быть 0:0.");
+          alert(Счёт не может быть 00.);
           return;
         }
 
-        const target = activeTournament.pointsPerGame || 16;
+        const target = activeTournament.pointsPerGame  16;
         if (sA + sB !== target) {
           alert(
-            `Сумма очков двух команд должна быть ровно ${target}. Например, при ${target} возможны варианты 10:${target - 10}, 8:${target - 8} и т.п.`
+            `Сумма очков двух команд должна быть ровно ${target}. Например, при ${target} возможны варианты 10${target - 10}, 8${target - 8} и т.п.`
           );
           return;
         }
@@ -2707,11 +2888,11 @@
         const playedAt =
           `${now.getFullYear()}-${pad2(now.getMonth() + 1)}-${pad2(
             now.getDate()
-          )} ` + `${pad2(now.getHours())}:${pad2(now.getMinutes())}`;
+          )} ` + `${pad2(now.getHours())}${pad2(now.getMinutes())}`;
 
         if (editingMatchId) {
           const existing = activeTournament.matches.find(
-            (m) => m.id === editingMatchId
+            (m) = m.id === editingMatchId
           );
           if (existing) {
             existing.gameId = gameId;
@@ -2725,17 +2906,17 @@
         } else {
           const nextId =
             activeTournament.matches && activeTournament.matches.length
-              ? Math.max(...activeTournament.matches.map((m) => m.id || 0)) + 1
-              : 1;
+               Math.max(...activeTournament.matches.map((m) = m.id  0)) + 1
+               1;
 
           const match = {
-            id: nextId,
+            id nextId,
             gameId,
             round,
-            teamA: currentGame.teamA,
-            teamB: currentGame.teamB,
-            scoreA: sA,
-            scoreB: sB,
+            teamA currentGame.teamA,
+            teamB currentGame.teamB,
+            scoreA sA,
+            scoreB sB,
             playedAt,
           };
 
@@ -2743,7 +2924,7 @@
           activeTournament.matches.push(match);
 
           const nextGame = schedule.find(
-            (g) => !isAmericanoGamePlayed(activeTournament, round, g.id)
+            (g) = !isAmericanoGamePlayed(activeTournament, round, g.id)
           );
           if (nextGame) {
             activeTournament.americanoCurrentGameId = nextGame.id;
@@ -2753,70 +2934,69 @@
         saveState();
 
         editingMatchId = null;
-        saveMatchBtn.textContent = "Сохранить матч";
-        amScoreA.value = "";
-        amScoreB.value = "";
+        saveMatchBtn.textContent = Сохранить матч;
+        amScoreA.value = ;
+        amScoreB.value = ;
 
         renderMatchesScreen();
-        alert("Матч сохранён. Очки игроков и информация по кругу обновлены.");
+        alert(Матч сохранён. Очки игроков и информация по кругу обновлены.);
         return;
       }
 
-      // --- Пары ---
-      if (activeTournament.mode !== "pairs") {
-        alert("Матчи поддерживаются только для режимов «Пары» и «Американо».");
+      if (activeTournament.mode !== pairs) {
+        alert(Матчи поддерживаются только для режимов «Пары» и «Американо».);
         return;
       }
 
-      const pairs = activeTournament.pairs || [];
-      if (pairs.length < 2) {
-        alert("Добавь минимум 2 пары.");
+      const pairs = activeTournament.pairs  [];
+      if (pairs.length  2) {
+        alert(Добавь минимум 2 пары.);
         return;
       }
 
       let pair1Id, pair2Id;
 
-      if (activeTournament.pairsModeType === "two_pairs") {
+      if (activeTournament.pairsModeType === two_pairs) {
         pair1Id = pairs[0].id;
         pair2Id = pairs[1].id;
       } else {
         pair1Id = parseInt(matchPair1Select.value, 10);
         pair2Id = parseInt(matchPair2Select.value, 10);
-        if (!pair1Id || !pair2Id || pair1Id === pair2Id) {
-          alert("Выбери две разные пары для матча.");
+        if (!pair1Id  !pair2Id  pair1Id === pair2Id) {
+          alert(Выбери две разные пары для матча.);
           return;
         }
       }
 
       const sets = [];
-      const setsCount = activeTournament.setsPerMatch || 1;
-      const maxGames = activeTournament.gamesPerSet || null;
+      const setsCount = activeTournament.setsPerMatch  1;
+      const maxGames = activeTournament.gamesPerSet  null;
 
       let isFirstMatch = false;
-      if (!activeTournament.matches || activeTournament.matches.length === 0) {
+      if (!activeTournament.matches  activeTournament.matches.length === 0) {
         isFirstMatch = true;
       } else if (editingMatchId) {
         const minId = Math.min(
-          ...activeTournament.matches.map((m) => m.id || 0)
+          ...activeTournament.matches.map((m) = m.id  0)
         );
         if (editingMatchId === minId) {
           isFirstMatch = true;
         }
       }
 
-      for (let i = 1; i <= setsCount; i++) {
+      for (let i = 1; i = setsCount; i++) {
         const inputA = document.getElementById(`set-a-${i}`);
         const inputB = document.getElementById(`set-b-${i}`);
-        if (!inputA || !inputB) continue;
+        if (!inputA  !inputB) continue;
 
         const valA = inputA.value.trim();
         const valB = inputB.value.trim();
 
-        if (valA === "" && valB === "") {
+        if (valA ===  && valB === ) {
           continue;
         }
 
-        if (valA === "" || valB === "") {
+        if (valA ===   valB === ) {
           alert(
             `В сете ${i} нужно ввести счёт для обеих пар или оставить сет полностью пустым.`
           );
@@ -2827,10 +3007,10 @@
         const gamesB = parseInt(valB, 10);
 
         if (
-          Number.isNaN(gamesA) ||
-          Number.isNaN(gamesB) ||
-          gamesA < 0 ||
-          gamesB < 0
+          Number.isNaN(gamesA) 
+          Number.isNaN(gamesB) 
+          gamesA  0 
+          gamesB  0
         ) {
           alert(`Некорректный счёт в сете ${i}.`);
           return;
@@ -2842,12 +3022,12 @@
           if (i === 1 && isFirstMatch) {
             if (gamesA === gamesB) {
               alert(
-                "В первом сете первой игры не может быть ничьей. Сыграйте тай-брейк или определите победителя иначе."
+                В первом сете первой игры не может быть ничьей. Сыграйте тай-брейк или определите победителя иначе.
               );
               return;
             }
 
-            if (sumGames < maxGames || sumGames > maxGames + 1) {
+            if (sumGames  maxGames  sumGames  maxGames + 1) {
               alert(
                 `В первом сете первой игры сумма геймов должна быть ${maxGames} или ${maxGames + 1}.`
               );
@@ -2856,7 +3036,7 @@
           } else {
             if (sumGames !== maxGames) {
               alert(
-                `В сете ${i} сумма геймов должна равняться ${maxGames} (например, 4:0, 3:1 или 2:2 при ${maxGames} геймах).`
+                `В сете ${i} сумма геймов должна равняться ${maxGames} (например, 40, 31 или 22 при ${maxGames} геймах).`
               );
               return;
             }
@@ -2864,29 +3044,29 @@
         }
 
         sets.push({
-          setIndex: i,
+          setIndex i,
           gamesA,
           gamesB,
         });
       }
 
       if (!sets.length) {
-        alert("Введите хотя бы один сет, чтобы сохранить матч.");
+        alert(Введите хотя бы один сет, чтобы сохранить матч.);
         return;
       }
 
-      const setsWonA = sets.filter((s) => s.gamesA > s.gamesB).length;
-      const setsWonB = sets.filter((s) => s.gamesB > s.gamesA).length;
+      const setsWonA = sets.filter((s) = s.gamesA  s.gamesB).length;
+      const setsWonB = sets.filter((s) = s.gamesB  s.gamesA).length;
 
-      let result = "draw";
-      if (setsWonA > setsWonB) result = "p1";
-      else if (setsWonB > setsWonA) result = "p2";
+      let result = draw;
+      if (setsWonA  setsWonB) result = p1;
+      else if (setsWonB  setsWonA) result = p2;
 
       const now = new Date();
       const playedAt =
         `${now.getFullYear()}-${pad2(now.getMonth() + 1)}-${pad2(
           now.getDate()
-        )} ` + `${pad2(now.getHours())}:${pad2(now.getMinutes())}`;
+        )} ` + `${pad2(now.getHours())}${pad2(now.getMinutes())}`;
 
       let matchId;
       if (editingMatchId) {
@@ -2894,12 +3074,12 @@
       } else {
         matchId =
           activeTournament.matches && activeTournament.matches.length
-            ? Math.max(...activeTournament.matches.map((m) => m.id || 0)) + 1
-            : 1;
+             Math.max(...activeTournament.matches.map((m) = m.id  0)) + 1
+             1;
       }
 
       const match = {
-        id: matchId,
+        id matchId,
         pair1Id,
         pair2Id,
         sets,
@@ -2909,9 +3089,9 @@
 
       if (editingMatchId) {
         const idx = activeTournament.matches.findIndex(
-          (m) => m.id === editingMatchId
+          (m) = m.id === editingMatchId
         );
-        if (idx >= 0) {
+        if (idx = 0) {
           activeTournament.matches[idx] = match;
         }
       } else {
@@ -2921,51 +3101,50 @@
 
       saveState();
 
-      for (let i = 1; i <= setsCount; i++) {
+      for (let i = 1; i = setsCount; i++) {
         const inputA = document.getElementById(`set-a-${i}`);
         const inputB = document.getElementById(`set-b-${i}`);
-        if (inputA) inputA.value = "";
-        if (inputB) inputB.value = "";
+        if (inputA) inputA.value = ;
+        if (inputB) inputB.value = ;
       }
 
       editingMatchId = null;
-      saveMatchBtn.textContent = "Сохранить матч";
+      saveMatchBtn.textContent = Сохранить матч;
 
       renderMatchesScreen();
-      alert("Матч сохранён. Таблица и список завершённых игр обновлены.");
+      alert(Матч сохранён. Таблица и список завершённых игр обновлены.);
     });
 
-    // Авто-подстановка счёта в Американо
-    amScoreA.addEventListener("input", () => {
+    amScoreA.addEventListener(input, () = {
       if (isUpdatingAmScore) return;
-      if (!activeTournament || activeTournament.mode !== "americano") return;
-      const target = activeTournament.pointsPerGame || 16;
-      let val = parseInt(amScoreA.value || "0", 10);
-      if (Number.isNaN(val) || val < 0) val = 0;
-      if (val > target) val = target;
+      if (!activeTournament  activeTournament.mode !== americano) return;
+      const target = activeTournament.pointsPerGame  16;
+      let val = parseInt(amScoreA.value  0, 10);
+      if (Number.isNaN(val)  val  0) val = 0;
+      if (val  target) val = target;
       isUpdatingAmScore = true;
       amScoreA.value = String(val);
       amScoreB.value = String(target - val);
       isUpdatingAmScore = false;
     });
 
-    amScoreB.addEventListener("input", () => {
+    amScoreB.addEventListener(input, () = {
       if (isUpdatingAmScore) return;
-      if (!activeTournament || activeTournament.mode !== "americano") return;
-      const target = activeTournament.pointsPerGame || 16;
-      let val = parseInt(amScoreB.value || "0", 10);
-      if (Number.isNaN(val) || val < 0) val = 0;
-      if (val > target) val = target;
+      if (!activeTournament  activeTournament.mode !== americano) return;
+      const target = activeTournament.pointsPerGame  16;
+      let val = parseInt(amScoreB.value  0, 10);
+      if (Number.isNaN(val)  val  0) val = 0;
+      if (val  target) val = target;
       isUpdatingAmScore = true;
       amScoreB.value = String(val);
       amScoreA.value = String(target - val);
       isUpdatingAmScore = false;
     });
 
-    // Инициализация
+    loadTheme();
     loadState();
     updateSettingsVisibility();
-    showScreen("home");
-  </script>
-</body>
-</html>
+    showScreen(home);
+  script
+body
+html
