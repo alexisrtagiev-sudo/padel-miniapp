@@ -75,28 +75,7 @@
       --shadow: rgba(0, 0, 0, 0.6);
     }
 
-    body.theme-red {
-      --bg: #ef4444;
-      --card: #ff5a5a;
-      --card-soft: #f87171;
-      --text: #050505;
-      --text-muted: #1f1f1f;
-      --text-soft: #3b0b0b;
-      --border: rgba(0, 0, 0, 0.45);
-      --border-strong: rgba(0, 0, 0, 0.7);
-      --primary-start: #050505;
-      --primary-end: #18181b;
-      --primary-text: #ffffff;
-      --primary-shadow: rgba(0, 0, 0, 0.28);
-      --danger-bg: #050505;
-      --danger-bg-hover: #18181b;
-      --danger-text: #ffffff;
-      --warning: #050505;
-      --remove: #050505;
-      --live: #050505;
-      --live-text: #050505;
-      --shadow: rgba(0, 0, 0, 0.35);
-    }
+    
 
     * {
       box-sizing: border-box;
@@ -119,7 +98,68 @@
       width: 100%;
       max-width: 420px;
       padding: 24px 16px 32px;
+      display: none;
     }
+    
+    #screen-start {
+  width: calc(100% - 32px);
+  max-width: 420px;
+  padding: 28px 20px 26px;
+}
+
+.start-title {
+  font-size: 26px;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+.start-section {
+  margin-top: 18px;
+}
+
+.start-label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-soft);
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.start-options {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.language-options {
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.start-option-btn {
+  min-width: 48px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: var(--card-soft);
+  color: var(--text);
+  padding: 10px 12px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.start-option-btn.active {
+  background: linear-gradient(135deg, var(--primary-start), var(--primary-end));
+  color: var(--primary-text);
+  border-color: transparent;
+}
+
+.start-btn {
+  margin-top: 22px;
+}
 
     .card {
       background: var(--card);
@@ -181,17 +221,9 @@
       border-color: var(--text);
     }
 
-    body.theme-red .theme-btn.active {
-      background: #050505;
-      color: #ef4444;
-      border-color: #050505;
-    }
+    
 
-    .theme-red-label {
-      font-size: 10px;
-      font-weight: 900;
-      letter-spacing: -0.04em;
-    }
+    
 
     .title {
       font-size: 22px;
@@ -455,14 +487,23 @@
     }
 
     .player-remove-btn {
-      border: none;
-      background: transparent;
-      color: var(--remove);
-      cursor: pointer;
-      font-size: 16px;
-      line-height: 1;
-      padding: 0 4px;
-    }
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--remove);
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  padding: 0 8px;
+  min-width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.player-remove-btn:hover {
+  background: var(--card-soft);
+  border-color: var(--remove);
+}
 
     .hint {
       font-size: 11px;
@@ -520,69 +561,93 @@
   </style>
 </head>
 <body class="theme-night">
+
+  <div class="card" id="screen-start">
+  <div class="start-title">Padel Mini App</div>
+
+  <div class="start-section">
+    <div class="start-label" data-i18n="language">Язык</div>
+    <div class="start-options language-options">
+      <button id="lang-ru-start" class="start-option-btn lang-btn-start active" onclick="setLang('ru')">RU</button>
+      <button id="lang-en-start" class="start-option-btn lang-btn-start" onclick="setLang('en')">EN</button>
+      <button id="lang-fr-start" class="start-option-btn lang-btn-start" onclick="setLang('fr')">FR</button>
+      <button id="lang-es-start" class="start-option-btn lang-btn-start" onclick="setLang('es')">ES</button>
+      <button id="lang-de-start" class="start-option-btn lang-btn-start" onclick="setLang('de')">DE</button>
+      <button id="lang-sr-start" class="start-option-btn lang-btn-start" onclick="setLang('sr')">SR</button>
+      <button id="lang-me-start" class="start-option-btn lang-btn-start" onclick="setLang('me')">ME</button>
+    </div>
+  </div>
+
+  <div class="start-section">
+    <div class="start-label" data-i18n="theme">Тема</div>
+    <div class="start-options">
+      <button id="theme-day-start" class="start-option-btn theme-btn-start" onclick="setTheme('day')">☀️</button>
+      <button id="theme-night-start" class="start-option-btn theme-btn-start active" onclick="setTheme('night')">🌙</button>
+    </div>
+  </div>
+
+  <button class="btn btn-primary start-btn" onclick="startApp()" data-i18n="start">
+    Старт
+  </button>
+</div>
+
   <div class="app">
     <div class="card" id="screen-home">
+      <button class="btn-ghost" onclick="goToStart()" data-i18n="backToStart">
+  ← Старт
+</button>
       <div class="home-top-row">
         <div class="home-title-block">
-          <div class="title">Padel турниры</div>
+          <div class="title" data-i18n="appHomeTitle">Padel турниры</div>
         </div>
 
         <div class="theme-switcher" aria-label="Переключатель темы">
           <button class="theme-btn" id="theme-day-btn" type="button" title="Дневная тема">☀️</button>
           <button class="theme-btn" id="theme-night-btn" type="button" title="Ночная тема">🌙</button>
-          <button class="theme-btn" id="theme-red-btn" type="button" title="Red тема">
-            <span class="theme-red-label">RED</span>
-          </button>
         </div>
       </div>
 
-      <div class="subtitle">
-        Управляй матчами в Американо и формате пар прямо из Telegram.
-      </div>
+      <div class="subtitle" data-i18n="homeSubtitle"></div>
 
-      <div class="mode-label">Главное меню</div>
 
-      <button class="btn btn-primary" id="new-tournament-btn">
-        Новый турнир
-      </button>
+      <div class="mode-label" data-i18n="mainMenu"></div>
 
-      <button class="btn btn-secondary" id="history-btn">
-        История турниров
-      </button>
+      <button class="btn btn-primary" id="new-tournament-btn" data-i18n="newTournament"></button>
 
-      <div class="history-note">
-        Незавершённые турниры будут отмечены как <strong>Live</strong>.
-      </div>
+      <button class="btn btn-secondary" id="history-btn" data-i18n="history"></button>
+
+      <div class="history-note" data-i18n="liveNote"></div>
     </div>
 
     <div class="card hidden" id="screen-new">
-      <button class="btn-ghost" id="back-from-new-btn">
-        ← Назад
-      </button>
+      <button class="btn-ghost" id="back-from-new-btn" data-i18n="back">
+  ← Назад
+</button>
 
-      <div class="title">Новый турнир</div>
-      <div class="subtitle">
-        Настрой формат, а затем добавь игроков.
-      </div>
+      <div class="title" data-i18n="newTournamentTitle">Новый турнир</div>
+<div class="subtitle" data-i18n="newTournamentSubtitle">
+  Настрой формат, а затем добавь игроков.
+</div>
 
-      <div class="field-label">Название турнира</div>
-      <input
-        type="text"
-        class="field"
-        id="tournament-name-input"
-        placeholder="Например: Воскресный падел"
+      <div class="field-label" data-i18n="tournamentName">Название турнира</div>
+<input
+  type="text"
+  class="field"
+  id="tournament-name-input"
+  placeholder="Например: Воскресный падел"
+  data-i18n-placeholder="tournamentNamePlaceholder"
       />
 
       <div class="field-row">
         <div style="flex: 1;">
-          <div class="field-label">Режим</div>
+          <div class="field-label" data-i18n="mode">Режим</div>
           <select class="field" id="tournament-mode-select">
-            <option value="americano">Американо</option>
-            <option value="pairs">Пары (до 3 пар)</option>
+            <option value="americano" data-i18n="modeAmericano">Американо</option>
+<option value="pairs" data-i18n="modePairs">Пары (до 3 пар)</option>
           </select>
         </div>
         <div style="width: 110px;">
-          <div class="field-label">Кортов</div>
+          <div class="field-label" data-i18n="courts">Кортов</div>
           <select class="field" id="courts-select">
             <option value="1" selected>1</option>
             <option value="2">2</option>
@@ -593,11 +658,11 @@
       </div>
 
       <div class="pairs-settings hidden" id="pairs-settings">
-        <div class="pairs-settings-title">Формат матча (Пары)</div>
+        <div class="pairs-settings-title" data-i18n="pairsMatchFormat">Формат матча (Пары)</div>
 
         <div class="field-row">
           <div style="flex: 1;">
-            <div class="field-label">Геймов в сете</div>
+            <div class="field-label" data-i18n="gamesPerSet">Геймов в сете</div>
             <select class="field" id="games-per-set-select">
               <option value="4" selected>4</option>
               <option value="5">5</option>
@@ -605,7 +670,7 @@
             </select>
           </div>
           <div style="flex: 1;">
-            <div class="field-label">Сетов в матче</div>
+            <div class="field-label" data-i18n="setsPerMatch">Сетов в матче</div>
             <select class="field" id="sets-per-match-select">
               <option value="1" selected>1</option>
               <option value="2">2</option>
@@ -616,17 +681,17 @@
           </div>
         </div>
 
-        <div class="pairs-settings-note">
-          В парах считаем только геймы и сеты. Очки турнира: победа — 3, ничья — 1, поражение — 0.
-        </div>
+        <div class="pairs-settings-note" data-i18n="pairsSettingsNote">
+  В парах считаем только геймы и сеты. Очки турнира: победа — 3, ничья — 1, поражение — 0.
+</div>
       </div>
 
       <div class="americano-settings" id="americano-settings">
-        <div class="pairs-settings-title">Формат матча (Американо)</div>
+        <div class="pairs-settings-title" data-i18n="americanoMatchFormat">Формат матча (Американо)</div>
 
         <div class="field-row">
           <div style="flex: 1;">
-            <div class="field-label">Очков в матче (сумма двух команд)</div>
+            <div class="field-label" data-i18n="pointsPerGame">Очков в матче (сумма двух команд)</div>
             <select class="field" id="points-per-game-select">
               <option value="8">8</option>
               <option value="12">12</option>
@@ -637,41 +702,42 @@
           </div>
         </div>
 
-        <div class="pairs-settings-note">
-          Например, при 16 очках команды могут сыграть 10:6 или 8:8 — главное, чтобы сумма была 16.
-          Значения кратны 4, чтобы игроки на корте могли подавать примерно одинаковое количество раз.
-        </div>
+        <div class="pairs-settings-note" data-i18n="americanoSettingsNote">
+  Например, при 16 очках команды могут сыграть 10:6 или 8:8 — главное, чтобы сумма была 16.
+  Значения кратны 4, чтобы игроки на корте могли подавать примерно одинаковое количество раз.
+</div>
       </div>
 
-      <button class="btn btn-primary" id="go-to-players-btn">
-        Далее → Игроки
-      </button>
+      <button class="btn btn-primary" id="go-to-players-btn" data-i18n="nextPlayers">
+  Далее → Игроки
+</button>
 
-      <div class="history-note">
-        Настройки можно будет расширять позже (очки за победу, время матча и т.д.).
-      </div>
+      <div class="history-note" data-i18n="settingsFutureNote">
+  Настройки можно будет расширять позже (очки за победу, время матча и т.д.).
+</div>
     </div>
 
     <div class="card hidden" id="screen-players">
-      <button class="btn-ghost" id="back-from-players-btn">
-        ← Назад к настройкам
-      </button>
+      <button class="btn-ghost" id="back-from-players-btn" data-i18n="backToSettings">
+  ← Назад к настройкам
+</button>
 
-      <div class="title">Игроки</div>
-      <div class="subtitle" id="players-subtitle">
-        Добавь игроков для этого турнира.
-      </div>
+      <div class="title" data-i18n="playersTitle">Игроки</div>
+      <div class="subtitle" id="players-subtitle" data-i18n="playersSubtitle">
+  Добавь игроков для этого турнира.
+</div>
 
       <div id="single-player-block">
-        <div class="field-label">
-          Имя игрока
-        </div>
+        <div class="field-label" data-i18n="playerName">
+  Имя игрока
+</div>
         <div class="field-row">
           <input
             type="text"
             class="field"
             id="player-name-input"
             placeholder="Например: Alex"
+data-i18n-placeholder="playerNamePlaceholder"
           />
           <button class="btn-small" id="add-player-btn">
             +
@@ -689,84 +755,87 @@
             class="field"
             id="pair-player1-input"
             placeholder="Игрок 1 (например: Саша)"
+data-i18n-placeholder="pairPlayer1Placeholder"
           />
           <input
             type="text"
             class="field"
             id="pair-player2-input"
             placeholder="Игрок 2 (например: Денис)"
+data-i18n-placeholder="pairPlayer2Placeholder"
           />
         </div>
-        <button class="btn-small" id="add-pair-btn">
-          Добавить пару
-        </button>
+        <button class="btn-small" id="add-pair-btn" data-i18n="addPair">
+  Добавить пару
+</button>
       </div>
 
       <div class="hint" id="players-hint"></div>
 
       <div class="mode-label" style="margin-top: 12px;">
-        Список участников <span class="badge" id="players-count-badge">0</span>
+        <span data-i18n="participantsList">Список участников</span>
+<span class="badge" id="players-count-badge">0</span>
       </div>
 
       <div class="players-list" id="players-list"></div>
 
-      <button class="btn btn-primary" id="players-continue-btn">
-        Продолжить (к турниру)
-      </button>
+      <button class="btn btn-primary" id="players-continue-btn" data-i18n="continueToTournament">
+  Продолжить (к турниру)
+</button>
     </div>
 
     <div class="card hidden" id="screen-tournament">
-      <button class="btn-ghost" id="back-from-tournament-btn">
-        ← История
-      </button>
+      <button class="btn-ghost" id="back-from-tournament-btn" data-i18n="backToHistory">
+  ← История
+</button>
 
       <div class="title" id="tournament-header-title">Турнир</div>
       <div class="subtitle" id="tournament-header-subtitle">
         Турнир в статусе Live. Можно играть матчи и смотреть таблицу.
       </div>
 
-      <div class="mode-label">Параметры турнира</div>
+      <div class="mode-label" data-i18n="tournamentParams">Параметры турнира</div>
       <div class="history-meta" id="tournament-header-meta"></div>
 
-      <div class="mode-label" style="margin-top: 16px;">
-        Экраны турнира
-      </div>
+      <div class="mode-label" style="margin-top: 16px;" data-i18n="tournamentScreens">
+  Экраны турнира
+</div>
 
-      <button class="btn btn-secondary" id="tournament-matches-btn">
-        Матчи
-      </button>
+      <button class="btn btn-secondary" id="tournament-matches-btn" data-i18n="matches">
+  Матчи
+</button>
 
-      <button class="btn btn-secondary" id="tournament-finished-games-btn">
-        Завершённые игры
-      </button>
+      <button class="btn btn-secondary" id="tournament-finished-games-btn" data-i18n="finishedGames">
+  Завершённые игры
+</button>
 
-      <button class="btn btn-secondary" id="tournament-table-btn">
-        Таблица
-      </button>
+      <button class="btn btn-secondary" id="tournament-table-btn" data-i18n="table">
+  Таблица
+</button>
 
-      <button class="btn btn-danger hidden" id="tournament-finish-btn">
-        Завершить турнир
-      </button>
+      <button class="btn btn-danger hidden" id="tournament-finish-btn" data-i18n="finishTournament">
+  Завершить турнир
+</button>
 
       <div class="history-note" style="margin-top: 10px;" id="tournament-footer-note">
         Дальше мы добавим расширенные настройки и отчёты.
       </div>
-    </div>
+        </div>
 
     <div class="card hidden" id="screen-matches">
-      <button class="btn-ghost" id="back-from-matches-btn">
-        ← Турнир
-      </button>
+      <button class="btn-ghost" id="back-from-matches-btn" data-i18n="backToTournament">
+  ← Турнир
+</button>
 
-      <div class="title" id="matches-title">Матчи</div>
-      <div class="subtitle" id="matches-subtitle">
-        Управляй матчами и следи за очками.
-      </div>
+<div class="title" id="matches-title" data-i18n="matchesTitle">Матчи</div>
+<div class="subtitle" id="matches-subtitle" data-i18n="matchesSubtitle">
+  Управляй матчами и следи за очками.
+</div>
 
       <div class="hint" id="americano-round-info"></div>
 
       <div id="pairs-config-block">
-        <div class="mode-label" style="margin-top: 12px;">Новый матч (Пары)</div>
+        <div class="mode-label" style="margin-top: 12px;" data-i18n="newMatchPairs">Новый матч (Пары)</div>
         <div class="hint" id="matches-config-note"></div>
 
         <div id="match-pairs-select-row" class="field-row">
@@ -774,7 +843,7 @@
           <select class="field" id="match-pair2-select"></select>
         </div>
 
-        <button class="btn-small hidden" id="first-match-random-btn">
+        <button class="btn-small hidden" id="first-match-random-btn" data-i18n="randomFirstPairs">
           🎲 Случайный выбор первых пар
         </button>
 
@@ -784,88 +853,82 @@
       </div>
 
       <div id="americano-config-block" class="hidden">
-        <div class="mode-label" style="margin-top: 12px;">Текущая игра</div>
+        <div class="mode-label" style="margin-top: 12px;" data-i18n="currentGame">Текущая игра</div>
         <div class="current-game-text" id="americano-current-game"></div>
 
-        <div class="mode-label" style="margin-top: 8px;">Счёт</div>
+        <div class="mode-label" style="margin-top: 8px;" data-i18n="score">Счёт</div>
         <div class="hint" id="americano-config-note"></div>
 
         <div class="field-row">
-          <input type="number" class="field" id="am-scoreA" min="0" placeholder="Очки команды 1" />
-          <input type="number" class="field" id="am-scoreB" min="0" placeholder="Очки команды 2" />
+          <input type="number" class="field" id="am-scoreA" min="0" placeholder="Очки команды 1" data-i18n-placeholder="team1PointsPlaceholder" />
+          <input type="number" class="field" id="am-scoreB" min="0" placeholder="Очки команды 2" data-i18n-placeholder="team2PointsPlaceholder" />
         </div>
 
-        <div class="mode-label" style="margin-top: 8px;">Оставшиеся игры</div>
+        <div class="mode-label" style="margin-top: 8px;" data-i18n="remainingGames">Оставшиеся игры</div>
         <div class="players-list" id="americano-remaining-list"></div>
       </div>
 
-      <button class="btn btn-primary" id="save-match-btn" style="margin-top: 4px;">
+      <button class="btn btn-primary" id="save-match-btn" style="margin-top: 4px;" data-i18n="saveMatch">
         Сохранить матч
       </button>
 
       <div id="am-round-buttons" class="hidden" style="margin-top:8px; display:flex; gap:8px; justify-content:space-between;">
-        <button class="btn btn-secondary" id="am-show-results-btn" style="margin-bottom:0;">
+        <button class="btn btn-secondary" id="am-show-results-btn" style="margin-bottom:0;" data-i18n="showResult">
           Результат
         </button>
-        <button class="btn btn-primary" id="am-new-round-btn" style="margin-bottom:0;">
+        <button class="btn btn-primary" id="am-new-round-btn" style="margin-bottom:0;" data-i18n="anotherRound">
           Ещё круг
         </button>
       </div>
 
       <div class="players-list hidden" id="pairs-stats-list"></div>
 
-      <div class="mode-label" style="margin-top: 16px;">
+      <div class="mode-label" style="margin-top: 16px;" data-i18n="matchHistory">
         История матчей
       </div>
       <div class="players-list" id="matches-list"></div>
     </div>
 
     <div class="card hidden" id="screen-history">
-      <button class="btn-ghost" id="back-from-history-btn">
-        ← Назад
-      </button>
+      <button class="btn-ghost" id="back-from-history-btn" data-i18n="back"></button>
 
-      <div class="title">История турниров</div>
-      <div class="subtitle">
-        Список турниров, отсортированный по дате создания. Live — ещё не завершён.
-      </div>
+      <div class="title" data-i18n="historyTitle"></div>
+      <div class="subtitle" data-i18n="historySubtitle"></div>
 
-      <div class="mode-label">Турниры</div>
+      <div class="mode-label" data-i18n="tournaments"></div>
 
-      <div id="history-empty" class="history-note hidden">
-        Пока нет ни одного турнира. Создай первый через «Новый турнир».
-      </div>
+      <div id="history-empty" class="history-note hidden" data-i18n="historyEmpty"></div>
 
       <div class="history-list" id="history-list"></div>
     </div>
 
     <div class="card hidden" id="screen-table">
-      <button class="btn-ghost" id="back-from-table-btn">
-        ← Турнир
-      </button>
+  <button class="btn-ghost" id="back-from-table-btn" data-i18n="backToTournament">
+    ← Турнир
+  </button>
 
-      <div class="title" id="table-title">Таблица</div>
-      <div class="subtitle" id="table-subtitle">
-        Рейтинг по очкам.
-      </div>
+  <div class="title" id="table-title" data-i18n="tableTitle">Таблица</div>
+  <div class="subtitle" id="table-subtitle" data-i18n="tableSubtitle">
+    Рейтинг по очкам.
+  </div>
 
-      <div class="mode-label">Итоговая таблица</div>
-      <div class="players-list" id="table-list"></div>
-    </div>
+  <div class="mode-label" data-i18n="finalTable">Итоговая таблица</div>
+  <div class="players-list" id="table-list"></div>
+</div>
 
     <div class="card hidden" id="screen-finished">
-      <button class="btn-ghost" id="back-from-finished-btn">
-        ← Турнир
-      </button>
+  <button class="btn-ghost" id="back-from-finished-btn" data-i18n="backToTournament">
+    ← Турнир
+  </button>
 
-      <div class="title" id="finished-title">Завершённые игры</div>
-      <div class="subtitle" id="finished-subtitle">
-        Все сыгранные матчи этого турнира.
-      </div>
+  <div class="title" id="finished-title" data-i18n="finishedTitle">Завершённые игры</div>
+  <div class="subtitle" id="finished-subtitle" data-i18n="finishedSubtitle">
+    Все сыгранные матчи этого турнира.
+  </div>
 
-      <div class="mode-label">Список игр</div>
-      <div class="players-list" id="finished-list"></div>
-    </div>
+  <div class="mode-label" data-i18n="gamesList">Список игр</div>
+  <div class="players-list" id="finished-list"></div>
+</div>
 
     <div class="footer">
       Beta • Padel Mini App
@@ -876,6 +939,999 @@
     const MAX_PAIRS = 3;
     const STORAGE_KEY = "padel_tournaments_v1";
     const THEME_KEY = "padel_theme_v1";
+    const LANG_KEY = "padel_lang_v1";
+    let currentLang = "ru";
+    const I18N = {
+  ru: {
+    start: "Старт",
+    language: "Язык",
+    theme: "Тема",
+    mainMenu: "Главное меню",
+    homeSubtitle: "Управляй матчами в Американо и формате пар прямо из Telegram.",
+    newTournament: "Новый турнир",
+    history: "История турниров",
+    liveNote: "Незавершённые турниры будут отмечены как Live.",
+    backToStart: "← Старт",
+    newTournamentTitle: "Новый турнир",
+    back: "← Назад",
+    appHomeTitle: "Padel турниры",
+newTournamentSubtitle: "Настрой формат, а затем добавь игроков.",
+tournamentName: "Название турнира",
+tournamentNamePlaceholder: "Например: Воскресный падел",
+mode: "Режим",
+courts: "Кортов",
+modeAmericano: "Американо",
+modePairs: "Пары (до 3 пар)",
+pairsMatchFormat: "Формат матча (Пары)",
+gamesPerSet: "Геймов в сете",
+setsPerMatch: "Сетов в матче",
+pairsSettingsNote: "В парах считаем только геймы и сеты. Очки турнира: победа — 3, ничья — 1, поражение — 0.",
+americanoMatchFormat: "Формат матча (Американо)",
+pointsPerGame: "Очков в матче (сумма двух команд)",
+americanoSettingsNote: "Например, при 16 очках команды могут сыграть 10:6 или 8:8 — главное, чтобы сумма была 16. Значения кратны 4, чтобы игроки на корте могли подавать примерно одинаковое количество раз.",
+nextPlayers: "Далее → Игроки",
+settingsFutureNote: "Настройки можно будет расширять позже (очки за победу, время матча и т.д.).",
+historyTitle: "История турниров",
+historySubtitle: "Список турниров, отсортированный по дате создания. Live — ещё не завершён.",
+tournaments: "Турниры",
+historyEmpty: "Пока нет ни одного турнира. Создай первый через «Новый турнир».",
+backToHistory: "← История",
+tournamentParams: "Параметры турнира",
+tournamentScreens: "Экраны турнира",
+matches: "Матчи",
+finishedGames: "Завершённые игры",
+table: "Таблица",
+finishTournament: "Завершить турнир",
+courtsLabel: "корт(а)",
+playersLabel: "игрок(ов)",
+formatLabel: "Формат",
+gamesTo: "до",
+setsLabel: "сетов",
+scoringSystem: "Система очков",
+typeLabel: "Тип",
+twoPairs: "2 пары",
+threePairsWinner: "3 пары (winner stays, макс. 2 игры подряд)",
+americanoLabel: "Американо",
+pointsPerMatch: "сумма очков",
+gamesPerRound: "Игры в круге",
+backToSettings: "← Назад к настройкам",
+playersTitle: "Игроки",
+playersSubtitle: "Добавь игроков для этого турнира.",
+playerName: "Имя игрока",
+playerNamePlaceholder: "Например: Alex",
+pairPlayer1Placeholder: "Игрок 1 (например: Саша)",
+pairPlayer2Placeholder: "Игрок 2 (например: Денис)",
+addPair: "Добавить пару",
+participantsList: "Список участников",
+continueToTournament: "Продолжить (к турниру)",
+addPairsForTournament: "Добавь пары для этого турнира.",
+pairsOfTournament: "Пары турнира",
+pairLabel: "Пара",
+maxPairsAdded: "Добавлено максимум",
+maxPairsNote: "пар (6 игроков). Для этого режима больше пары добавить нельзя.",
+addPlayersForTournament: "Добавь игроков для этого турнира.",
+playersOfTournament: "Игроки турнира",
+deletePair: "Удалить пару",
+deletePlayer: "Удалить игрока",
+tournamentLiveSubtitle: "Турнир в статусе Live. Можно играть матчи и смотреть таблицу.",
+tournamentFinishedSubtitle: "Турнир завершён. Можно просматривать матчи, завершённые игры и таблицу.",
+tournamentLiveFooter: "Турнир Live — можно продолжать играть матчи.",
+tournamentFinishedFooter: "Это завершённый турнир. Результаты можно смотреть, но не редактировать.",
+
+backToTournament: "← Турнир",
+matchesTitle: "Матчи",
+matchesSubtitle: "Управляй матчами и следи за очками.",
+newMatchPairs: "Новый матч (Пары)",
+randomFirstPairs: "🎲 Случайный выбор первых пар",
+currentGame: "Текущая игра",
+score: "Счёт",
+team1PointsPlaceholder: "Очки команды 1",
+team2PointsPlaceholder: "Очки команды 2",
+remainingGames: "Оставшиеся игры",
+saveMatch: "Сохранить матч",
+showResult: "Результат",
+anotherRound: "Ещё круг",
+matchHistory: "История матчей",
+roundProgressText: "Круг {round}: сыграно {played} из {total} игр (осталось {remaining}).",
+americanoCurrentGameText: "Круг {round}, игра {game}: {teamA} vs {teamB}",
+americanoGameListItem: "Игра {game}: {teamA} vs {teamB}",
+restingPlayersText: "отдыхает: {players}",
+americanoConfigNoteText: "Сумма очков двух команд должна быть ровно {target}. Введите очки любой команды — вторая заполнится автоматически.",
+allRoundGamesPlayed: "Все игры этого круга сыграны.",
+matchesEmpty: "Пока нет сохранённых матчей.",
+match: "Матч",
+unknownPairs: "Неизвестные пары",
+bySets: "по сетам",
+pair1Win: "Победа пары 1",
+pair2Win: "Победа пары 2",
+draw: "Ничья",
+round: "Круг",
+team1Win: "Победа команды 1",
+team2Win: "Победа команды 2",
+points: "очков",
+openTournamentFirst: "Сначала открой турнир.",
+pairsWinnerStaysSubtitle: "Формат: 3 пары — победитель остаётся, следующая игра подбирается автоматически.",
+pairsTwoSubtitle: "Формат: 2 пары — пары всегда играют друг с другом.",
+pairsGenericSubtitle: "Управляй матчами пар и сохраняй результаты.",
+americanoSubtitle: "Управляй играми Американо, сохраняй счёт и смотри таблицу.",
+tableTitle: "Таблица",
+tableSubtitle: "Рейтинг по очкам.",
+finalTable: "Итоговая таблица",
+createTournamentAndPlayMatch: "Создай турнир и сыграй хотя бы один матч.",
+pairsTableSubtitle: "Таблица пар по очкам: победа — 3, ничья — 1, поражение — 0.",
+americanoTableSubtitle: "Таблица игроков по набранным очкам и разнице.",
+tableEmpty: "Пока нет матчей, таблица пустая.",
+player: "Игрок",
+tableSupportedModesOnly: "Таблица поддерживается только для режимов «Пары» и «Американо».",
+createSupportedTournament: "Создай турнир в режиме «Пары» или «Американо».",
+finishedTitle: "Завершённые игры",
+finishedSubtitle: "Все сыгранные матчи этого турнира.",
+finishedSubtitleAmericano: "Все сыгранные игры Американо в этом турнире.",
+finishedSubtitlePairs: "Все сыгранные матчи пар в этом турнире.",
+gamesList: "Список игр",
+finishedEmpty: "Пока нет завершённых игр.",
+finishedSupportedModesOnly: "Завершённые игры доступны только для режимов «Пары» и «Американо».",
+
+  },
+  en: {
+    start: "Start",
+    language: "Language",
+    theme: "Theme",
+    mainMenu: "Main menu",
+    homeSubtitle: "Manage Americano and pairs matches directly from Telegram.",
+    newTournament: "New tournament",
+    history: "Tournament history",
+    liveNote: "Unfinished tournaments will be marked as Live.",
+    backToStart: "← Start",
+    newTournamentTitle: "New tournament",
+    back: "← Back",
+    appHomeTitle: "Padel tournaments",
+newTournamentSubtitle: "Set the format, then add players.",
+tournamentName: "Tournament name",
+tournamentNamePlaceholder: "For example: Sunday padel",
+mode: "Mode",
+courts: "Courts",
+modeAmericano: "Americano",
+modePairs: "Pairs (up to 3 pairs)",
+pairsMatchFormat: "Match format (Pairs)",
+gamesPerSet: "Games per set",
+setsPerMatch: "Sets per match",
+pairsSettingsNote: "In pairs mode, only games and sets are counted. Tournament points: win — 3, draw — 1, loss — 0.",
+americanoMatchFormat: "Match format (Americano)",
+pointsPerGame: "Points per match (total of both teams)",
+americanoSettingsNote: "For example, with 16 points teams can play 10:6 or 8:8 — the total must be 16. Values are multiples of 4 so players can serve roughly equally.",
+nextPlayers: "Next → Players",
+settingsFutureNote: "Settings can be expanded later: win points, match time, etc.",
+historyTitle: "Tournament history",
+historySubtitle: "List of tournaments sorted by creation date. Live — not finished yet.",
+tournaments: "Tournaments",
+historyEmpty: "No tournaments yet. Create your first one via “New tournament”.",
+backToHistory: "← History",
+tournamentParams: "Tournament parameters",
+tournamentScreens: "Tournament screens",
+matches: "Matches",
+finishedGames: "Finished games",
+table: "Table",
+finishTournament: "Finish tournament",
+courtsLabel: "court(s)",
+playersLabel: "player(s)",
+formatLabel: "Format",
+gamesTo: "up to",
+setsLabel: "sets",
+scoringSystem: "Scoring system",
+typeLabel: "Type",
+twoPairs: "2 pairs",
+threePairsWinner: "3 pairs (winner stays, max 2 games in a row)",
+americanoLabel: "Americano",
+pointsPerMatch: "total points",
+gamesPerRound: "Games per round",
+backToSettings: "← Back to settings",
+playersTitle: "Players",
+playersSubtitle: "Add players for this tournament.",
+playerName: "Player name",
+playerNamePlaceholder: "For example: Alex",
+pairPlayer1Placeholder: "Player 1 (for example: Alex)",
+pairPlayer2Placeholder: "Player 2 (for example: Denis)",
+addPair: "Add pair",
+participantsList: "Participants",
+continueToTournament: "Continue to tournament",
+addPairsForTournament: "Add pairs for this tournament.",
+pairsOfTournament: "Pairs of tournament",
+pairLabel: "Pair",
+maxPairsAdded: "Maximum added:",
+maxPairsNote: "pairs (6 players). No more pairs can be added in this mode.",
+addPlayersForTournament: "Add players for this tournament.",
+playersOfTournament: "Players of tournament",
+deletePair: "Delete pair",
+deletePlayer: "Delete player",
+tournamentLiveSubtitle: "Tournament is Live. You can play matches and view the table.",
+tournamentFinishedSubtitle: "Tournament is finished. You can view matches, finished games and the table.",
+tournamentLiveFooter: "Live tournament — you can continue playing matches.",
+tournamentFinishedFooter: "This tournament is finished. Results can be viewed but not edited.",
+
+backToTournament: "← Tournament",
+matchesTitle: "Matches",
+matchesSubtitle: "Manage matches and track scores.",
+newMatchPairs: "New match (Pairs)",
+randomFirstPairs: "🎲 Random first pairs",
+currentGame: "Current game",
+score: "Score",
+team1PointsPlaceholder: "Team 1 points",
+team2PointsPlaceholder: "Team 2 points",
+remainingGames: "Remaining games",
+saveMatch: "Save match",
+showResult: "Result",
+anotherRound: "Another round",
+matchHistory: "Match history",
+roundProgressText: "Round {round}: {played} of {total} games played ({remaining} remaining).",
+americanoCurrentGameText: "Round {round}, game {game}: {teamA} vs {teamB}",
+americanoGameListItem: "Game {game}: {teamA} vs {teamB}",
+restingPlayersText: "resting: {players}",
+americanoConfigNoteText: "The total points of both teams must be exactly {target}. Enter points for either team — the other one will be filled automatically.",
+allRoundGamesPlayed: "All games in this round have been played.",
+matchesEmpty: "No saved matches yet.",
+match: "Match",
+unknownPairs: "Unknown pairs",
+bySets: "by sets",
+pair1Win: "Pair 1 wins",
+pair2Win: "Pair 2 wins",
+draw: "Draw",
+round: "Round",
+team1Win: "Team 1 wins",
+team2Win: "Team 2 wins",
+points: "points",
+openTournamentFirst: "Open a tournament first.",
+pairsWinnerStaysSubtitle: "Format: 3 pairs — the winner stays, and the next game is suggested automatically.",
+pairsTwoSubtitle: "Format: 2 pairs — the same pairs always play each other.",
+pairsGenericSubtitle: "Manage pair matches and save results.",
+americanoSubtitle: "Manage Americano games, save scores and view the table.",
+tableTitle: "Table",
+tableSubtitle: "Ranking by points.",
+finalTable: "Final table",
+createTournamentAndPlayMatch: "Create a tournament and play at least one match.",
+pairsTableSubtitle: "Pairs table by points: win — 3, draw — 1, loss — 0.",
+americanoTableSubtitle: "Player table by scored points and difference.",
+tableEmpty: "No matches yet, the table is empty.",
+player: "Player",
+tableSupportedModesOnly: "The table is available only for Pairs and Americano modes.",
+createSupportedTournament: "Create a tournament in Pairs or Americano mode.",
+finishedTitle: "Finished games",
+finishedSubtitle: "All played matches of this tournament.",
+finishedSubtitleAmericano: "All played Americano games in this tournament.",
+finishedSubtitlePairs: "All played pair matches in this tournament.",
+gamesList: "Games list",
+finishedEmpty: "No finished games yet.",
+finishedSupportedModesOnly: "Finished games are available only for Pairs and Americano modes.",
+  },
+
+
+  fr: {
+    start: "Démarrer",
+    language: "Langue",
+    theme: "Thème",
+    mainMenu: "Menu principal",
+    homeSubtitle: "Gèrez les matchs Americano et les matchs en paires directement depuis Telegram.",
+    newTournamentTitle: "Nouveau tournoi",
+    back: "← Retour",
+    appHomeTitle: "Tournois de padel",
+    newTournament: "Nouveau tournoi",
+    history: "Historique des tournois",
+    liveNote: "Les tournois non terminés seront marqués comme Live.",
+    backToStart: "← Accueil",
+newTournamentSubtitle: "Définissez le format, puis ajoutez les joueurs.",
+tournamentName: "Nom du tournoi",
+tournamentNamePlaceholder: "Par exemple : padel du dimanche",
+mode: "Mode",
+courts: "Terrains",
+modeAmericano: "Americano",
+modePairs: "Paires (jusqu’à 3 paires)",
+pairsMatchFormat: "Format du match (Paires)",
+gamesPerSet: "Jeux par set",
+setsPerMatch: "Sets par match",
+pairsSettingsNote: "En mode paires, seuls les jeux et les sets sont comptés. Points du tournoi : victoire — 3, match nul — 1, défaite — 0.",
+americanoMatchFormat: "Format du match (Americano)",
+pointsPerGame: "Points par match (total des deux équipes)",
+americanoSettingsNote: "Par exemple, avec 16 points, les équipes peuvent jouer 10:6 ou 8:8 — le total doit être 16. Les valeurs sont des multiples de 4 afin que les joueurs servent de manière à peu près équilibrée.",
+nextPlayers: "Suivant → Joueurs",
+settingsFutureNote: "Les paramètres pourront être élargis plus tard : points pour une victoire, durée du match, etc.",
+historyTitle: "Historique des tournois",
+historySubtitle: "Liste des tournois triés par date de création. Live — non terminé.",
+tournaments: "Tournois",
+historyEmpty: "Aucun tournoi pour le moment. Créez-en un via « Nouveau tournoi ».",
+backToHistory: "← Historique",
+tournamentParams: "Paramètres du tournoi",
+tournamentScreens: "Écrans du tournoi",
+matches: "Matchs",
+finishedGames: "Matchs terminés",
+table: "Classement",
+finishTournament: "Terminer le tournoi",
+courtsLabel: "terrain(s)",
+playersLabel: "joueur(s)",
+formatLabel: "Format",
+gamesTo: "jusqu'à",
+setsLabel: "sets",
+scoringSystem: "Système de points",
+typeLabel: "Type",
+twoPairs: "2 paires",
+threePairsWinner: "3 paires (le gagnant reste, max 2 matchs d'affilée)",
+americanoLabel: "Americano",
+pointsPerMatch: "points totaux",
+gamesPerRound: "Matchs par tour",
+backToSettings: "← Retour aux paramètres",
+playersTitle: "Joueurs",
+playersSubtitle: "Ajoutez les joueurs pour ce tournoi.",
+playerName: "Nom du joueur",
+playerNamePlaceholder: "Par exemple : Alex",
+pairPlayer1Placeholder: "Joueur 1 (par exemple : Alex)",
+pairPlayer2Placeholder: "Joueur 2 (par exemple : Denis)",
+addPair: "Ajouter une paire",
+participantsList: "Participants",
+continueToTournament: "Continuer vers le tournoi",
+addPairsForTournament: "Ajoutez les paires pour ce tournoi.",
+pairsOfTournament: "Paires du tournoi",
+pairLabel: "Paire",
+maxPairsAdded: "Maximum ajouté :",
+maxPairsNote: "paires (6 joueurs). Aucune paire supplémentaire ne peut être ajoutée dans ce mode.",
+addPlayersForTournament: "Ajoutez les joueurs pour ce tournoi.",
+playersOfTournament: "Joueurs du tournoi",
+deletePair: "Supprimer la paire",
+deletePlayer: "Supprimer le joueur",
+tournamentLiveSubtitle: "Le tournoi est en statut Live. Vous pouvez jouer des matchs et consulter le classement.",
+tournamentFinishedSubtitle: "Le tournoi est terminé. Vous pouvez consulter les matchs, les matchs terminés et le classement.",
+tournamentLiveFooter: "Tournoi Live — vous pouvez continuer à jouer les matchs.",
+tournamentFinishedFooter: "Ce tournoi est terminé. Les résultats peuvent être consultés, mais pas modifiés.",
+
+backToTournament: "← Tournoi",
+matchesTitle: "Matchs",
+matchesSubtitle: "Gérez les matchs et suivez les scores.",
+newMatchPairs: "Nouveau match (Paires)",
+randomFirstPairs: "🎲 Tirage aléatoire des premières paires",
+currentGame: "Match en cours",
+score: "Score",
+team1PointsPlaceholder: "Points de l’équipe 1",
+team2PointsPlaceholder: "Points de l’équipe 2",
+remainingGames: "Matchs restants",
+saveMatch: "Enregistrer le match",
+showResult: "Résultat",
+anotherRound: "Encore un tour",
+matchHistory: "Historique des matchs",
+roundProgressText: "Tour {round} : {played} match(s) joué(s) sur {total} ({remaining} restant(s)).",
+americanoCurrentGameText: "Tour {round}, match {game} : {teamA} vs {teamB}",
+americanoGameListItem: "Match {game} : {teamA} vs {teamB}",
+restingPlayersText: "au repos : {players}",
+americanoConfigNoteText: "Le total des points des deux équipes doit être exactement {target}. Entrez les points d’une équipe — l’autre sera remplie automatiquement.",
+allRoundGamesPlayed: "Tous les matchs de ce tour ont été joués.",
+matchesEmpty: "Aucun match enregistré pour le moment.",
+match: "Match",
+unknownPairs: "Paires inconnues",
+bySets: "aux sets",
+pair1Win: "Victoire de la paire 1",
+pair2Win: "Victoire de la paire 2",
+draw: "Match nul",
+round: "Tour",
+team1Win: "Victoire de l’équipe 1",
+team2Win: "Victoire de l’équipe 2",
+points: "points",
+openTournamentFirst: "Ouvrez d’abord un tournoi.",
+pairsWinnerStaysSubtitle: "Format : 3 paires — le gagnant reste, et le match suivant est proposé automatiquement.",
+pairsTwoSubtitle: "Format : 2 paires — les mêmes paires jouent toujours l’une contre l’autre.",
+pairsGenericSubtitle: "Gérez les matchs en paires et enregistrez les résultats.",
+americanoSubtitle: "Gérez les matchs Americano, enregistrez les scores et consultez le classement.",
+tableTitle: "Classement",
+tableSubtitle: "Classement par points.",
+finalTable: "Classement final",
+createTournamentAndPlayMatch: "Créez un tournoi et jouez au moins un match.",
+pairsTableSubtitle: "Classement des paires par points : victoire — 3, match nul — 1, défaite — 0.",
+americanoTableSubtitle: "Classement des joueurs par points marqués et différence.",
+tableEmpty: "Aucun match pour le moment, le classement est vide.",
+player: "Joueur",
+tableSupportedModesOnly: "Le classement est disponible uniquement pour les modes Paires et Americano.",
+createSupportedTournament: "Créez un tournoi en mode Paires ou Americano.",
+finishedTitle: "Matchs terminés",
+finishedSubtitle: "Tous les matchs joués de ce tournoi.",
+finishedSubtitleAmericano: "Tous les matchs Americano joués dans ce tournoi.",
+finishedSubtitlePairs: "Tous les matchs en paires joués dans ce tournoi.",
+gamesList: "Liste des matchs",
+finishedEmpty: "Aucun match terminé pour le moment.",
+finishedSupportedModesOnly: "Les matchs terminés sont disponibles uniquement pour les modes Paires et Americano.",
+  },
+
+
+  es: {
+  start: "Empezar",
+  language: "Idioma",
+  theme: "Tema",
+  mainMenu: "Menú principal",
+  homeSubtitle: "Gestiona partidos Americano y por parejas directamente desde Telegram.",
+  newTournament: "Nuevo torneo",
+  history: "Historial de torneos",
+  liveNote: "Los torneos sin terminar se marcarán como Live.",
+  backToStart: "← Inicio",
+  newTournamentTitle: "Nuevo torneo",
+  back: "← Atrás",
+  appHomeTitle: "Torneos de pádel",
+newTournamentSubtitle: "Configura el formato y luego añade jugadores.",
+tournamentName: "Nombre del torneo",
+tournamentNamePlaceholder: "Por ejemplo: Pádel del domingo",
+mode: "Modo",
+courts: "Pistas",
+modeAmericano: "Americano",
+modePairs: "Parejas (hasta 3 parejas)",
+pairsMatchFormat: "Formato del partido (Parejas)",
+gamesPerSet: "Juegos por set",
+setsPerMatch: "Sets por partido",
+pairsSettingsNote: "En el modo parejas solo se cuentan juegos y sets. Puntos del torneo: victoria — 3, empate — 1, derrota — 0.",
+americanoMatchFormat: "Formato del partido (Americano)",
+pointsPerGame: "Puntos por partido (total de ambos equipos)",
+americanoSettingsNote: "Por ejemplo, con 16 puntos los equipos pueden jugar 10:6 u 8:8 — el total debe ser 16. Los valores son múltiplos de 4 para equilibrar aproximadamente los servicios.",
+nextPlayers: "Siguiente → Jugadores",
+settingsFutureNote: "Los ajustes podrán ampliarse más adelante: puntos por victoria, tiempo de partido, etc.",
+historyTitle: "Historial de torneos",
+historySubtitle: "Lista de torneos ordenados por fecha de creación. Live — no terminado.",
+tournaments: "Torneos",
+historyEmpty: "Aún no hay torneos. Crea el primero desde «Nuevo torneo».",
+backToHistory: "← Historial",
+tournamentParams: "Parámetros del torneo",
+tournamentScreens: "Pantallas del torneo",
+matches: "Partidos",
+finishedGames: "Partidos terminados",
+table: "Tabla",
+finishTournament: "Finalizar torneo",
+courtsLabel: "pista(s)",
+playersLabel: "jugador(es)",
+formatLabel: "Formato",
+gamesTo: "hasta",
+setsLabel: "sets",
+scoringSystem: "Sistema de puntos",
+typeLabel: "Tipo",
+twoPairs: "2 parejas",
+threePairsWinner: "3 parejas (el ganador sigue, máx. 2 partidos seguidos)",
+americanoLabel: "Americano",
+pointsPerMatch: "puntos totales",
+gamesPerRound: "Partidos por ronda",
+backToSettings: "← Volver a ajustes",
+playersTitle: "Jugadores",
+playersSubtitle: "Añade jugadores para este torneo.",
+playerName: "Nombre del jugador",
+playerNamePlaceholder: "Por ejemplo: Alex",
+pairPlayer1Placeholder: "Jugador 1 (por ejemplo: Alex)",
+pairPlayer2Placeholder: "Jugador 2 (por ejemplo: Denis)",
+addPair: "Añadir pareja",
+participantsList: "Participantes",
+continueToTournament: "Continuar al torneo",
+addPairsForTournament: "Añade parejas para este torneo.",
+pairsOfTournament: "Parejas del torneo",
+pairLabel: "Pareja",
+maxPairsAdded: "Máximo añadido:",
+maxPairsNote: "parejas (6 jugadores). No se pueden añadir más parejas en este modo.",
+addPlayersForTournament: "Añade jugadores para este torneo.",
+playersOfTournament: "Jugadores del torneo",
+deletePair: "Eliminar pareja",
+deletePlayer: "Eliminar jugador",
+tournamentLiveSubtitle: "El torneo está en estado Live. Puedes jugar partidos y ver la tabla.",
+tournamentFinishedSubtitle: "El torneo ha terminado. Puedes ver los partidos, los partidos terminados y la tabla.",
+tournamentLiveFooter: "Torneo Live — puedes seguir jugando partidos.",
+tournamentFinishedFooter: "Este torneo ha terminado. Los resultados se pueden ver, pero no editar.",
+
+backToTournament: "← Torneo",
+matchesTitle: "Partidos",
+matchesSubtitle: "Gestiona los partidos y sigue los puntos.",
+newMatchPairs: "Nuevo partido (Parejas)",
+randomFirstPairs: "🎲 Selección aleatoria de las primeras parejas",
+currentGame: "Partido actual",
+score: "Marcador",
+team1PointsPlaceholder: "Puntos del equipo 1",
+team2PointsPlaceholder: "Puntos del equipo 2",
+remainingGames: "Partidos restantes",
+saveMatch: "Guardar partido",
+showResult: "Resultado",
+anotherRound: "Otra ronda",
+matchHistory: "Historial de partidos",
+roundProgressText: "Ronda {round}: {played} de {total} partidos jugados (quedan {remaining}).",
+americanoCurrentGameText: "Ronda {round}, partido {game}: {teamA} vs {teamB}",
+americanoGameListItem: "Partido {game}: {teamA} vs {teamB}",
+restingPlayersText: "descansan: {players}",
+americanoConfigNoteText: "El total de puntos de ambos equipos debe ser exactamente {target}. Introduce los puntos de un equipo — el otro se completará automáticamente.",
+allRoundGamesPlayed: "Todos los partidos de esta ronda ya se han jugado.",
+matchesEmpty: "Aún no hay partidos guardados.",
+match: "Partido",
+unknownPairs: "Parejas desconocidas",
+bySets: "por sets",
+pair1Win: "Gana la pareja 1",
+pair2Win: "Gana la pareja 2",
+draw: "Empate",
+round: "Ronda",
+team1Win: "Gana el equipo 1",
+team2Win: "Gana el equipo 2",
+points: "puntos",
+openTournamentFirst: "Primero abre un torneo.",
+pairsWinnerStaysSubtitle: "Formato: 3 parejas — el ganador sigue y el siguiente partido se sugiere automáticamente.",
+pairsTwoSubtitle: "Formato: 2 parejas — las mismas parejas siempre juegan entre sí.",
+pairsGenericSubtitle: "Gestiona partidos de parejas y guarda resultados.",
+americanoSubtitle: "Gestiona juegos Americano, guarda el marcador y consulta la tabla.",
+tableTitle: "Tabla",
+tableSubtitle: "Clasificación por puntos.",
+finalTable: "Tabla final",
+createTournamentAndPlayMatch: "Crea un torneo y juega al menos un partido.",
+pairsTableSubtitle: "Tabla de parejas por puntos: victoria — 3, empate — 1, derrota — 0.",
+americanoTableSubtitle: "Tabla de jugadores por puntos anotados y diferencia.",
+tableEmpty: "Aún no hay partidos, la tabla está vacía.",
+player: "Jugador",
+tableSupportedModesOnly: "La tabla está disponible solo para los modos Parejas y Americano.",
+createSupportedTournament: "Crea un torneo en modo Parejas o Americano.",
+finishedTitle: "Partidos terminados",
+finishedSubtitle: "Todos los partidos jugados de este torneo.",
+finishedSubtitleAmericano: "Todos los juegos Americano jugados en este torneo.",
+finishedSubtitlePairs: "Todos los partidos de parejas jugados en este torneo.",
+gamesList: "Lista de partidos",
+finishedEmpty: "Aún no hay partidos terminados.",
+finishedSupportedModesOnly: "Los partidos terminados están disponibles solo para los modos Parejas y Americano.",
+},
+
+
+de: {
+  start: "Start",
+  language: "Sprache",
+  theme: "Thema",
+  mainMenu: "Hauptmenü",
+  homeSubtitle: "Verwalte Americano- und Doppelspiele direkt über Telegram.",
+  newTournament: "Neues Turnier",
+  history: "Turnierverlauf",
+  liveNote: "Nicht abgeschlossene Turniere werden als Live markiert.",
+  backToStart: "← Start",
+  newTournamentTitle: "Neues Turnier",
+  back: "← Zurück",
+  appHomeTitle: "Padel-Turniere",
+newTournamentSubtitle: "Lege das Format fest und füge dann Spieler hinzu.",
+tournamentName: "Turniername",
+tournamentNamePlaceholder: "Zum Beispiel: Sonntags-Padel",
+mode: "Modus",
+courts: "Plätze",
+modeAmericano: "Americano",
+modePairs: "Doppel (bis zu 3 Paare)",
+pairsMatchFormat: "Matchformat (Doppel)",
+gamesPerSet: "Spiele pro Satz",
+setsPerMatch: "Sätze pro Match",
+pairsSettingsNote: "Im Doppelmodus zählen nur Spiele und Sätze. Turnierpunkte: Sieg — 3, Unentschieden — 1, Niederlage — 0.",
+americanoMatchFormat: "Matchformat (Americano)",
+pointsPerGame: "Punkte pro Match (Summe beider Teams)",
+americanoSettingsNote: "Zum Beispiel können Teams bei 16 Punkten 10:6 oder 8:8 spielen — die Summe muss 16 sein. Die Werte sind Vielfache von 4, damit die Aufschläge ungefähr ausgeglichen sind.",
+nextPlayers: "Weiter → Spieler",
+settingsFutureNote: "Einstellungen können später erweitert werden: Punkte für Siege, Matchdauer usw.",
+historyTitle: "Turnierverlauf",
+historySubtitle: "Liste der Turniere nach Erstellungsdatum sortiert. Live — noch nicht abgeschlossen.",
+tournaments: "Turniere",
+historyEmpty: "Noch keine Turniere. Erstelle dein erstes über „Neues Turnier“.",
+backToHistory: "← Verlauf",
+tournamentParams: "Turnierparameter",
+tournamentScreens: "Turnieransichten",
+matches: "Spiele",
+finishedGames: "Abgeschlossene Spiele",
+table: "Tabelle",
+finishTournament: "Turnier beenden",
+courtsLabel: "Platz/Plätze",
+playersLabel: "Spieler",
+formatLabel: "Format",
+gamesTo: "bis zu",
+setsLabel: "Sätze",
+scoringSystem: "Punktesystem",
+typeLabel: "Typ",
+twoPairs: "2 Paare",
+threePairsWinner: "3 Paare (Gewinner bleibt, max. 2 Spiele in Folge)",
+americanoLabel: "Americano",
+pointsPerMatch: "Gesamtpunkte",
+gamesPerRound: "Spiele pro Runde",
+backToSettings: "← Zurück zu den Einstellungen",
+playersTitle: "Spieler",
+playersSubtitle: "Füge Spieler für dieses Turnier hinzu.",
+playerName: "Spielername",
+playerNamePlaceholder: "Zum Beispiel: Alex",
+pairPlayer1Placeholder: "Spieler 1 (zum Beispiel: Alex)",
+pairPlayer2Placeholder: "Spieler 2 (zum Beispiel: Denis)",
+addPair: "Paar hinzufügen",
+participantsList: "Teilnehmer",
+continueToTournament: "Weiter zum Turnier",
+addPairsForTournament: "Füge Paare für dieses Turnier hinzu.",
+pairsOfTournament: "Paare des Turniers",
+pairLabel: "Paar",
+maxPairsAdded: "Maximum hinzugefügt:",
+maxPairsNote: "Paare (6 Spieler). In diesem Modus können keine weiteren Paare hinzugefügt werden.",
+addPlayersForTournament: "Füge Spieler für dieses Turnier hinzu.",
+playersOfTournament: "Spieler des Turniers",
+deletePair: "Paar löschen",
+deletePlayer: "Spieler löschen",
+tournamentLiveSubtitle: "Das Turnier ist Live. Du kannst Spiele spielen und die Tabelle ansehen.",
+tournamentFinishedSubtitle: "Das Turnier ist beendet. Du kannst Spiele, abgeschlossene Spiele und die Tabelle ansehen.",
+tournamentLiveFooter: "Live-Turnier — du kannst weiter Spiele spielen.",
+tournamentFinishedFooter: "Dieses Turnier ist beendet. Ergebnisse können angesehen, aber nicht bearbeitet werden.",
+
+backToTournament: "← Turnier",
+matchesTitle: "Spiele",
+matchesSubtitle: "Verwalte Spiele und verfolge die Punkte.",
+newMatchPairs: "Neues Spiel (Doppel)",
+randomFirstPairs: "🎲 Zufällige Auswahl der ersten Paare",
+currentGame: "Aktuelles Spiel",
+score: "Spielstand",
+team1PointsPlaceholder: "Punkte Team 1",
+team2PointsPlaceholder: "Punkte Team 2",
+remainingGames: "Verbleibende Spiele",
+saveMatch: "Spiel speichern",
+showResult: "Ergebnis",
+anotherRound: "Noch eine Runde",
+matchHistory: "Spielverlauf",
+roundProgressText: "Runde {round}: {played} von {total} Spielen gespielt ({remaining} übrig).",
+americanoCurrentGameText: "Runde {round}, Spiel {game}: {teamA} vs {teamB}",
+americanoGameListItem: "Spiel {game}: {teamA} vs {teamB}",
+restingPlayersText: "pausiert: {players}",
+americanoConfigNoteText: "Die Gesamtpunktzahl beider Teams muss genau {target} betragen. Gib die Punkte eines Teams ein — das andere wird automatisch ausgefüllt.",
+allRoundGamesPlayed: "Alle Spiele dieser Runde wurden gespielt.",
+matchesEmpty: "Noch keine gespeicherten Spiele.",
+match: "Spiel",
+unknownPairs: "Unbekannte Paare",
+bySets: "nach Sätzen",
+pair1Win: "Paar 1 gewinnt",
+pair2Win: "Paar 2 gewinnt",
+draw: "Unentschieden",
+round: "Runde",
+team1Win: "Team 1 gewinnt",
+team2Win: "Team 2 gewinnt",
+points: "Punkte",
+openTournamentFirst: "Öffne zuerst ein Turnier.",
+pairsWinnerStaysSubtitle: "Format: 3 Paare — der Gewinner bleibt, das nächste Spiel wird automatisch vorgeschlagen.",
+pairsTwoSubtitle: "Format: 2 Paare — dieselben Paare spielen immer gegeneinander.",
+pairsGenericSubtitle: "Verwalte Doppelspiele und speichere Ergebnisse.",
+americanoSubtitle: "Verwalte Americano-Spiele, speichere Punkte und sieh dir die Tabelle an.",
+tableTitle: "Tabelle",
+tableSubtitle: "Rangliste nach Punkten.",
+finalTable: "Abschlusstabelle",
+createTournamentAndPlayMatch: "Erstelle ein Turnier und spiele mindestens ein Spiel.",
+pairsTableSubtitle: "Doppeltabelle nach Punkten: Sieg — 3, Unentschieden — 1, Niederlage — 0.",
+americanoTableSubtitle: "Spielertabelle nach erzielten Punkten und Differenz.",
+tableEmpty: "Noch keine Spiele, die Tabelle ist leer.",
+player: "Spieler",
+tableSupportedModesOnly: "Die Tabelle ist nur für Doppel- und Americano-Modi verfügbar.",
+createSupportedTournament: "Erstelle ein Turnier im Doppel- oder Americano-Modus.",
+finishedTitle: "Abgeschlossene Spiele",
+finishedSubtitle: "Alle gespielten Spiele dieses Turniers.",
+finishedSubtitleAmericano: "Alle gespielten Americano-Spiele dieses Turniers.",
+finishedSubtitlePairs: "Alle gespielten Doppelspiele dieses Turniers.",
+gamesList: "Spielliste",
+finishedEmpty: "Noch keine abgeschlossenen Spiele.",
+finishedSupportedModesOnly: "Abgeschlossene Spiele sind nur für Doppel- und Americano-Modi verfügbar.",
+},
+
+
+  sr: {
+    start: "Старт",
+  language: "Језик",
+  theme: "Тема",
+  mainMenu: "Главни мени",
+  homeSubtitle: "Управљај Американо и паровима директно из Telegram-а.",
+  newTournament: "Нови турнир",
+  history: "Историја турнира",
+  liveNote: "Незавршени турнири биће означени као Live.",
+  backToStart: "← Старт",
+  newTournamentTitle: "Нови турнир",
+  back: "← Назад",
+  appHomeTitle: "Падел турнири",
+newTournamentSubtitle: "Подеси формат, па додај играче.",
+tournamentName: "Назив турнира",
+tournamentNamePlaceholder: "На пример: Недељни падел",
+mode: "Режим",
+courts: "Терена",
+modeAmericano: "Американо",
+modePairs: "Парови (до 3 пара)",
+pairsMatchFormat: "Формат меча (Парови)",
+gamesPerSet: "Гемова у сету",
+setsPerMatch: "Сетова у мечу",
+pairsSettingsNote: "У паровима се броје само гемови и сетови. Поени турнира: победа — 3, нерешено — 1, пораз — 0.",
+americanoMatchFormat: "Формат меча (Американо)",
+pointsPerGame: "Поена у мечу (збир обе екипе)",
+americanoSettingsNote: "На пример, код 16 поена екипе могу одиграти 10:6 или 8:8 — важно је да збир буде 16. Вредности су дељиве са 4 да би играчи приближно једнако сервирали.",
+nextPlayers: "Даље → Играчи",
+settingsFutureNote: "Подешавања се касније могу проширити: поени за победу, време меча итд.",
+historyTitle: "Историја турнира",
+historySubtitle: "Списак турнира сортиран по датуму креирања. Live — још није завршен.",
+tournaments: "Турнири",
+historyEmpty: "Још нема турнира. Направи први преко „Нови турнир“.",
+backToHistory: "← Историја",
+tournamentParams: "Параметри турнира",
+tournamentScreens: "Екрани турнира",
+matches: "Мечеви",
+finishedGames: "Завршене игре",
+table: "Табела",
+finishTournament: "Заврши турнир",
+courtsLabel: "терен(а)",
+playersLabel: "играч(а)",
+formatLabel: "Формат",
+gamesTo: "до",
+setsLabel: "сетова",
+scoringSystem: "Систем бодова",
+typeLabel: "Тип",
+twoPairs: "2 пара",
+threePairsWinner: "3 пара (победник остаје, макс. 2 игре заредом)",
+americanoLabel: "Американо",
+pointsPerMatch: "збир поена",
+gamesPerRound: "Игре по кругу",
+backToSettings: "← Назад на подешавања",
+playersTitle: "Играчи",
+playersSubtitle: "Додај играче за овај турнир.",
+playerName: "Име играча",
+playerNamePlaceholder: "На пример: Alex",
+pairPlayer1Placeholder: "Играч 1 (на пример: Саша)",
+pairPlayer2Placeholder: "Играч 2 (на пример: Денис)",
+addPair: "Додај пар",
+participantsList: "Списак учесника",
+continueToTournament: "Настави на турнир",
+addPairsForTournament: "Додај парове за овај турнир.",
+pairsOfTournament: "Парови турнира",
+pairLabel: "Пар",
+maxPairsAdded: "Додат је максимум:",
+maxPairsNote: "парова (6 играча). У овом режиму није могуће додати више парова.",
+addPlayersForTournament: "Додај играче за овај турнир.",
+playersOfTournament: "Играчи турнира",
+deletePair: "Обриши пар",
+deletePlayer: "Обриши играча",
+tournamentLiveSubtitle: "Турнир је у статусу Live. Можеш играти мечеве и гледати табелу.",
+tournamentFinishedSubtitle: "Турнир је завршен. Можеш гледати мечеве, завршене игре и табелу.",
+tournamentLiveFooter: "Live турнир — можеш наставити да играш мечеве.",
+tournamentFinishedFooter: "Ово је завршен турнир. Резултати могу да се гледају, али не и да се мењају.",
+
+backToTournament: "← Турнир",
+matchesTitle: "Мечеви",
+matchesSubtitle: "Управљај мечевима и прати поене.",
+newMatchPairs: "Нови меч (Парови)",
+randomFirstPairs: "🎲 Насумичан избор првих парова",
+currentGame: "Тренутна игра",
+score: "Резултат",
+team1PointsPlaceholder: "Поени екипе 1",
+team2PointsPlaceholder: "Поени екипе 2",
+remainingGames: "Преостале игре",
+saveMatch: "Сачувај меч",
+showResult: "Резултат",
+anotherRound: "Још један круг",
+matchHistory: "Историја мечева",
+roundProgressText: "Круг {round}: одиграно {played} од {total} игара (остало {remaining}).",
+americanoCurrentGameText: "Круг {round}, игра {game}: {teamA} vs {teamB}",
+americanoGameListItem: "Игра {game}: {teamA} vs {teamB}",
+restingPlayersText: "одмара: {players}",
+americanoConfigNoteText: "Збир поена обе екипе мора бити тачно {target}. Унеси поене било које екипе — друга ће се попунити аутоматски.",
+allRoundGamesPlayed: "Све игре овог круга су одигране.",
+matchesEmpty: "Још нема сачуваних мечева.",
+match: "Меч",
+unknownPairs: "Непознати парови",
+bySets: "по сетовима",
+pair1Win: "Победа пара 1",
+pair2Win: "Победа пара 2",
+draw: "Нерешено",
+round: "Круг",
+team1Win: "Победа екипе 1",
+team2Win: "Победа екипе 2",
+points: "поена",
+openTournamentFirst: "Прво отвори турнир.",
+pairsWinnerStaysSubtitle: "Формат: 3 пара — победник остаје, а следећа игра се предлаже аутоматски.",
+pairsTwoSubtitle: "Формат: 2 пара — исти парови увек играју једни против других.",
+pairsGenericSubtitle: "Управљај мечевима парова и сачувај резултате.",
+americanoSubtitle: "Управљај Американо играма, сачувај резултат и гледај табелу.",
+tableTitle: "Табела",
+tableSubtitle: "Рангирање по поенима.",
+finalTable: "Коначна табела",
+createTournamentAndPlayMatch: "Направи турнир и одиграј бар један меч.",
+pairsTableSubtitle: "Табела парова по поенима: победа — 3, нерешено — 1, пораз — 0.",
+americanoTableSubtitle: "Табела играча по освојеним поенима и разлици.",
+tableEmpty: "Још нема мечева, табела је празна.",
+player: "Играч",
+tableSupportedModesOnly: "Табела је доступна само за режиме Парови и Американо.",
+createSupportedTournament: "Направи турнир у режиму Парови или Американо.",
+finishedTitle: "Завршене игре",
+finishedSubtitle: "Сви одиграни мечеви овог турнира.",
+finishedSubtitleAmericano: "Све одигране Американо игре овог турнира.",
+finishedSubtitlePairs: "Сви одиграни мечеви парова овог турнира.",
+gamesList: "Списак игара",
+finishedEmpty: "Још нема завршених игара.",
+finishedSupportedModesOnly: "Завршене игре су доступне само за режиме Парови и Американо.",
+  },
+
+
+  me: {
+    start: "Start",
+    language: "Jezik",
+    theme: "Tema",
+    mainMenu: "Glavni meni",
+    homeSubtitle: "Upravljaj Americano i parovima direktno iz Telegrama.",
+    newTournament: "Novi turnir",
+    history: "Istorija turnira",
+    liveNote: "Nezavršeni turniri biće označeni kao Live.",
+    backToStart: "← Start",
+    newTournamentTitle: "Novi turnir",
+    back: "← Nazad",
+    appHomeTitle: "Padel turniri",
+newTournamentSubtitle: "Podesi format, pa dodaj igrače.",
+tournamentName: "Naziv turnira",
+tournamentNamePlaceholder: "Na primjer: Nedjeljni padel",
+mode: "Režim",
+courts: "Terena",
+modeAmericano: "Americano",
+modePairs: "Parovi (do 3 para)",
+pairsMatchFormat: "Format meča (Parovi)",
+gamesPerSet: "Gemova u setu",
+setsPerMatch: "Setova u meču",
+pairsSettingsNote: "U parovima se broje samo gemovi i setovi. Poeni turnira: pobjeda — 3, neriješeno — 1, poraz — 0.",
+americanoMatchFormat: "Format meča (Americano)",
+pointsPerGame: "Poena u meču (zbir obje ekipe)",
+americanoSettingsNote: "Na primjer, kod 16 poena ekipe mogu odigrati 10:6 ili 8:8 — važno je da zbir bude 16. Vrijednosti su djeljive sa 4 da bi igrači približno jednako servirali.",
+nextPlayers: "Dalje → Igrači",
+settingsFutureNote: "Podešavanja se kasnije mogu proširiti: poeni za pobjedu, vrijeme meča itd.",
+historyTitle: "Istorija turnira",
+historySubtitle: "Lista turnira sortirana po datumu kreiranja. Live — još nije završen.",
+tournaments: "Turniri",
+historyEmpty: "Još nema turnira. Kreiraj prvi preko „Novi turnir“.",
+backToHistory: "← Istorija",
+tournamentParams: "Parametri turnira",
+tournamentScreens: "Ekrani turnira",
+matches: "Mečevi",
+finishedGames: "Završene igre",
+table: "Tabela",
+finishTournament: "Završi turnir",
+courtsLabel: "teren(a)",
+playersLabel: "igrač(a)",
+formatLabel: "Format",
+gamesTo: "do",
+setsLabel: "setova",
+scoringSystem: "Sistem bodova",
+typeLabel: "Tip",
+twoPairs: "2 para",
+threePairsWinner: "3 para (pobjednik ostaje, max 2 igre zaredom)",
+americanoLabel: "Americano",
+pointsPerMatch: "zbir poena",
+gamesPerRound: "Igre po krugu",
+backToSettings: "← Nazad na podešavanja",
+playersTitle: "Igrači",
+playersSubtitle: "Dodaj igrače za ovaj turnir.",
+playerName: "Ime igrača",
+playerNamePlaceholder: "Na primjer: Alex",
+pairPlayer1Placeholder: "Igrač 1 (na primjer: Saša)",
+pairPlayer2Placeholder: "Igrač 2 (na primjer: Denis)",
+addPair: "Dodaj par",
+participantsList: "Spisak učesnika",
+continueToTournament: "Nastavi na turnir",
+addPairsForTournament: "Dodaj parove za ovaj turnir.",
+pairsOfTournament: "Parovi turnira",
+pairLabel: "Par",
+maxPairsAdded: "Dodat je maksimum:",
+maxPairsNote: "parova (6 igrača). U ovom režimu nije moguće dodati više parova.",
+addPlayersForTournament: "Dodaj igrače za ovaj turnir.",
+playersOfTournament: "Igrači turnira",
+deletePair: "Obriši par",
+deletePlayer: "Obriši igrača",
+tournamentLiveSubtitle: "Turnir je u statusu Live. Možeš igrati mečeve i gledati tabelu.",
+tournamentFinishedSubtitle: "Turnir je završen. Možeš gledati mečeve, završene igre i tabelu.",
+tournamentLiveFooter: "Live turnir — možeš nastaviti da igraš mečeve.",
+tournamentFinishedFooter: "Ovo je završen turnir. Rezultati mogu da se gledaju, ali ne i da se mijenjaju.",
+
+backToTournament: "← Turnir",
+matchesTitle: "Mečevi",
+matchesSubtitle: "Upravljaj mečevima i prati poene.",
+newMatchPairs: "Novi meč (Parovi)",
+randomFirstPairs: "🎲 Nasumičan izbor prvih parova",
+currentGame: "Trenutna igra",
+score: "Rezultat",
+team1PointsPlaceholder: "Poeni ekipe 1",
+team2PointsPlaceholder: "Poeni ekipe 2",
+remainingGames: "Preostale igre",
+saveMatch: "Sačuvaj meč",
+showResult: "Rezultat",
+anotherRound: "Još jedan krug",
+matchHistory: "Istorija mečeva",
+roundProgressText: "Krug {round}: odigrano {played} od {total} igara (ostalo {remaining}).",
+americanoCurrentGameText: "Krug {round}, igra {game}: {teamA} vs {teamB}",
+americanoGameListItem: "Igra {game}: {teamA} vs {teamB}",
+restingPlayersText: "odmara: {players}",
+americanoConfigNoteText: "Zbir poena obje ekipe mora biti tačno {target}. Unesi poene bilo koje ekipe — druga će se popuniti automatski.",
+allRoundGamesPlayed: "Sve igre ovog kruga su odigrane.",
+matchesEmpty: "Još nema sačuvanih mečeva.",
+match: "Meč",
+unknownPairs: "Nepoznati parovi",
+bySets: "po setovima",
+pair1Win: "Pobjeda para 1",
+pair2Win: "Pobjeda para 2",
+draw: "Neriješeno",
+round: "Krug",
+team1Win: "Pobjeda ekipe 1",
+team2Win: "Pobjeda ekipe 2",
+points: "poena",
+openTournamentFirst: "Prvo otvori turnir.",
+pairsWinnerStaysSubtitle: "Format: 3 para — pobjednik ostaje, a sljedeća igra se predlaže automatski.",
+pairsTwoSubtitle: "Format: 2 para — isti parovi uvijek igraju jedni protiv drugih.",
+pairsGenericSubtitle: "Upravljaj mečevima parova i sačuvaj rezultate.",
+americanoSubtitle: "Upravljaj Americano igrama, sačuvaj rezultat i gledaj tabelu.",
+tableTitle: "Tabela",
+tableSubtitle: "Rangiranje po poenima.",
+finalTable: "Konačna tabela",
+createTournamentAndPlayMatch: "Kreiraj turnir i odigraj bar jedan meč.",
+pairsTableSubtitle: "Tabela parova po poenima: pobjeda — 3, neriješeno — 1, poraz — 0.",
+americanoTableSubtitle: "Tabela igrača po osvojenim poenima i razlici.",
+tableEmpty: "Još nema mečeva, tabela je prazna.",
+player: "Igrač",
+tableSupportedModesOnly: "Tabela je dostupna samo za režime Parovi i Americano.",
+createSupportedTournament: "Kreiraj turnir u režimu Parovi ili Americano.",
+finishedTitle: "Završene igre",
+finishedSubtitle: "Svi odigrani mečevi ovog turnira.",
+finishedSubtitleAmericano: "Sve odigrane Americano igre ovog turnira.",
+finishedSubtitlePairs: "Svi odigrani mečevi parova ovog turnira.",
+gamesList: "Spisak igara",
+finishedEmpty: "Još nema završenih igara.",
+finishedSupportedModesOnly: "Završene igre su dostupne samo za režime Parovi i Americano.",
+  }
+};
+function getTranslation(key) {
+  const langDict = I18N[currentLang] || {};
+
+  if (Object.prototype.hasOwnProperty.call(langDict, key)) {
+    return langDict[key];
+  }
+
+  if (I18N.ru && Object.prototype.hasOwnProperty.call(I18N.ru, key)) {
+    return I18N.ru[key];
+  }
+
+  return null;
+}
+
+function tr(key) {
+  const value = getTranslation(key);
+  return value !== null ? value : key;
+}
+
+function setLang(lang) {
+  const safeLang = I18N[lang] ? lang : "ru";
+  currentLang = safeLang;
+  document.documentElement.lang = safeLang;
+
+  try {
+    localStorage.setItem(LANG_KEY, safeLang);
+  } catch (e) {
+    console.error("Ошибка сохранения языка:", e);
+  }
+
+  document.querySelectorAll(".lang-btn-start").forEach((btn) => {
+    btn.classList.remove("active");
+  });
+
+  const activeBtn = document.getElementById(`lang-${safeLang}-start`);
+  if (activeBtn) activeBtn.classList.add("active");
+
+  applyTranslations();
+}
+
+function loadLang() {
+  try {
+    const savedLang = localStorage.getItem(LANG_KEY) || "ru";
+    setLang(savedLang);
+  } catch (e) {
+    setLang("ru");
+  }
+}
+
+function applyTranslations() {
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    const key = el.getAttribute("data-i18n");
+    const value = getTranslation(key);
+
+    if (value !== null) {
+      el.textContent = value;
+    }
+  });
+
+  document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+    const key = el.getAttribute("data-i18n-placeholder");
+    const value = getTranslation(key);
+
+    if (value !== null) {
+      el.placeholder = value;
+    }
+  });
+}
 
     const screenHome = document.getElementById("screen-home");
     const screenNew = document.getElementById("screen-new");
@@ -888,7 +1944,6 @@
 
     const themeDayBtn = document.getElementById("theme-day-btn");
     const themeNightBtn = document.getElementById("theme-night-btn");
-    const themeRedBtn = document.getElementById("theme-red-btn");
 
     const newTournamentBtn = document.getElementById("new-tournament-btn");
     const historyBtn = document.getElementById("history-btn");
@@ -983,13 +2038,13 @@
     let editingMatchId = null;
 
     function applyTheme(theme) {
-      const safeTheme = ["day", "night", "red"].includes(theme) ? theme : "night";
-      document.body.classList.remove("theme-day", "theme-night", "theme-red");
+      const safeTheme = ["day", "night"].includes(theme) ? theme : "night";
+
+      document.body.classList.remove("theme-day", "theme-night");
       document.body.classList.add(`theme-${safeTheme}`);
 
       themeDayBtn.classList.toggle("active", safeTheme === "day");
       themeNightBtn.classList.toggle("active", safeTheme === "night");
-      themeRedBtn.classList.toggle("active", safeTheme === "red");
 
       try {
         localStorage.setItem(THEME_KEY, safeTheme);
@@ -997,13 +2052,25 @@
         console.error("Ошибка сохранения темы:", e);
       }
     }
+        function setTheme(theme) {
+      const safeTheme = ["day", "night"].includes(theme) ? theme : "night";
 
-    function loadTheme() {
+      applyTheme(safeTheme);
+
+      document.querySelectorAll(".theme-btn-start").forEach((btn) => {
+        btn.classList.remove("active");
+      });
+
+      const startThemeBtn = document.getElementById(`theme-${safeTheme}-start`);
+      if (startThemeBtn) startThemeBtn.classList.add("active");
+    }
+
+        function loadTheme() {
       try {
         const savedTheme = localStorage.getItem(THEME_KEY) || "night";
-        applyTheme(savedTheme);
+        setTheme(savedTheme);
       } catch (e) {
-        applyTheme("night");
+        setTheme("night");
       }
     }
 
@@ -1026,12 +2093,22 @@
       if (screen === "table") screenTable.classList.remove("hidden");
       if (screen === "finished") screenFinished.classList.remove("hidden");
     }
+    function startApp() {
+  document.getElementById("screen-start").classList.add("hidden");
+  document.querySelector(".app").style.display = "block";
+  applyTranslations();
+  showScreen("home");
+}
+    function goToStart() {
+      document.querySelector(".app").style.display = "none";
+      document.getElementById("screen-start").classList.remove("hidden");
+    }
 
     function modeLabel(mode) {
-      if (mode === "americano") return "Американо";
-      if (mode === "pairs") return "Пары (до 3 пар)";
-      return mode;
-    }
+  if (mode === "americano") return tr("modeAmericano");
+  if (mode === "pairs") return tr("modePairs");
+  return mode;
+}
 
     function saveState() {
       try {
@@ -1149,6 +2226,31 @@
 
           titleRow.appendChild(livePill);
         }
+        const deleteBtn = document.createElement("button");
+deleteBtn.className = "player-remove-btn";
+deleteBtn.innerHTML = "×";
+deleteBtn.title = "Удалить турнир";
+
+deleteBtn.addEventListener("click", (event) => {
+  event.stopPropagation();
+
+  const confirmed = confirm(
+    `Удалить турнир "${t.name || "Без названия"}"? Это действие нельзя отменить.`
+  );
+
+  if (!confirmed) return;
+
+  tournaments = tournaments.filter((item) => item.id !== t.id);
+
+  if (activeTournament && activeTournament.id === t.id) {
+    activeTournament = null;
+  }
+
+  saveState();
+  renderHistory();
+});
+
+titleRow.appendChild(deleteBtn);
 
         const meta = document.createElement("div");
         meta.className = "history-meta";
@@ -1202,10 +2304,10 @@
         playersCountBadge.textContent = playersCount.toString();
 
         if (!pairs.length) {
-          playersSubtitle.textContent = "Добавь пары для этого турнира.";
-        } else {
-          playersSubtitle.textContent = `Пары турнира "${currentTournament.name}"`;
-        }
+  playersSubtitle.textContent = tr("addPairsForTournament");
+} else {
+  playersSubtitle.textContent = `${tr("pairsOfTournament")} "${currentTournament.name}"`;
+}
 
         pairs.forEach((pair, index) => {
           const row = document.createElement("div");
@@ -1213,12 +2315,12 @@
 
           const nameEl = document.createElement("div");
           nameEl.className = "player-name";
-          nameEl.textContent = `Пара ${index + 1}: ${pair.name1} & ${pair.name2}`;
+          nameEl.textContent = `${tr("pairLabel")} ${index + 1}: ${pair.name1} & ${pair.name2}`;
 
           const removeBtn = document.createElement("button");
           removeBtn.className = "player-remove-btn";
           removeBtn.innerHTML = "×";
-          removeBtn.title = "Удалить пару";
+          removeBtn.title = tr("deletePair");
 
           removeBtn.addEventListener("click", (event) => {
             event.stopPropagation();
@@ -1237,11 +2339,10 @@
         if (pairs.length >= MAX_PAIRS) {
           pairInputBlock.classList.add("hidden");
           playersHint.innerHTML =
-            `Добавлено максимум ${MAX_PAIRS} пар (6 игроков). ` +
-            `Для этого режима больше пары добавить нельзя.`;
+  `${tr("maxPairsAdded")} ${MAX_PAIRS} ${tr("maxPairsNote")}`;
         } else {
           pairInputBlock.classList.remove("hidden");
-          pairLabel.textContent = `Пара ${pairs.length + 1}`;
+          pairLabel.textContent = `${tr("pairLabel")} ${pairs.length + 1}`;
           setPlayersHintForMode(mode);
         }
       } else {
@@ -1249,10 +2350,10 @@
         playersCountBadge.textContent = players.length.toString();
 
         if (!players.length) {
-          playersSubtitle.textContent = "Добавь игроков для этого турнира.";
-        } else {
-          playersSubtitle.textContent = `Игроки турнира "${currentTournament.name}"`;
-        }
+  playersSubtitle.textContent = tr("addPlayersForTournament");
+} else {
+  playersSubtitle.textContent = `${tr("playersOfTournament")} "${currentTournament.name}"`;
+}
 
         for (const p of players) {
           const row = document.createElement("div");
@@ -1265,7 +2366,7 @@
           const removeBtn = document.createElement("button");
           removeBtn.className = "player-remove-btn";
           removeBtn.innerHTML = "×";
-          removeBtn.title = "Удалить игрока";
+          removeBtn.title = tr("deletePlayer");
 
           removeBtn.addEventListener("click", (event) => {
             event.stopPropagation();
@@ -1518,37 +2619,37 @@
 
       tournamentHeaderTitle.textContent = activeTournament.name || "Турнир";
       tournamentHeaderSubtitle.textContent = isLive
-        ? "Турнир в статусе Live. Можно играть матчи и смотреть таблицу."
-        : "Турнир завершён. Можно просматривать матчи, завершённые игры и таблицу.";
+  ? tr("tournamentLiveSubtitle")
+  : tr("tournamentFinishedSubtitle");
 
       const playersCount = getPlayersCountForTournament(activeTournament);
 
       let baseMeta = `
-        <span>${activeTournament.createdAt || ""}</span>
-        <span>${modeLabel(activeTournament.mode)}</span>
-        <span>${activeTournament.courts || 1} корт(а)</span>
-        <span>${playersCount} игрок(ов)</span>
-      `;
+  <span>${activeTournament.createdAt || ""}</span>
+  <span>${modeLabel(activeTournament.mode)}</span>
+  <span>${activeTournament.courts || 1} ${tr("courtsLabel")}</span>
+  <span>${playersCount} ${tr("playersLabel")}</span>
+`;
 
       if (
         activeTournament.mode === "pairs" &&
         activeTournament.gamesPerSet &&
         activeTournament.setsPerMatch
       ) {
-        baseMeta += `<span>Формат: до ${activeTournament.gamesPerSet} геймов, ${activeTournament.setsPerMatch} сет(ов)</span>`;
-        baseMeta += `<span>Система очков: 3 / 1 / 0</span>`;
+        baseMeta += `<span>${tr("formatLabel")}: ${tr("gamesTo")} ${activeTournament.gamesPerSet}, ${activeTournament.setsPerMatch} ${tr("setsLabel")}</span>`;
+baseMeta += `<span>${tr("scoringSystem")}: 3 / 1 / 0</span>`;
 
         if (activeTournament.pairsModeType === "two_pairs") {
-          baseMeta += `<span>Тип: 2 пары</span>`;
-        } else if (activeTournament.pairsModeType === "three_pairs_winner_stays") {
-          baseMeta += `<span>Тип: 3 пары (Winner stays, макс. 2 игры подряд)</span>`;
-        }
+  baseMeta += `<span>${tr("typeLabel")}: ${tr("twoPairs")}</span>`;
+} else if (activeTournament.pairsModeType === "three_pairs_winner_stays") {
+  baseMeta += `<span>${tr("typeLabel")}: ${tr("threePairsWinner")}</span>`;
+}
       }
 
       if (activeTournament.mode === "americano" && activeTournament.pointsPerGame) {
-        baseMeta += `<span>Американо: сумма очков в матче ${activeTournament.pointsPerGame}</span>`;
+        baseMeta += `<span>${tr("americanoLabel")}: ${tr("pointsPerMatch")} ${activeTournament.pointsPerGame}</span>`;
         if (activeTournament.americanoGamesPerRound) {
-          baseMeta += `<span>Игры в круге: ${activeTournament.americanoGamesPerRound}</span>`;
+          baseMeta += `<span>${tr("gamesPerRound")}: ${activeTournament.americanoGamesPerRound}</span>`;
         }
       }
 
@@ -1556,11 +2657,10 @@
 
       if (isLive) {
         tournamentFinishBtn.classList.remove("hidden");
-        tournamentFooterNote.textContent = "Турнир Live — можно продолжать играть матчи.";
+        tournamentFooterNote.textContent = tr("tournamentLiveFooter");
       } else {
         tournamentFinishBtn.classList.add("hidden");
-        tournamentFooterNote.textContent =
-          "Это завершённый турнир. Результаты можно смотреть, но не редактировать.";
+        tournamentFooterNote.textContent = tr("tournamentFinishedFooter");
       }
     }
 
@@ -1907,7 +3007,7 @@
       if (!matches.length) {
         const msg = document.createElement("div");
         msg.className = "hint";
-        msg.textContent = "Матчи ещё не сыграны.";
+        msg.textContent = tr("matchesEmpty");
         matchesList.appendChild(msg);
         return;
       }
@@ -1930,11 +3030,11 @@
         const nameEl = document.createElement("div");
         nameEl.className = "player-name";
 
-        let title = `Матч ${idx + 1}: `;
+        let title = `${tr("match")} ${idx + 1}: `;
         if (p1 && p2) {
           title += `${p1.label}: ${p1.name1} & ${p1.name2} vs ${p2.label}: ${p2.name1} & ${p2.name2}`;
         } else {
-          title += "неизвестные пары";
+          title += tr("unknownPairs");
         }
         nameEl.textContent = title;
 
@@ -1944,12 +3044,12 @@
 
         const setsWonA = m.sets.filter((s) => s.gamesA > s.gamesB).length;
         const setsWonB = m.sets.filter((s) => s.gamesB > s.gamesA).length;
-        const setsScoreText = `${setsWonA}:${setsWonB} по сетам`;
+        const setsScoreText = `${setsWonA}:${setsWonB} ${tr("bySets")}`;
 
         let resultText = "";
-        if (m.result === "p1") resultText = "Победа пары 1";
-        else if (m.result === "p2") resultText = "Победа пары 2";
-        else if (m.result === "draw") resultText = "Ничья";
+        if (m.result === "p1") resultText = tr("pair1Win");
+        else if (m.result === "p2") resultText = tr("pair2Win");
+        else if (m.result === "draw") resultText = tr("draw");
 
         const setsDetails = m.sets.map((s) => `${s.gamesA}:${s.gamesB}`).join(", ");
 
@@ -2005,7 +3105,7 @@
       if (!matches.length) {
         const msg = document.createElement("div");
         msg.className = "hint";
-        msg.textContent = "Матчи ещё не сыграны.";
+        msg.textContent = tr("matchesEmpty");
         matchesList.appendChild(msg);
         return;
       }
@@ -2028,7 +3128,7 @@
 
         const nameEl = document.createElement("div");
         nameEl.className = "player-name";
-        const roundInfo = m.round ? ` (круг ${m.round})` : "";
+        const roundInfo = m.round ? ` (${tr("round")} ${m.round})` : "";
         nameEl.textContent = `Матч ${idx + 1}${roundInfo}: ${teamAPlayers} vs ${teamBPlayers}`;
 
         const infoEl = document.createElement("div");
@@ -2036,11 +3136,11 @@
         infoEl.style.textAlign = "right";
 
         let resultText = "";
-        if ((m.scoreA || 0) > (m.scoreB || 0)) resultText = "Победа команды 1";
-        else if ((m.scoreB || 0) > (m.scoreA || 0)) resultText = "Победа команды 2";
-        else resultText = "Ничья";
+        if ((m.scoreA || 0) > (m.scoreB || 0)) resultText = tr("team1Win");
+        else if ((m.scoreB || 0) > (m.scoreA || 0)) resultText = tr("team2Win");
+        else resultText = tr("draw");
 
-        infoEl.innerHTML = `${m.scoreA || 0}:${m.scoreB || 0} очков<br>${resultText}<br>${m.playedAt || ""}`;
+        infoEl.innerHTML = `${m.scoreA || 0}:${m.scoreB || 0} ${tr("points")}<br>${resultText}<br>${m.playedAt || ""}`;
 
         row.appendChild(nameEl);
         row.appendChild(infoEl);
@@ -2129,14 +3229,20 @@
         .map((id) => (playerById[id] ? playerById[id].name : "?"))
         .join(", ");
 
-      let currentText = `Круг ${round}, игра ${idxInSchedule + 1}: ${nameA} vs ${nameB}`;
+      let currentText = tr("americanoCurrentGameText")
+        .replace("{round}", round)
+        .replace("{game}", idxInSchedule + 1)
+        .replace("{teamA}", nameA)
+        .replace("{teamB}", nameB);
+
       if (restNames) {
-        currentText += ` (отдыхает: ${restNames})`;
+        currentText += ` (${tr("restingPlayersText").replace("{players}", restNames)})`;
       }
+
       americanoCurrentGameEl.textContent = currentText;
 
-      americanoConfigNote.textContent =
-        `Сумма очков двух команд должна быть ровно ${target}. Введите очки любой команды — вторая заполнится автоматически.`;
+      americanoConfigNote.textContent = tr("americanoConfigNoteText")
+        .replace("{target}", target);
 
       americanoRemainingList.innerHTML = "";
 
@@ -2159,16 +3265,20 @@
           .map((id) => (playerById[id] ? playerById[id].name : "?"))
           .join(", ");
 
-        let text = `Игра ${idx + 1}: ${gNameA} vs ${gNameB}`;
+        let text = tr("americanoGameListItem")
+          .replace("{game}", idx + 1)
+          .replace("{teamA}", gNameA)
+          .replace("{teamB}", gNameB);
+
         if (gRest) {
-          text += ` (отдыхает: ${gRest})`;
+          text += ` (${tr("restingPlayersText").replace("{players}", gRest)})`;
         }
 
         btn.textContent = text;
         btn.addEventListener("click", () => {
           activeTournament.americanoCurrentGameId = g.id;
           editingMatchId = null;
-          saveMatchBtn.textContent = "Сохранить матч";
+          saveMatchBtn.textContent = tr("saveMatch");
           amScoreA.value = "";
           amScoreB.value = "";
           renderMatchesScreen();
@@ -2180,7 +3290,7 @@
       if (!americanoRemainingList.childNodes.length) {
         const msg = document.createElement("div");
         msg.className = "hint";
-        msg.textContent = "Все игры этого круга сыграны.";
+        msg.textContent = tr("allRoundGamesPlayed");
         americanoRemainingList.appendChild(msg);
       }
     }
@@ -2209,8 +3319,11 @@
 
       const remaining = Math.max(0, total - played);
 
-      americanoRoundInfo.textContent =
-        `Круг ${round}: сыграно ${played} из ${total} игр (осталось ${remaining}).`;
+      americanoRoundInfo.textContent = tr("roundProgressText")
+        .replace("{round}", round)
+        .replace("{played}", played)
+        .replace("{total}", total)
+        .replace("{remaining}", remaining);
 
       if (remaining <= 0 && activeTournament.live) {
         amRoundButtons.classList.remove("hidden");
@@ -2221,8 +3334,8 @@
 
     function renderMatchesScreen() {
       if (!activeTournament) {
-        matchesTitle.textContent = "Матчи";
-        matchesSubtitle.textContent = "Сначала создай и открой турнир.";
+        matchesTitle.textContent = tr("matchesTitle");
+matchesSubtitle.textContent = tr("openTournamentFirst");
         matchesList.innerHTML = "";
         pairsConfigBlock.classList.add("hidden");
         americanoConfigBlock.classList.add("hidden");
@@ -2234,7 +3347,7 @@
       const isLive = !!activeTournament.live;
 
       editingMatchId = null;
-      saveMatchBtn.textContent = "Сохранить матч";
+      saveMatchBtn.textContent = tr("saveMatch");
       saveMatchBtn.disabled = !isLive;
       if (!isLive) {
         saveMatchBtn.textContent = "Редактирование недоступно (турнир завершён)";
@@ -2246,17 +3359,14 @@
         americanoRoundInfo.textContent = "";
         amRoundButtons.classList.add("hidden");
 
-        matchesTitle.textContent = `Матчи — ${activeTournament.name || ""}`;
+        matchesTitle.textContent = `${tr("matchesTitle")} — ${activeTournament.name || ""}`;
 
         if (activeTournament.pairsModeType === "three_pairs_winner_stays") {
-          matchesSubtitle.textContent =
-            "3 пары — формат Winner stays. Победитель остаётся максимум на 2 игры подряд, со второй игры возможна ничья (по 1 очку каждой паре).";
+                    matchesSubtitle.textContent = tr("pairsWinnerStaysSubtitle");
         } else if (activeTournament.pairsModeType === "two_pairs") {
-          matchesSubtitle.textContent =
-            "2 пары — играют между собой. Очки 3 / 1 / 0 идут в итоговую таблицу.";
+                    matchesSubtitle.textContent = tr("pairsTwoSubtitle");
         } else {
-          matchesSubtitle.textContent =
-            "Режим пар. Каждая победа — 3 очка, ничья — 1, поражение — 0.";
+                    matchesSubtitle.textContent = tr("pairsGenericSubtitle");
         }
 
         renderMatchConfigPairs();
@@ -2266,9 +3376,8 @@
         pairsConfigBlock.classList.add("hidden");
         americanoConfigBlock.classList.remove("hidden");
 
-        matchesTitle.textContent = `Матчи — ${activeTournament.name || ""}`;
-        matchesSubtitle.textContent =
-          "Американо. Выберите игру и введите счёт.";
+        matchesTitle.textContent = `${tr("matchesTitle")} — ${activeTournament.name || ""}`;
+        matchesSubtitle.textContent = tr("americanoSubtitle");
 
         renderAmericanoRoundInfo();
         renderAmericanoConfig();
@@ -2293,27 +3402,25 @@
       tableList.innerHTML = "";
 
       if (!activeTournament) {
-        tableTitle.textContent = "Таблица";
-        tableSubtitle.textContent =
-          "Сначала создай и открой турнир.";
-        const msg = document.createElement("div");
-        msg.className = "hint";
-        msg.textContent = "Создай турнир и сыграй хотя бы один матч.";
-        tableList.appendChild(msg);
-        return;
-      }
+  tableTitle.textContent = tr("tableTitle");
+  tableSubtitle.textContent = tr("openTournamentFirst");
+  const msg = document.createElement("div");
+  msg.className = "hint";
+  msg.textContent = tr("createTournamentAndPlayMatch");
+  tableList.appendChild(msg);
+  return;
+}
 
       if (activeTournament.mode === "pairs") {
-        tableTitle.textContent = `Таблица — ${activeTournament.name || ""}`;
-        tableSubtitle.textContent =
-          "Рейтинг пар по очкам: победа — 3, ничья — 1, поражение — 0.";
+        tableTitle.textContent = `${tr("tableTitle")} — ${activeTournament.name || ""}`;
+tableSubtitle.textContent = tr("pairsTableSubtitle");
 
         const stats = computePairsStats(activeTournament);
 
         if (!stats.length) {
           const msg = document.createElement("div");
           msg.className = "hint";
-          msg.textContent = "Пока нет матчей, таблица пустая.";
+          msg.textContent = tr("tableEmpty");
           tableList.appendChild(msg);
           return;
         }
@@ -2337,9 +3444,8 @@
           tableList.appendChild(row);
         });
       } else if (activeTournament.mode === "americano") {
-        tableTitle.textContent = `Таблица — ${activeTournament.name || ""}`;
-        tableSubtitle.textContent =
-          "Американо: рейтинг игроков по забитым очкам и разнице +/−.";
+        tableTitle.textContent = `${tr("tableTitle")} — ${activeTournament.name || ""}`;
+tableSubtitle.textContent = tr("americanoTableSubtitle");
 
         const stats = computeAmericanoStats(activeTournament);
 
@@ -2356,7 +3462,7 @@
 
         const hName = document.createElement("div");
         hName.className = "player-name";
-        hName.textContent = "Игрок";
+        hName.textContent = tr("player");
 
         const hInfo = document.createElement("div");
         hInfo.style.fontSize = "11px";
@@ -2387,13 +3493,12 @@
           tableList.appendChild(row);
         });
       } else {
-        tableTitle.textContent = "Таблица";
-        tableSubtitle.textContent =
-          "Таблица пока поддерживает только турниры Американо и Пары.";
-        const msg = document.createElement("div");
-        msg.className = "hint";
-        msg.textContent = "Создай турнир в подходящем режиме.";
-        tableList.appendChild(msg);
+        tableTitle.textContent = tr("tableTitle");
+tableSubtitle.textContent = tr("tableSupportedModesOnly");
+const msg = document.createElement("div");
+msg.className = "hint";
+msg.textContent = tr("createSupportedTournament");
+tableList.appendChild(msg);
       }
     }
 
@@ -2401,27 +3506,26 @@
       finishedList.innerHTML = "";
 
       if (!activeTournament) {
-        finishedTitle.textContent = "Завершённые игры";
-        finishedSubtitle.textContent =
-          "Сначала создай и открой турнир.";
-        const msg = document.createElement("div");
-        msg.className = "hint";
-        msg.textContent = "Создай турнир и сыграй хотя бы один матч.";
-        finishedList.appendChild(msg);
-        return;
-      }
+  finishedTitle.textContent = tr("finishedTitle");
+  finishedSubtitle.textContent = tr("openTournamentFirst");
+  const msg = document.createElement("div");
+  msg.className = "hint";
+  msg.textContent = tr("createTournamentAndPlayMatch");
+  finishedList.appendChild(msg);
+  return;
+}
 
-      finishedTitle.textContent = `Завершённые игры — ${activeTournament.name || ""}`;
-      finishedSubtitle.textContent =
-        activeTournament.mode === "americano"
-          ? "Все сыгранные матчи Американо (по кругам)."
-          : "Все сыгранные матчи в режиме пар.";
+      finishedTitle.textContent = `${tr("finishedTitle")} — ${activeTournament.name || ""}`;
+finishedSubtitle.textContent =
+  activeTournament.mode === "americano"
+    ? tr("finishedSubtitleAmericano")
+    : tr("finishedSubtitlePairs");
 
       const matches = activeTournament.matches || [];
       if (!matches.length) {
         const msg = document.createElement("div");
         msg.className = "hint";
-        msg.textContent = "Пока нет сыгранных матчей.";
+        msg.textContent = tr("finishedEmpty");
         finishedList.appendChild(msg);
         return;
       }
@@ -2432,7 +3536,7 @@
         pairs.forEach((p, index) => {
           pairById[p.id] = {
             ...p,
-            label: `Пара ${index + 1}`,
+            label: `${tr("pairLabel")} ${index + 1}`,
           };
         });
 
@@ -2446,11 +3550,11 @@
           const nameEl = document.createElement("div");
           nameEl.className = "player-name";
 
-          let title = `Матч ${idx + 1}: `;
+          let title = `${tr("match")} ${idx + 1}: `;
           if (p1 && p2) {
             title += `${p1.label}: ${p1.name1} & ${p1.name2} vs ${p2.label}: ${p2.name1} & ${p2.name2}`;
           } else {
-            title += "неизвестные пары";
+            title += tr("unknownPairs");
           }
           nameEl.textContent = title;
 
@@ -2460,12 +3564,12 @@
 
           const setsWonA = m.sets.filter((s) => s.gamesA > s.gamesB).length;
           const setsWonB = m.sets.filter((s) => s.gamesB > s.gamesA).length;
-          const setsScoreText = `${setsWonA}:${setsWonB} по сетам`;
+          const setsScoreText = `${setsWonA}:${setsWonB} ${tr("bySets")}`;
 
           let resultText = "";
-          if (m.result === "p1") resultText = "Победа пары 1";
-          else if (m.result === "p2") resultText = "Победа пары 2";
-          else if (m.result === "draw") resultText = "Ничья";
+          if (m.result === "p1") resultText = tr("pair1Win");
+else if (m.result === "p2") resultText = tr("pair2Win");
+else if (m.result === "draw") resultText = tr("draw");
 
           const setsDetails = m.sets.map((s) => `${s.gamesA}:${s.gamesB}`).join(", ");
 
@@ -2503,19 +3607,19 @@
 
           const nameEl = document.createElement("div");
           nameEl.className = "player-name";
-          const roundInfo = m.round ? `Круг ${m.round}, ` : "";
-          nameEl.textContent = `${roundInfo}матч ${idx + 1}: ${teamAPlayers} vs ${teamBPlayers}`;
+          const roundInfo = m.round ? `${tr("round")} ${m.round}, ` : "";
+nameEl.textContent = `${roundInfo}${tr("match").toLowerCase()} ${idx + 1}: ${teamAPlayers} vs ${teamBPlayers}`;
 
           const infoEl = document.createElement("div");
           infoEl.style.fontSize = "11px";
           infoEl.style.textAlign = "right";
 
           let resultText = "";
-          if ((m.scoreA || 0) > (m.scoreB || 0)) resultText = "Победа команды 1";
-          else if ((m.scoreB || 0) > (m.scoreA || 0)) resultText = "Победа команды 2";
-          else resultText = "Ничья";
+          if ((m.scoreA || 0) > (m.scoreB || 0)) resultText = tr("team1Win");
+else if ((m.scoreB || 0) > (m.scoreA || 0)) resultText = tr("team2Win");
+else resultText = tr("draw");
 
-          infoEl.innerHTML = `${m.scoreA || 0}:${m.scoreB || 0} очков<br>${resultText}<br>${m.playedAt || ""}`;
+          infoEl.innerHTML = `${m.scoreA || 0}:${m.scoreB || 0} ${tr("points")}<br>${resultText}<br>${m.playedAt || ""}`;
 
           row.appendChild(nameEl);
           row.appendChild(infoEl);
@@ -2525,14 +3629,14 @@
       } else {
         const msg = document.createElement("div");
         msg.className = "hint";
-        msg.textContent = "Завершённые игры доступны только для режимов «Пары» и «Американо».";
+        msg.textContent = tr("finishedSupportedModesOnly");
         finishedList.appendChild(msg);
       }
     }
 
-    themeDayBtn.addEventListener("click", () => applyTheme("day"));
-    themeNightBtn.addEventListener("click", () => applyTheme("night"));
-    themeRedBtn.addEventListener("click", () => applyTheme("red"));
+    themeDayBtn.addEventListener("click", () => setTheme("day"));
+    themeNightBtn.addEventListener("click", () => setTheme("night"));
+    
 
     newTournamentBtn.addEventListener("click", () => {
       nameInput.value = "";
@@ -2934,7 +4038,7 @@
         saveState();
 
         editingMatchId = null;
-        saveMatchBtn.textContent = "Сохранить матч";
+        saveMatchBtn.textContent = tr("saveMatch");
         amScoreA.value = "";
         amScoreB.value = "";
 
@@ -3109,7 +4213,7 @@
       }
 
       editingMatchId = null;
-      saveMatchBtn.textContent = "Сохранить матч";
+      saveMatchBtn.textContent = tr("saveMatch");
 
       renderMatchesScreen();
       alert("Матч сохранён. Таблица и список завершённых игр обновлены.");
@@ -3141,7 +4245,8 @@
       isUpdatingAmScore = false;
     });
 
-    loadTheme();
+        loadTheme();
+    loadLang();
     loadState();
     updateSettingsVisibility();
     showScreen("home");
